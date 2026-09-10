@@ -3,9 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
+    <title>Dashboard - Tech Direction</title>
+    <link rel="stylesheet" href="./assets/css/main.css">
+    <link rel="stylesheet" href="./assets/css/dashboard.css">
 </head>
 <body>
-    <h1>Hello World</h1>
+
+    <header>
+        <h1>Tech Direction</h1>
+        
+        <nav>
+            <ul class="menu-items">
+                <li><a href="#">Sobre nós</a></li>
+                <li><a href="#">FAQ</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <nav>
+                <ul class="sidebar-nav">
+                    <li>
+                        <a href="#" class="sidebar-link active">
+                            <span>Início</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="sidebar-link">
+                            <span>Dicas</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="content">
+            <div class="welcome-header">
+                <h2>Olá, Aluno!</h2>
+                <p class="subtitle">Desenvolva suas habilidades através das principais trilhas de conhecimento.</p>
+            </div>
+
+            <section class="tracks-section">
+                <h3 class="section-title">Trilhas de Aprendizado</h3>
+                
+                <div class="tracks-grid">
+                    <!-- Trilha HTML -->
+                    <article class="track-card">
+                        <div class="card-banner banner-html">
+                            <img src="./assets/img/html5.svg" alt="Logo HTML5" width="68" height="68">
+                        </div>
+                        <div class="card-content">
+                            <h4>Trilha HTML</h4>
+                            <p>Aprenda a estrutura fundamental de marcas, elementos e páginas web com HTML.</p>
+                            <a href="#" class="btn-track">Acessar trilha &rsaquo;</a>
+                        </div>
+                    </article>
+
+                    <!-- Trilha CSS -->
+                    <article class="track-card">
+                        <div class="card-banner banner-css">
+                            <img src="./assets/img/css3.svg" alt="Logo CSS3" width="68" height="68">
+                        </div>
+                        <div class="card-content">
+                            <h4>Trilha CSS</h4>
+                            <p>Compreenda a estilização, seletores, box model e layouts responsivos com CSS.</p>
+                            <a href="#" class="btn-track">Acessar trilha &rsaquo;</a>
+                        </div>
+                    </article>
+
+                    <!-- Trilha JavaScript -->
+                    <article class="track-card">
+                        <div class="card-banner banner-js">
+                            <img src="./assets/img/javascript.svg" alt="Logo JavaScript" width="68" height="68">
+                        </div>
+                        <div class="card-content">
+                            <h4>Trilha JavaScript</h4>
+                            <p>Domine a lógica de programação, eventos e interatividade dinâmica no navegador com JS.</p>
+                            <a href="#" class="btn-track">Acessar trilha &rsaquo;</a>
+                        </div>
+                    </article>
+                </div>
+            </section>
+        </main>
+    </div>
+
 </body>
 </html>

@@ -1,0 +1,142 @@
+/* Dashboard */
+.dashboard-layout {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f8fafc;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 240px;
+    background-color: #0f172a;
+    padding: 20px 10px;
+}
+
+.sidebar-nav {
+    list-style: none;
+}
+
+.sidebar-nav li {
+    margin-bottom: 8px;
+}
+
+.sidebar-link {
+    display: block;
+    padding: 12px 15px;
+    border-radius: 8px;
+    color: #cbd5e1;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.sidebar-link.active {
+    background-color: #3b5998;
+    color: #ffffff;
+}
+
+.sidebar-link:hover {
+    background-color: #1e293b;
+    color: #ffffff;
+}
+
+/* Conteudo Principal */
+.content {
+    flex: 1;
+    padding: 30px;
+}
+
+.welcome-header {
+    margin-bottom: 30px;
+}
+
+.welcome-header h2 {
+    font-size: 28px;
+    color: #0f172a;
+}
+
+.subtitle {
+    color: #475569;
+    font-size: 16px;
+    margin-top: 5px;
+}
+
+/* Secao das Trilhas */
+.tracks-section {
+    margin-top: 10px;
+}
+
+.section-title {
+    font-size: 22px;
+    color: #0f172a;
+    margin-bottom: 20px;
+}
+
+/* Grade de Cards das Trilhas */
+.tracks-grid {
+    display: flex;
+    gap: 20px;
+}
+
+/* Card Individual */
+.track-card {
+    width: 300px;
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+/* Banner do Card */
+.card-banner {
+    height: 160px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.banner-html {
+    background-color: #f97316;
+}
+
+.banner-css {
+    background-color: #3b82f6;
+}
+
+.banner-js {
+    background-color: #eab308;
+}
+
+/* Conteudo do Card */
+.card-content {
+    padding: 20px;
+}
+
+.card-content h4 {
+    font-size: 18px;
+    color: #0f172a;
+    margin-bottom: 8px;
+}
+
+.card-content p {
+    font-size: 14px;
+    color: #475569;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+/* Botões das Trilhas*/
+.btn-track {
+    display: block;
+    text-align: center;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #3b5998;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.btn-track:hover {
+    background-color: #2d4373;
+}
