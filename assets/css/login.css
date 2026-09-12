@@ -50,3 +50,8 @@ button {
     background-color: #3b5998;
     color: #fff;
 }
+
+.required {
+    color: #dc2626;
+    font-weight: bold;
+}
