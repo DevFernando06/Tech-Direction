@@ -7,13 +7,13 @@
 {% endblock %}
 
 {% block content %}
-<div class="dashboard-layout flex-1 flex">
+<div class="flex-1 flex relative">
     {% include 'partils/sidebar.html' %}
-    <main class="flex-1 max-w-[76rem] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8" id="main-content" tabindex="-1">
+    <main class="flex-1 min-w-0 max-w-[76rem] w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8" id="main-content" tabindex="-1">
         <div class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-line pb-6">
             <div>
                 <nav aria-label="Breadcrumb" class="mb-2">
-                    <ol class="flex items-center gap-2 text-xs text-muted font-medium">
+                    <ol class="flex flex-wrap items-center gap-2 text-xs text-muted font-medium">
                         <li><a href="{{ url_for('dashboard') }}" class="hover:text-brand-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-1 py-0.5">Início</a></li>
                         <li aria-hidden="true">/</li>
                         <li><span class="text-ink font-semibold" aria-current="page">Escritores (Writers)</span></li>
@@ -31,7 +31,7 @@
 
             <a
                 href="{{ url_for('cad_writer') }}"
-                class="py-3 px-5 rounded-xl bg-brand-lime hover:bg-[#aedf1e] text-brand-dark font-bold text-sm flex items-center gap-2 shadow-[0_4px_0_0_#0A1E3F] active:translate-y-[2px] active:shadow-none transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime shrink-0"
+                class="w-full md:w-auto justify-center py-3 px-5 rounded-xl bg-brand-lime hover:bg-[#aedf1e] text-brand-dark font-bold text-sm flex items-center gap-2 shadow-[0_4px_0_0_#0A1E3F] active:translate-y-[2px] active:shadow-none transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime shrink-0"
             >
                 <i class="bi bi-plus-lg" aria-hidden="true"></i>
                 <span>Cadastrar Escritor</span>
@@ -188,7 +188,7 @@
                 </table>
             </div>
 
-            <div class="p-4 bg-slate-50 border-t border-line flex items-center justify-between text-xs text-muted">
+            <div class="p-4 bg-slate-50 border-t border-line flex flex-col sm:flex-row items-center justify-between text-xs text-muted gap-2">
                 <span>Mostrando 3 de 3 escritores cadastrados</span>
                 <span>Papel atribuído: <strong>Writer</strong> com acesso total de criação de trilhas</span>
             </div>

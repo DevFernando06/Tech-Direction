@@ -9,13 +9,13 @@
 {% endblock %}
 
 {% block content %}
-<div class="dashboard-layout flex-1 flex">
+<div class="flex-1 flex relative">
     {% include 'partils/sidebar.html' %}
 
-    <main class="flex-1 max-w-4xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10" id="main-content" tabindex="-1">
+    <main class="flex-1 min-w-0 max-w-4xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-8 sm:space-y-10" id="main-content" tabindex="-1">
         <!-- Hero da Trilha -->
         <section aria-labelledby="trail-main-title" class="space-y-4">
-            <div class="flex items-center justify-between gap-4 mb-2">
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-2">
                 <span 
                     tabindex="0"
                     class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-brand-light text-brand-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"

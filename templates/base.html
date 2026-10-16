@@ -6,7 +6,6 @@
     <title>{% block title %}Tech Direction{% endblock %}</title>
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
     {% block extra_css %}{% endblock %}
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -26,6 +25,7 @@
 
     {% block footer %}{% endblock %}
 
+    <script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>
     {% block scripts %}{% endblock %}
 </body>
 </html>

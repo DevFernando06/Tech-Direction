@@ -26,37 +26,3 @@ body {
     background-color: #f8fafc;
     color: var(--ink);
 }
-
-.input-text {
-    display: block;
-    padding: 10px;
-    border: 1px solid var(--line);
-    border-radius: 15px;
-    background: #f9fafb;
-    color: var(--ink);
-    font-size: 16px;
-}
-
-.center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px;
-}
-
-.menu-items {
-    list-style: none;
-    display: flex;
-    gap: 24px;
-}
-
-.menu-items a {
-    text-decoration: none;
-    color: var(--muted);
-    font-weight: 600;
-    font-size: 15px;
-}
-
-.menu-items a:hover {
-    color: var(--blue-700);
-}

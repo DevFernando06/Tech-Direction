@@ -7,12 +7,12 @@
 {% endblock %}
 
 {% block content %}
-<div class="dashboard-layout flex-1 flex">
+<div class="flex-1 flex relative">
     {% include 'partils/sidebar.html' %}
-    <main class="flex-1 max-w-[76rem] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8" id="main-content" tabindex="-1">
+    <main class="flex-1 min-w-0 max-w-[76rem] w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8" id="main-content" tabindex="-1">
         <div class="mb-8 border-b border-line pb-6">
             <nav aria-label="Breadcrumb" class="mb-2">
-                <ol class="flex items-center gap-2 text-xs text-muted font-medium">
+                <ol class="flex flex-wrap items-center gap-2 text-xs text-muted font-medium">
                     <li><a href="{{ url_for('dashboard') }}" class="hover:text-brand-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-1 py-0.5">Início</a></li>
                     <li aria-hidden="true">/</li>
                     <li><a href="{{ url_for('writers') }}" class="hover:text-brand-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-1 py-0.5">Escritores (Writers)</a></li>
@@ -32,13 +32,13 @@
 
         <form action="{{ url_for('cad_writer') }}" method="post" class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             <div class="lg:col-span-8 space-y-8">
-                <section aria-labelledby="writer-id-heading" class="bg-white rounded-2xl border border-line p-6 sm:p-8 shadow-xs">
-                    <header tabindex="0" class="mb-6 flex items-center justify-between border-b border-line pb-4 rounded-xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
+                <section aria-labelledby="writer-id-heading" class="bg-white rounded-2xl border border-line p-5 sm:p-8 shadow-xs">
+                    <header tabindex="0" class="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-line pb-4 rounded-xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
                         <div>
                             <h2 id="writer-id-heading" class="text-lg font-bold text-brand-dark">1. Identificação do Escritor</h2>
                             <p class="text-xs text-muted mt-0.5">Informações públicas e de autoria que serão associadas às trilhas.</p>
                         </div>
-                        <span class="text-xs font-semibold text-brand-blue bg-brand-light px-2.5 py-1 rounded-md">Perfil</span>
+                        <span class="text-xs font-semibold text-brand-blue bg-brand-light px-2.5 py-1 rounded-md w-fit shrink-0">Perfil</span>
                     </header>
 
                     <div class="space-y-5">
@@ -106,13 +106,13 @@
                     </div>
                 </section>
 
-                <section aria-labelledby="writer-creds-heading" class="bg-white rounded-2xl border border-line p-6 sm:p-8 shadow-xs">
-                    <header tabindex="0" class="mb-6 flex items-center justify-between border-b border-line pb-4 rounded-xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
+                <section aria-labelledby="writer-creds-heading" class="bg-white rounded-2xl border border-line p-5 sm:p-8 shadow-xs">
+                    <header tabindex="0" class="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-line pb-4 rounded-xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
                         <div>
                             <h2 id="writer-creds-heading" class="text-lg font-bold text-brand-dark">2. Credenciais de Acesso</h2>
                             <p class="text-xs text-muted mt-0.5">Defina a senha inicial que o escritor usará para entrar na plataforma.</p>
                         </div>
-                        <span class="text-xs font-semibold text-brand-blue bg-brand-light px-2.5 py-1 rounded-md">Segurança</span>
+                        <span class="text-xs font-semibold text-brand-blue bg-brand-light px-2.5 py-1 rounded-md w-fit shrink-0">Segurança</span>
                     </header>
 
                     <div class="space-y-5">

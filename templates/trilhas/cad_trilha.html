@@ -7,13 +7,13 @@
 {% endblock %}
 
 {% block content %}
-<div class="dashboard-layout flex-1 flex">
+<div class="flex-1 flex relative">
     {% include 'partils/sidebar.html' %}
-    <main class="flex-1 max-w-[76rem] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8" id="main-content" tabindex="-1">
+    <main class="flex-1 min-w-0 max-w-[76rem] w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8" id="main-content" tabindex="-1">
         <div class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-line pb-6">
             <div>
                 <nav aria-label="Breadcrumb" class="mb-2">
-                    <ol class="flex items-center gap-2 text-xs text-muted font-medium">
+                    <ol class="flex flex-wrap items-center gap-2 text-xs text-muted font-medium">
                         <li><a href="{{ url_for('dashboard') }}" class="hover:text-brand-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-1 py-0.5">Início</a></li>
                         <li aria-hidden="true">/</li>
                         <li><a href="{{ url_for('search_trilha') }}" class="hover:text-brand-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-1 py-0.5">Trilhas</a></li>
@@ -59,13 +59,13 @@
 
         <form id="formTrail" action="{{ url_for('cad_trilha') }}" method="post" enctype="multipart/form-data" class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             <div class="lg:col-span-8 space-y-8">
-                <section aria-labelledby="step-1-heading" class="bg-white rounded-2xl border border-line p-6 sm:p-8 shadow-xs">
-                    <header tabindex="0" class="mb-6 flex items-center justify-between border-b border-line pb-4 rounded-xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
+                <section aria-labelledby="step-1-heading" class="bg-white rounded-2xl border border-line p-5 sm:p-8 shadow-xs">
+                    <header tabindex="0" class="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-line pb-4 rounded-xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
                         <div>
                             <h2 id="step-1-heading" class="text-lg font-bold text-brand-dark">1. Dados Fundamentais da Trilha</h2>
                             <p class="text-xs text-muted mt-0.5">Identifique a trilha para os alunos no dashboard e na busca.</p>
                         </div>
-                        <span class="text-xs font-semibold text-brand-blue bg-brand-light px-2.5 py-1 rounded-md">Passo 1 de 4</span>
+                        <span class="text-xs font-semibold text-brand-blue bg-brand-light px-2.5 py-1 rounded-md w-fit shrink-0">Passo 1 de 4</span>
                     </header>
 
                     <div class="space-y-5">
@@ -151,13 +151,13 @@
                     </div>
                 </section>
 
-                <section aria-labelledby="step-2-heading" class="bg-white rounded-2xl border border-line p-6 sm:p-8 shadow-xs">
-                    <header tabindex="0" class="mb-6 flex items-center justify-between border-b border-line pb-4 rounded-xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
+                <section aria-labelledby="step-2-heading" class="bg-white rounded-2xl border border-line p-5 sm:p-8 shadow-xs">
+                    <header tabindex="0" class="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-line pb-4 rounded-xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
                         <div>
                             <h2 id="step-2-heading" class="text-lg font-bold text-brand-dark">2. Imagem de Capa e Identidade Visual</h2>
                             <p class="text-xs text-muted mt-0.5">Adicione o arquivo de imagem local da trilha com acessibilidade obrigatória.</p>
                         </div>
-                        <span class="text-xs font-semibold text-brand-blue bg-brand-light px-2.5 py-1 rounded-md">Passo 2 de 4</span>
+                        <span class="text-xs font-semibold text-brand-blue bg-brand-light px-2.5 py-1 rounded-md w-fit shrink-0">Passo 2 de 4</span>
                     </header>
 
                     <div class="space-y-5">
@@ -211,18 +211,18 @@
                     </div>
                 </section>
 
-                <section aria-labelledby="step-3-heading" class="bg-white rounded-2xl border border-line p-6 sm:p-8 shadow-xs">
-                    <header tabindex="0" class="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-line pb-4 rounded-xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
+                <section aria-labelledby="step-3-heading" class="bg-white rounded-2xl border border-line p-5 sm:p-8 shadow-xs">
+                    <header tabindex="0" class="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-line pb-4 rounded-xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
                         <div>
                             <h2 id="step-3-heading" class="text-lg font-bold text-brand-dark">3. Conteúdo da Trilha</h2>
                             <p class="text-xs text-muted mt-0.5">Escreva o texto completo da trilha em um campo único, gravado como TEXT no banco de dados.</p>
                         </div>
-                        <span class="text-xs font-semibold text-brand-blue bg-brand-light px-2.5 py-1 rounded-md w-fit">Passo 3 de 4</span>
+                        <span class="text-xs font-semibold text-brand-blue bg-brand-light px-2.5 py-1 rounded-md w-fit shrink-0">Passo 3 de 4</span>
                     </header>
 
                     <div class="space-y-4">
                         <div>
-                            <div class="flex items-center justify-between mb-2">
+                            <div class="flex flex-wrap items-center justify-between gap-1 mb-2">
                                 <label for="trailContent" class="block text-xs sm:text-sm font-bold text-ink">
                                     Texto do Conteúdo <span class="text-danger" aria-hidden="true">*</span>
                                 </label>
@@ -266,13 +266,13 @@
                     </div>
                 </section>
 
-                <section aria-labelledby="step-4-heading" class="bg-white rounded-2xl border border-line p-6 sm:p-8 shadow-xs">
-                    <header tabindex="0" class="mb-6 flex items-center justify-between border-b border-line pb-4 rounded-xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
+                <section aria-labelledby="step-4-heading" class="bg-white rounded-2xl border border-line p-5 sm:p-8 shadow-xs">
+                    <header tabindex="0" class="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-line pb-4 rounded-xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
                         <div>
                             <h2 id="step-4-heading" class="text-lg font-bold text-brand-dark">4. Referências e Leituras Complementares</h2>
                             <p class="text-xs text-muted mt-0.5">Cada trilha deve conter referências e fontes de autoridade.</p>
                         </div>
-                        <span class="text-xs font-semibold text-brand-blue bg-brand-light px-2.5 py-1 rounded-md">Passo 4 de 4</span>
+                        <span class="text-xs font-semibold text-brand-blue bg-brand-light px-2.5 py-1 rounded-md w-fit shrink-0">Passo 4 de 4</span>
                     </header>
 
                     <div class="space-y-4">
