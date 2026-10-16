@@ -1,0 +1,439 @@
+{% extends 'base.html' %}
+
+{% block title %}Cadastro de Trilha de Ensino - Tech Direction{% endblock %}
+
+{% block header %}
+    {% include 'partils/header.html' %}
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-layout flex-1 flex">
+    {% include 'partils/sidebar.html' %}
+    <main class="flex-1 max-w-[76rem] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8" id="main-content" tabindex="-1">
+        <div class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-line pb-6">
+            <div>
+                <nav aria-label="Breadcrumb" class="mb-2">
+                    <ol class="flex items-center gap-2 text-xs text-muted font-medium">
+                        <li><a href="{{ url_for('dashboard') }}" class="hover:text-brand-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-1 py-0.5">Início</a></li>
+                        <li aria-hidden="true">/</li>
+                        <li><a href="{{ url_for('search_trilha') }}" class="hover:text-brand-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-1 py-0.5">Trilhas</a></li>
+                        <li aria-hidden="true">/</li>
+                        <li><span class="text-ink font-semibold" aria-current="page">Nova Trilha de Ensino</span></li>
+                    </ol>
+                </nav>
+                <div tabindex="0" class="rounded-2xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
+                    <h1 class="text-2xl sm:text-3xl font-extrabold text-brand-dark tracking-tight">
+                        Criar Trilha de Ensino
+                    </h1>
+                    <p class="text-sm text-muted mt-1 max-w-2xl">
+                        Escreva textos autorais, adicione imagens locais com acessibilidade e referências para construir uma trilha inclusiva.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="flex flex-wrap items-center gap-3">
+                <a href="{{ url_for('search_trilha') }}" class="px-3.5 py-2 text-xs sm:text-sm font-semibold text-muted hover:text-brand-dark transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded-lg">
+                    Cancelar
+                </a>
+                <button
+                    type="button"
+                    id="btnPreviewToggle"
+                    data-toggle-preview
+                    aria-haspopup="dialog"
+                    aria-controls="previewModal"
+                    class="px-3.5 py-2 text-xs sm:text-sm font-bold text-brand-dark bg-slate-100 hover:bg-slate-200 border border-line rounded-xl transition-all flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"
+                >
+                    <i class="bi bi-eye text-muted" aria-hidden="true"></i>
+                    <span id="previewBtnText">Pré-visualizar</span>
+                </button>
+                <button
+                    type="submit"
+                    form="formTrail"
+                    class="py-2 px-4 sm:px-5 rounded-xl bg-brand-lime hover:bg-[#aedf1e] text-brand-dark font-bold text-xs sm:text-sm flex items-center gap-1.5 shadow-[0_3px_0_0_#0A1E3F] active:translate-y-[1px] active:shadow-none transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"
+                >
+                    <span>Publicar Trilha</span>
+                    <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+
+        <form id="formTrail" action="{{ url_for('cad_trilha') }}" method="post" enctype="multipart/form-data" class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <div class="lg:col-span-8 space-y-8">
+                <section aria-labelledby="step-1-heading" class="bg-white rounded-2xl border border-line p-6 sm:p-8 shadow-xs">
+                    <header tabindex="0" class="mb-6 flex items-center justify-between border-b border-line pb-4 rounded-xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
+                        <div>
+                            <h2 id="step-1-heading" class="text-lg font-bold text-brand-dark">1. Dados Fundamentais da Trilha</h2>
+                            <p class="text-xs text-muted mt-0.5">Identifique a trilha para os alunos no dashboard e na busca.</p>
+                        </div>
+                        <span class="text-xs font-semibold text-brand-blue bg-brand-light px-2.5 py-1 rounded-md">Passo 1 de 4</span>
+                    </header>
+
+                    <div class="space-y-5">
+                        <div>
+                            <label for="trailTitle" class="block text-xs sm:text-sm font-bold text-ink mb-1.5">
+                                Título da Trilha <span class="text-danger" aria-hidden="true">*</span>
+                            </label>
+                            <input
+                                type="text"
+                                id="trailTitle"
+                                name="trailTitle"
+                                required
+                                placeholder="Ex: Fundamentos de HTML5 e Estrutura Semântica"
+                                class="w-full px-4 py-3 text-sm rounded-xl bg-slate-50/75 border border-line text-ink placeholder-muted/60 focus:outline-none focus:ring-2 focus:ring-brand-lime focus:border-brand-blue focus:bg-white transition-all"
+                            >
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <div>
+                                <label for="trailCategory" class="block text-xs sm:text-sm font-bold text-ink mb-1.5">
+                                    Categoria <span class="text-danger" aria-hidden="true">*</span>
+                                </label>
+                                <select
+                                    id="trailCategory"
+                                    name="trailCategory"
+                                    required
+                                    class="w-full px-4 py-3 text-sm rounded-xl bg-slate-50/75 border border-line text-ink focus:outline-none focus:ring-2 focus:ring-brand-lime focus:border-brand-blue focus:bg-white transition-all"
+                                >
+                                    <option value="HTML & Estrutura">HTML &amp; Estrutura</option>
+                                    <option value="CSS & Estilização">CSS &amp; Estilização</option>
+                                    <option value="JavaScript & Lógica">JavaScript &amp; Lógica</option>
+                                    <option value="Acessibilidade Web">Acessibilidade Web</option>
+                                    <option value="Fundamentos de UI/UX">Fundamentos de UI/UX</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label for="trailLevel" class="block text-xs sm:text-sm font-bold text-ink mb-1.5">
+                                    Nível <span class="text-danger" aria-hidden="true">*</span>
+                                </label>
+                                <select
+                                    id="trailLevel"
+                                    name="trailLevel"
+                                    required
+                                    class="w-full px-4 py-3 text-sm rounded-xl bg-slate-50/75 border border-line text-ink focus:outline-none focus:ring-2 focus:ring-brand-lime focus:border-brand-blue focus:bg-white transition-all"
+                                >
+                                    <option value="Iniciante">Iniciante</option>
+                                    <option value="Intermediário">Intermediário</option>
+                                    <option value="Avançado">Avançado</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label for="trailReadTime" class="block text-xs sm:text-sm font-bold text-ink mb-1.5">
+                                    Tempo de Leitura <span class="text-danger" aria-hidden="true">*</span>
+                                </label>
+                                <input
+                                    type="text"
+                                    id="trailReadTime"
+                                    name="trailReadTime"
+                                    required
+                                    placeholder="Ex: 15 min"
+                                    class="w-full px-4 py-3 text-sm rounded-xl bg-slate-50/75 border border-line text-ink placeholder-muted/60 focus:outline-none focus:ring-2 focus:ring-brand-lime focus:border-brand-blue focus:bg-white transition-all"
+                                >
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="trailSummary" class="block text-xs sm:text-sm font-bold text-ink mb-1.5">
+                                Resumo da Trilha <span class="text-danger" aria-hidden="true">*</span>
+                            </label>
+                            <textarea
+                                id="trailSummary"
+                                name="trailSummary"
+                                rows="3"
+                                required
+                                aria-describedby="summary-help"
+                                placeholder="Apresente de forma direta o que o aluno será capaz de compreender ao concluir esta trilha."
+                                class="w-full px-4 py-3 text-sm rounded-xl bg-slate-50/75 border border-line text-ink placeholder-muted/60 focus:outline-none focus:ring-2 focus:ring-brand-lime focus:border-brand-blue focus:bg-white transition-all"
+                            ></textarea>
+                            <p id="summary-help" class="text-xs text-muted mt-1">Este texto aparecerá no topo do artigo e nos cards de destaque.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section aria-labelledby="step-2-heading" class="bg-white rounded-2xl border border-line p-6 sm:p-8 shadow-xs">
+                    <header tabindex="0" class="mb-6 flex items-center justify-between border-b border-line pb-4 rounded-xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
+                        <div>
+                            <h2 id="step-2-heading" class="text-lg font-bold text-brand-dark">2. Imagem de Capa e Identidade Visual</h2>
+                            <p class="text-xs text-muted mt-0.5">Adicione o arquivo de imagem local da trilha com acessibilidade obrigatória.</p>
+                        </div>
+                        <span class="text-xs font-semibold text-brand-blue bg-brand-light px-2.5 py-1 rounded-md">Passo 2 de 4</span>
+                    </header>
+
+                    <div class="space-y-5">
+                        <div>
+                            <label for="coverImageFile" class="block text-xs sm:text-sm font-bold text-ink mb-1.5">
+                                Arquivo de Imagem (PNG, JPG, SVG)
+                            </label>
+                            <input
+                                type="file"
+                                id="coverImageFile"
+                                name="coverImageFile"
+                                accept="image/*"
+                                class="w-full text-xs text-muted file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-brand-dark file:text-white hover:file:bg-brand-blue cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded-xl"
+                            >
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label for="coverImageAlt" class="block text-xs sm:text-sm font-bold text-ink mb-1.5">
+                                    Texto Alternativo (alt) <span class="text-danger" aria-hidden="true">*</span>
+                                </label>
+                                <input
+                                    type="text"
+                                    id="coverImageAlt"
+                                    name="coverImageAlt"
+                                    required
+                                    placeholder="Descreva o conteúdo visual para leitores de tela"
+                                    class="w-full px-4 py-3 text-sm rounded-xl bg-slate-50/75 border border-line text-ink placeholder-muted/60 focus:outline-none focus:ring-2 focus:ring-brand-lime focus:border-brand-blue focus:bg-white transition-all"
+                                >
+                            </div>
+                            <div>
+                                <label for="coverCaption" class="block text-xs sm:text-sm font-bold text-ink mb-1.5">
+                                    Legenda da Imagem (opcional)
+                                </label>
+                                <input
+                                    type="text"
+                                    id="coverCaption"
+                                    name="coverCaption"
+                                    placeholder="Ex: Ilustração da hierarquia da árvore DOM"
+                                    class="w-full px-4 py-3 text-sm rounded-xl bg-slate-50/75 border border-line text-ink placeholder-muted/60 focus:outline-none focus:ring-2 focus:ring-brand-lime focus:border-brand-blue focus:bg-white transition-all"
+                                >
+                            </div>
+                        </div>
+
+                        <div id="coverPreviewContainer" class="hidden border border-line rounded-xl p-3 bg-slate-50">
+                            <span class="text-xs font-bold text-muted uppercase block mb-2">Pré-visualização da Capa:</span>
+                            <div class="relative w-full h-48 sm:h-64 rounded-lg overflow-hidden bg-slate-200">
+                                <img id="coverPreviewImage" src="{{ url_for('static', filename='img/logo.svg') }}" alt="Pré-visualização da imagem de capa selecionada para a trilha" class="w-full h-full object-cover">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section aria-labelledby="step-3-heading" class="bg-white rounded-2xl border border-line p-6 sm:p-8 shadow-xs">
+                    <header tabindex="0" class="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-line pb-4 rounded-xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
+                        <div>
+                            <h2 id="step-3-heading" class="text-lg font-bold text-brand-dark">3. Conteúdo da Trilha</h2>
+                            <p class="text-xs text-muted mt-0.5">Escreva o texto completo da trilha em um campo único, gravado como TEXT no banco de dados.</p>
+                        </div>
+                        <span class="text-xs font-semibold text-brand-blue bg-brand-light px-2.5 py-1 rounded-md w-fit">Passo 3 de 4</span>
+                    </header>
+
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <label for="trailContent" class="block text-xs sm:text-sm font-bold text-ink">
+                                    Texto do Conteúdo <span class="text-danger" aria-hidden="true">*</span>
+                                </label>
+                                <span class="text-[11px] text-muted">Coluna TEXT única no banco de dados</span>
+                            </div>
+
+                            <div class="flex flex-wrap items-center gap-1.5 p-1.5 bg-slate-100 rounded-t-xl border-t border-x border-line text-xs" role="toolbar" aria-label="Ferramentas de formatação do texto">
+                                <button type="button" data-format-target="trailContent" data-format-prefix="**" data-format-suffix="**" aria-label="Formatar em negrito" class="px-2.5 py-1 rounded font-bold hover:bg-white text-ink border border-transparent hover:border-line focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime" title="Negrito">
+                                    B
+                                </button>
+                                <button type="button" data-format-target="trailContent" data-format-prefix="*" data-format-suffix="*" aria-label="Formatar em itálico" class="px-2.5 py-1 rounded italic hover:bg-white text-ink border border-transparent hover:border-line focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime" title="Itálico">
+                                    I
+                                </button>
+                                <button type="button" data-format-target="trailContent" data-format-prefix="\n### " data-format-suffix="\n" aria-label="Inserir subtítulo H3" class="px-2.5 py-1 rounded font-bold hover:bg-white text-ink border border-transparent hover:border-line focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime" title="Subtítulo">
+                                    H3
+                                </button>
+                                <button type="button" data-format-target="trailContent" data-format-prefix="\n> " data-format-suffix="\n" aria-label="Inserir citação" class="px-2.5 py-1 rounded hover:bg-white text-ink border border-transparent hover:border-line focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime" title="Citação">
+                                    &ldquo; Citação
+                                </button>
+                                <button type="button" data-format-target="trailContent" data-format-prefix="`" data-format-suffix="`" aria-label="Formatar como código" class="px-2.5 py-1 rounded font-mono hover:bg-white text-ink border border-transparent hover:border-line focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime" title="Código">
+                                    &lt;/&gt;
+                                </button>
+                                <button type="button" data-format-target="trailContent" data-format-prefix="\n- " data-format-suffix="\n" aria-label="Inserir lista de itens" class="px-2.5 py-1 rounded hover:bg-white text-ink border border-transparent hover:border-line focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime" title="Lista de itens">
+                                    &bull; Lista
+                                </button>
+                            </div>
+
+                            <textarea
+                                id="trailContent"
+                                name="trailContent"
+                                rows="14"
+                                required
+                                aria-describedby="content-help"
+                                placeholder="Escreva aqui o texto explicativo completo da trilha. Use parágrafos normais, quebras de linha e tópicos para organizar o conteúdo de forma clara e acessível..."
+                                class="w-full px-4 py-3 text-sm rounded-b-xl bg-white border border-line text-ink placeholder-muted/60 focus:outline-none focus:ring-2 focus:ring-brand-lime focus:border-brand-blue transition-all leading-relaxed"
+                            ></textarea>
+                            <p id="content-help" class="text-xs text-muted mt-1.5">
+                                O texto pode conter quebras de linha, citações e listas. Será exibido continuamente na página de visualização da trilha.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section aria-labelledby="step-4-heading" class="bg-white rounded-2xl border border-line p-6 sm:p-8 shadow-xs">
+                    <header tabindex="0" class="mb-6 flex items-center justify-between border-b border-line pb-4 rounded-xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
+                        <div>
+                            <h2 id="step-4-heading" class="text-lg font-bold text-brand-dark">4. Referências e Leituras Complementares</h2>
+                            <p class="text-xs text-muted mt-0.5">Cada trilha deve conter referências e fontes de autoridade.</p>
+                        </div>
+                        <span class="text-xs font-semibold text-brand-blue bg-brand-light px-2.5 py-1 rounded-md">Passo 4 de 4</span>
+                    </header>
+
+                    <div class="space-y-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label for="refTitle1" class="block text-xs font-bold text-ink mb-1">Título da Referência 1</label>
+                                <input
+                                    type="text"
+                                    id="refTitle1"
+                                    name="refTitles[]"
+                                    value="MDN Web Docs - HTML: HyperText Markup Language"
+                                    class="w-full px-3.5 py-2.5 text-sm rounded-xl bg-slate-50/75 border border-line text-ink focus:outline-none focus:ring-2 focus:ring-brand-lime"
+                                >
+                            </div>
+                            <div>
+                                <label for="refUrl1" class="block text-xs font-bold text-ink mb-1">Link / URL da Referência 1</label>
+                                <input
+                                    type="url"
+                                    id="refUrl1"
+                                    name="refUrls[]"
+                                    value="https://developer.mozilla.org/pt-BR/docs/Web/HTML"
+                                    class="w-full px-3.5 py-2.5 text-sm rounded-xl bg-slate-50/75 border border-line text-ink focus:outline-none focus:ring-2 focus:ring-brand-lime"
+                                >
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label for="refTitle2" class="block text-xs font-bold text-ink mb-1">Título da Referência 2</label>
+                                <input
+                                    type="text"
+                                    id="refTitle2"
+                                    name="refTitles[]"
+                                    value="W3C Web Accessibility Initiative (WAI)"
+                                    class="w-full px-3.5 py-2.5 text-sm rounded-xl bg-slate-50/75 border border-line text-ink focus:outline-none focus:ring-2 focus:ring-brand-lime"
+                                >
+                            </div>
+                            <div>
+                                <label for="refUrl2" class="block text-xs font-bold text-ink mb-1">Link / URL da Referência 2</label>
+                                <input
+                                    type="url"
+                                    id="refUrl2"
+                                    name="refUrls[]"
+                                    value="https://www.w3.org/WAI/"
+                                    class="w-full px-3.5 py-2.5 text-sm rounded-xl bg-slate-50/75 border border-line text-ink focus:outline-none focus:ring-2 focus:ring-brand-lime"
+                                >
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <aside class="lg:col-span-4 space-y-6">
+                <div class="bg-white rounded-2xl border border-line p-6 shadow-xs sticky top-24">
+                    <div tabindex="0" class="rounded-xl p-2 -m-2 mb-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
+                        <h3 class="text-sm font-bold uppercase tracking-wider text-muted mb-4">Publicação da Trilha</h3>
+
+                        <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-line">
+                            <span class="text-xs font-semibold text-muted">Status do documento:</span>
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800">
+                                <span class="w-1.5 h-1.5 rounded-full bg-amber-500" aria-hidden="true"></span>
+                                Rascunho
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="mb-5">
+                        <label for="authorName" class="block text-xs font-bold text-ink mb-1.5">
+                            Autor / Escritor <span class="text-danger" aria-hidden="true">*</span>
+                        </label>
+                        <input
+                            type="text"
+                            id="authorName"
+                            name="authorName"
+                            required
+                            placeholder="Seu nome ou equipe"
+                            value="Equipe Tech Direction"
+                            class="w-full px-3.5 py-2.5 text-sm rounded-xl bg-slate-50/75 border border-line text-ink focus:outline-none focus:ring-2 focus:ring-brand-lime"
+                        >
+                    </div>
+
+                    <div class="space-y-3 pt-2">
+                        <button
+                            type="submit"
+                            class="w-full py-3 px-4 rounded-xl bg-brand-lime hover:bg-[#aedf1e] text-brand-dark font-bold text-sm flex items-center justify-center gap-2 shadow-[0_4px_0_0_#0A1E3F] active:translate-y-[2px] active:shadow-none transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"
+                        >
+                            <span>Publicar Trilha Agora</span>
+                            <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                        </button>
+
+                        <button
+                            type="button"
+                            id="btnSaveDraft"
+                            class="w-full py-2.5 px-4 rounded-xl bg-brand-dark hover:bg-brand-blue text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"
+                        >
+                            <span>Salvar Como Rascunho</span>
+                        </button>
+                    </div>
+
+                    <div tabindex="0" class="mt-8 pt-6 border-t border-line rounded-xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-brand-dark mb-3">
+                            Checklist de Qualidade (Design System)
+                        </h4>
+                        <ul class="space-y-2.5 text-xs text-muted">
+                            <li class="flex items-start gap-2">
+                                <i class="bi bi-check-lg text-success shrink-0 mt-0.5" aria-hidden="true"></i>
+                                <span>Vocabulário centrado em leitura, autoria e exploração.</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="bi bi-check-lg text-success shrink-0 mt-0.5" aria-hidden="true"></i>
+                                <span>Toda imagem informativa possui descrição alternativa (alt).</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="bi bi-check-lg text-success shrink-0 mt-0.5" aria-hidden="true"></i>
+                                <span>Contém links e referências complementares confiáveis.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </aside>
+        </form>
+
+        <div
+            id="previewModal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="previewModalTitle"
+            class="hidden fixed inset-0 z-50 bg-brand-dark/80 backdrop-blur-xs overflow-y-auto p-4 sm:p-6 lg:p-10 flex items-center justify-center"
+        >
+            <div class="bg-white w-full max-w-4xl rounded-2xl shadow-2xl border border-line overflow-hidden flex flex-col max-h-[90vh]">
+                <div class="p-4 sm:px-6 bg-slate-50 border-b border-line flex items-center justify-between">
+                    <div>
+                        <span class="text-xs font-bold uppercase text-brand-blue tracking-wider">Simulação do Aluno</span>
+                        <h3 id="previewModalTitle" class="text-base font-bold text-brand-dark">Pré-visualização da Leitura</h3>
+                    </div>
+                    <button type="button" data-toggle-preview aria-label="Fechar pré-visualização" class="p-2 rounded-lg text-muted hover:text-ink hover:bg-slate-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime">
+                        <i class="bi bi-x-lg" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <div tabindex="0" class="p-6 sm:p-10 overflow-y-auto space-y-6 flex-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime focus-visible:ring-inset">
+                    <span id="prevBadge" class="inline-block px-3 py-1 rounded-md text-xs font-bold uppercase tracking-wider bg-brand-light text-brand-blue">Categoria</span>
+                    <h2 id="prevTitle" class="text-2xl sm:text-3xl font-extrabold text-brand-dark">Título da Trilha</h2>
+                    <p id="prevSummary" class="text-base text-muted leading-relaxed italic border-l-3 border-brand-action pl-4">Resumo da trilha...</p>
+                    <div id="prevContentArea" class="space-y-6 pt-4 border-t border-line text-sm text-ink leading-relaxed"></div>
+                </div>
+                <div class="p-4 bg-slate-50 border-t border-line flex justify-end">
+                    <button type="button" data-toggle-preview class="px-5 py-2 rounded-xl bg-brand-dark text-white text-xs font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime">
+                        Fechar Visualização
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+{% endblock %}
+
+{% block footer %}
+    {% set footer_subtitle = 'Plataforma Educacional • Autoria de Conteúdo' %}
+    {% include 'partils/footer.html' %}
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/cad-trilha.js') }}"></script>
+{% endblock %}

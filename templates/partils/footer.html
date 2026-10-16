@@ -1,0 +1,10 @@
+<footer class="mt-auto border-t border-line bg-white py-6 text-center text-xs text-muted md:pl-60">
+    <div class="max-w-[76rem] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <p tabindex="0" class="rounded px-1 py-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime">&copy; Tech Direction &bull; {{ footer_subtitle | default('Plataforma Educacional Inclusiva') }}</p>
+        <nav aria-label="Links do rodapé" class="flex items-center gap-4 text-brand-blue font-semibold">
+            <a href="{{ url_for('dashboard') if url_for is defined else '../dashboard.html' }}" class="hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-1 py-0.5">Início</a>
+            <a href="#" class="hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-1 py-0.5">Sobre nós</a>
+            <a href="#" class="hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-1 py-0.5">Ajuda</a>
+        </nav>
+    </div>
+</footer>

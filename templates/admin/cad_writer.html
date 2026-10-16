@@ -1,0 +1,285 @@
+{% extends 'base.html' %}
+
+{% block title %}Cadastrar Novo Escritor - Tech Direction Admin{% endblock %}
+
+{% block header %}
+    {% include 'partils/header.html' %}
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-layout flex-1 flex">
+    {% include 'partils/sidebar.html' %}
+    <main class="flex-1 max-w-[76rem] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8" id="main-content" tabindex="-1">
+        <div class="mb-8 border-b border-line pb-6">
+            <nav aria-label="Breadcrumb" class="mb-2">
+                <ol class="flex items-center gap-2 text-xs text-muted font-medium">
+                    <li><a href="{{ url_for('dashboard') }}" class="hover:text-brand-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-1 py-0.5">Início</a></li>
+                    <li aria-hidden="true">/</li>
+                    <li><a href="{{ url_for('writers') }}" class="hover:text-brand-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-1 py-0.5">Escritores (Writers)</a></li>
+                    <li aria-hidden="true">/</li>
+                    <li><span class="text-ink font-semibold" aria-current="page">Novo Escritor</span></li>
+                </ol>
+            </nav>
+            <div tabindex="0" class="rounded-2xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-brand-dark tracking-tight">
+                    Cadastrar Novo Escritor
+                </h1>
+                <p class="text-sm text-muted mt-1 max-w-2xl">
+                    Crie contas de escritores para que colaboradores publiquem trilhas de conhecimento e gerenciem conteúdos educativos na plataforma.
+                </p>
+            </div>
+        </div>
+
+        <form action="{{ url_for('cad_writer') }}" method="post" class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <div class="lg:col-span-8 space-y-8">
+                <section aria-labelledby="writer-id-heading" class="bg-white rounded-2xl border border-line p-6 sm:p-8 shadow-xs">
+                    <header tabindex="0" class="mb-6 flex items-center justify-between border-b border-line pb-4 rounded-xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
+                        <div>
+                            <h2 id="writer-id-heading" class="text-lg font-bold text-brand-dark">1. Identificação do Escritor</h2>
+                            <p class="text-xs text-muted mt-0.5">Informações públicas e de autoria que serão associadas às trilhas.</p>
+                        </div>
+                        <span class="text-xs font-semibold text-brand-blue bg-brand-light px-2.5 py-1 rounded-md">Perfil</span>
+                    </header>
+
+                    <div class="space-y-5">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label for="fullName" class="block text-xs sm:text-sm font-bold text-ink mb-1.5">
+                                    Nome Completo <span class="text-danger" aria-hidden="true">*</span>
+                                </label>
+                                <input
+                                    type="text"
+                                    id="fullName"
+                                    name="fullName"
+                                    required
+                                    autocomplete="name"
+                                    placeholder="Ex: Mariana Vasconcelos"
+                                    class="w-full px-4 py-3 text-sm rounded-xl bg-slate-50/75 border border-line text-ink placeholder-muted/60 focus:outline-none focus:ring-2 focus:ring-brand-lime focus:border-brand-blue focus:bg-white transition-all"
+                                >
+                            </div>
+
+                            <div>
+                                <label for="login" class="block text-xs sm:text-sm font-bold text-ink mb-1.5">
+                                    Nome de Usuário (Login) <span class="text-danger" aria-hidden="true">*</span>
+                                </label>
+                                <input
+                                    type="text"
+                                    id="login"
+                                    name="login"
+                                    required
+                                    autocomplete="username"
+                                    placeholder="mariana.vasconcelos"
+                                    class="w-full px-4 py-3 text-sm rounded-xl bg-slate-50/75 border border-line text-ink placeholder-muted/60 focus:outline-none focus:ring-2 focus:ring-brand-lime focus:border-brand-blue focus:bg-white transition-all"
+                                >
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="email" class="block text-xs sm:text-sm font-bold text-ink mb-1.5">
+                                E-mail Institucional <span class="text-danger" aria-hidden="true">*</span>
+                            </label>
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                required
+                                autocomplete="email"
+                                placeholder="mariana@techdirection.edu"
+                                class="w-full px-4 py-3 text-sm rounded-xl bg-slate-50/75 border border-line text-ink placeholder-muted/60 focus:outline-none focus:ring-2 focus:ring-brand-lime focus:border-brand-blue focus:bg-white transition-all"
+                            >
+                        </div>
+
+                        <div>
+                            <label for="bio" class="block text-xs sm:text-sm font-bold text-ink mb-1.5">
+                                Minibiografia do Escritor
+                            </label>
+                            <textarea
+                                id="bio"
+                                name="bio"
+                                rows="3"
+                                aria-describedby="bio-help"
+                                placeholder="Breve apresentação sobre a trajetória ou foco técnico. Este texto aparecerá no rodapé dos artigos autorais."
+                                class="w-full px-4 py-3 text-sm rounded-xl bg-slate-50/75 border border-line text-ink placeholder-muted/60 focus:outline-none focus:ring-2 focus:ring-brand-lime focus:border-brand-blue focus:bg-white transition-all"
+                            ></textarea>
+                            <p id="bio-help" class="text-xs text-muted mt-1">Opcional. Máximo de 250 caracteres recomendado.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section aria-labelledby="writer-creds-heading" class="bg-white rounded-2xl border border-line p-6 sm:p-8 shadow-xs">
+                    <header tabindex="0" class="mb-6 flex items-center justify-between border-b border-line pb-4 rounded-xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
+                        <div>
+                            <h2 id="writer-creds-heading" class="text-lg font-bold text-brand-dark">2. Credenciais de Acesso</h2>
+                            <p class="text-xs text-muted mt-0.5">Defina a senha inicial que o escritor usará para entrar na plataforma.</p>
+                        </div>
+                        <span class="text-xs font-semibold text-brand-blue bg-brand-light px-2.5 py-1 rounded-md">Segurança</span>
+                    </header>
+
+                    <div class="space-y-5">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label for="password" class="block text-xs sm:text-sm font-bold text-ink mb-1.5">
+                                    Senha Provisória <span class="text-danger" aria-hidden="true">*</span>
+                                </label>
+                                <div class="relative">
+                                    <input
+                                        type="password"
+                                        id="password"
+                                        name="password"
+                                        required
+                                        minlength="8"
+                                        autocomplete="new-password"
+                                        placeholder="Mínimo de 8 caracteres"
+                                        class="w-full pl-4 pr-11 py-3 text-sm rounded-xl bg-slate-50/75 border border-line text-ink placeholder-muted/60 focus:outline-none focus:ring-2 focus:ring-brand-lime focus:border-brand-blue focus:bg-white transition-all"
+                                    >
+                                    <button
+                                        type="button"
+                                        data-toggle-password="password"
+                                        aria-label="Mostrar senha"
+                                        aria-pressed="false"
+                                        class="absolute right-0 top-0 bottom-0 px-3 flex items-center text-muted hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded-r-xl"
+                                    >
+                                        <i class="bi bi-eye" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label for="confirmPassword" class="block text-xs sm:text-sm font-bold text-ink mb-1.5">
+                                    Confirmar Senha <span class="text-danger" aria-hidden="true">*</span>
+                                </label>
+                                <div class="relative">
+                                    <input
+                                        type="password"
+                                        id="confirmPassword"
+                                        name="confirmPassword"
+                                        required
+                                        minlength="8"
+                                        autocomplete="new-password"
+                                        placeholder="Repita a senha"
+                                        class="w-full pl-4 pr-11 py-3 text-sm rounded-xl bg-slate-50/75 border border-line text-ink placeholder-muted/60 focus:outline-none focus:ring-2 focus:ring-brand-lime focus:border-brand-blue focus:bg-white transition-all"
+                                    >
+                                    <button
+                                        type="button"
+                                        data-toggle-password="confirmPassword"
+                                        aria-label="Mostrar confirmação de senha"
+                                        aria-pressed="false"
+                                        class="absolute right-0 top-0 bottom-0 px-3 flex items-center text-muted hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded-r-xl"
+                                    >
+                                        <i class="bi bi-eye" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pt-2">
+                            <label class="flex items-start gap-2.5 cursor-pointer">
+                                <input
+                                    type="checkbox"
+                                    name="forcePasswordChange"
+                                    checked
+                                    class="mt-0.5 w-4 h-4 rounded border-line text-brand-blue focus:ring-brand-lime"
+                                >
+                                <span class="text-xs sm:text-sm text-ink leading-snug">
+                                    Exigir que o escritor altere a senha no primeiro acesso à plataforma
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <aside class="lg:col-span-4 space-y-6">
+                <div class="bg-white rounded-2xl border border-line p-6 shadow-xs">
+                    <div tabindex="0" class="rounded-xl p-2 -m-2 mb-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
+                        <h3 class="text-xs font-bold uppercase tracking-wider text-muted mb-3">
+                            Papel no Sistema (Role)
+                        </h3>
+
+                        <div class="p-4 rounded-xl bg-brand-light/50 border border-brand-blue/20 mb-5">
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="w-2.5 h-2.5 rounded-full bg-brand-blue" aria-hidden="true"></span>
+                                <span class="text-sm font-bold text-brand-dark">Writer (Escritor)</span>
+                            </div>
+                            <p class="text-xs text-muted leading-relaxed">
+                                Papel dedicado à criação, revisão e manutenção de conteúdos e trilhas de aprendizagem.
+                            </p>
+                        </div>
+
+                        <h4 class="text-xs font-bold text-brand-dark mb-2.5">
+                            Permissões Atribuídas ao Papel:
+                        </h4>
+                        <ul class="space-y-2 text-xs text-muted">
+                            <li class="flex items-center gap-2">
+                                <i class="bi bi-check-lg text-success text-sm shrink-0" aria-hidden="true"></i>
+                                <span class="font-mono font-semibold text-ink">READ_TRAIL</span>
+                                <span class="text-[11px] text-muted">(Ler trilhas)</span>
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="bi bi-check-lg text-success text-sm shrink-0" aria-hidden="true"></i>
+                                <span class="font-mono font-semibold text-ink">CREATE_TRAIL</span>
+                                <span class="text-[11px] text-muted">(Criar novas trilhas)</span>
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="bi bi-check-lg text-success text-sm shrink-0" aria-hidden="true"></i>
+                                <span class="font-mono font-semibold text-ink">UPDATE_TRAIL</span>
+                                <span class="text-[11px] text-muted">(Editar trilhas)</span>
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="bi bi-check-lg text-success text-sm shrink-0" aria-hidden="true"></i>
+                                <span class="font-mono font-semibold text-ink">DELETE_TRAIL</span>
+                                <span class="text-[11px] text-muted">(Excluir/arquivar trilhas)</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <fieldset class="pt-4 border-t border-line mb-6">
+                        <legend class="block text-xs font-bold text-ink mb-2">Status da Conta</legend>
+                        <div class="flex items-center gap-4 text-xs font-semibold">
+                            <label class="inline-flex items-center gap-2 cursor-pointer">
+                                <input type="radio" name="accountStatus" value="active" checked class="text-brand-blue focus:ring-brand-lime">
+                                <span>Ativo</span>
+                            </label>
+                            <label class="inline-flex items-center gap-2 cursor-pointer text-muted">
+                                <input type="radio" name="accountStatus" value="pending" class="text-brand-blue focus:ring-brand-lime">
+                                <span>Pendente</span>
+                            </label>
+                        </div>
+                    </fieldset>
+
+                    <div class="space-y-3">
+                        <button
+                            type="submit"
+                            class="w-full py-3.5 px-6 rounded-xl bg-brand-lime hover:bg-[#aedf1e] text-brand-dark font-bold text-sm flex items-center justify-center gap-2 shadow-[0_4px_0_0_#0A1E3F] active:translate-y-[2px] active:shadow-none transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime focus-visible:ring-offset-2"
+                        >
+                            <span>Cadastrar Escritor</span>
+                            <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                        </button>
+
+                        <a
+                            href="{{ url_for('writers') }}"
+                            class="w-full py-2.5 px-4 rounded-xl border border-line hover:bg-slate-50 text-muted hover:text-ink font-semibold text-xs sm:text-sm flex items-center justify-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime text-center"
+                        >
+                            Cancelar e Voltar
+                        </a>
+                    </div>
+                </div>
+
+                <div tabindex="0" class="p-4 rounded-xl bg-blue-50/60 border border-brand-blue/15 text-xs text-muted leading-relaxed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
+                    <p class="font-bold text-brand-blue mb-1">Nota de Segurança:</p>
+                    <p>Somente administradores autorizados têm permissão para cadastrar ou desativar perfis de escritores.</p>
+                </div>
+            </aside>
+        </form>
+    </main>
+</div>
+{% endblock %}
+
+{% block footer %}
+    {% set footer_subtitle = 'Módulo Administrativo • Gestão de Escritores' %}
+    {% include 'partils/footer.html' %}
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+{% endblock %}

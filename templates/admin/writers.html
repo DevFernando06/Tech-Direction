@@ -1,0 +1,207 @@
+{% extends 'base.html' %}
+
+{% block title %}Gerenciamento de Escritores (Writers) - Tech Direction Admin{% endblock %}
+
+{% block header %}
+    {% include 'partils/header.html' %}
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-layout flex-1 flex">
+    {% include 'partils/sidebar.html' %}
+    <main class="flex-1 max-w-[76rem] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8" id="main-content" tabindex="-1">
+        <div class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-line pb-6">
+            <div>
+                <nav aria-label="Breadcrumb" class="mb-2">
+                    <ol class="flex items-center gap-2 text-xs text-muted font-medium">
+                        <li><a href="{{ url_for('dashboard') }}" class="hover:text-brand-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-1 py-0.5">Início</a></li>
+                        <li aria-hidden="true">/</li>
+                        <li><span class="text-ink font-semibold" aria-current="page">Escritores (Writers)</span></li>
+                    </ol>
+                </nav>
+                <div tabindex="0" class="rounded-2xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
+                    <h1 class="text-2xl sm:text-3xl font-extrabold text-brand-dark tracking-tight">
+                        Equipe de Escritores (Writers)
+                    </h1>
+                    <p class="text-sm text-muted mt-1 max-w-2xl">
+                        Gerencie os escritores autorizados a produzir, revisar e publicar trilhas de conhecimento e conteúdos educativos.
+                    </p>
+                </div>
+            </div>
+
+            <a
+                href="{{ url_for('cad_writer') }}"
+                class="py-3 px-5 rounded-xl bg-brand-lime hover:bg-[#aedf1e] text-brand-dark font-bold text-sm flex items-center gap-2 shadow-[0_4px_0_0_#0A1E3F] active:translate-y-[2px] active:shadow-none transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime shrink-0"
+            >
+                <i class="bi bi-plus-lg" aria-hidden="true"></i>
+                <span>Cadastrar Escritor</span>
+            </a>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-8">
+            <div tabindex="0" class="bg-white p-5 rounded-2xl border border-line shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
+                <span class="text-xs font-bold uppercase tracking-wider text-muted block mb-1">Total de Writers</span>
+                <div class="flex items-baseline justify-between">
+                    <span class="text-3xl font-extrabold text-brand-dark">3</span>
+                    <span class="text-xs font-semibold text-success bg-emerald-50 px-2 py-0.5 rounded-full">100% ativos</span>
+                </div>
+            </div>
+
+            <div tabindex="0" class="bg-white p-5 rounded-2xl border border-line shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
+                <span class="text-xs font-bold uppercase tracking-wider text-muted block mb-1">Trilhas em Autoria</span>
+                <div class="flex items-baseline justify-between">
+                    <span class="text-3xl font-extrabold text-brand-dark">7</span>
+                    <span class="text-xs font-semibold text-brand-blue bg-brand-light px-2 py-0.5 rounded-full">Coleção ativa</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-line p-4 sm:p-5 mb-6 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="relative w-full sm:max-w-md">
+                <label for="searchWriter" class="sr-only">Buscar escritor por nome, login ou e-mail</label>
+                <input
+                    type="search"
+                    id="searchWriter"
+                    aria-label="Buscar escritor por nome, login ou e-mail"
+                    placeholder="Buscar por nome, login ou e-mail..."
+                    class="w-full pl-10 pr-4 py-2.5 text-xs sm:text-sm rounded-xl bg-slate-50/75 border border-line text-ink placeholder-muted/60 focus:outline-none focus:ring-2 focus:ring-brand-lime focus:border-brand-blue"
+                >
+                <i class="bi bi-search text-muted absolute left-3.5 top-1/2 -translate-y-1/2" aria-hidden="true"></i>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-line shadow-xs overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs sm:text-sm text-ink border-collapse" aria-label="Tabela de escritores cadastrados">
+                    <thead class="bg-slate-50 border-b border-line text-[11px] font-bold uppercase tracking-wider text-muted">
+                        <tr>
+                            <th scope="col" class="py-3.5 px-6">Escritor (Writer)</th>
+                            <th scope="col" class="py-3.5 px-6">E-mail Institucional</th>
+                            <th scope="col" class="py-3.5 px-6 text-center">Trilhas Criadas</th>
+                            <th scope="col" class="py-3.5 px-6">Status</th>
+                            <th scope="col" class="py-3.5 px-6 text-right">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="writersTableBody" class="divide-y divide-line">
+                        <tr class="writer-row hover:bg-slate-50/80 transition-colors" data-name="Mariana Vasconcelos" data-login="mariana.vasconcelos" data-email="mariana@techdirection.edu">
+                            <td class="py-4 px-6">
+                                <div tabindex="0" class="flex items-center gap-3 rounded-xl p-1 -m-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime">
+                                    <div class="w-9 h-9 rounded-full bg-brand-dark text-white font-bold flex items-center justify-center text-xs shrink-0" aria-hidden="true">
+                                        MV
+                                    </div>
+                                    <div>
+                                        <p class="font-bold text-brand-dark text-sm">Mariana Vasconcelos</p>
+                                        <p class="text-xs text-muted font-mono">@mariana.vasconcelos</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-4 px-6 text-muted">mariana@techdirection.edu</td>
+                            <td class="py-4 px-6 text-center font-bold text-brand-dark">3 trilhas</td>
+                            <td class="py-4 px-6">
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-success" aria-hidden="true"></span>
+                                    Ativo
+                                </span>
+                            </td>
+                            <td class="py-4 px-6 text-right">
+                                <div class="inline-flex items-center gap-2 justify-end">
+                                    <a
+                                        href="{{ url_for('cad_writer') }}"
+                                        class="px-3 py-1.5 text-xs font-bold text-brand-dark hover:text-brand-blue hover:bg-slate-100 rounded-xl transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime flex items-center gap-1.5 border border-line"
+                                        aria-label="Editar escritor Mariana Vasconcelos"
+                                    >
+                                        <i class="bi bi-pencil-square" aria-hidden="true"></i>
+                                        <span>Editar</span>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr class="writer-row hover:bg-slate-50/80 transition-colors" data-name="Carlos Mendes" data-login="carlos.mendes" data-email="carlos@techdirection.edu">
+                            <td class="py-4 px-6">
+                                <div tabindex="0" class="flex items-center gap-3 rounded-xl p-1 -m-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime">
+                                    <div class="w-9 h-9 rounded-full bg-brand-blue text-white font-bold flex items-center justify-center text-xs shrink-0" aria-hidden="true">
+                                        CM
+                                    </div>
+                                    <div>
+                                        <p class="font-bold text-brand-dark text-sm">Carlos Mendes</p>
+                                        <p class="text-xs text-muted font-mono">@carlos.mendes</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-4 px-6 text-muted">carlos@techdirection.edu</td>
+                            <td class="py-4 px-6 text-center font-bold text-brand-dark">2 trilhas</td>
+                            <td class="py-4 px-6">
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-success" aria-hidden="true"></span>
+                                    Ativo
+                                </span>
+                            </td>
+                            <td class="py-4 px-6 text-right">
+                                <div class="inline-flex items-center gap-2 justify-end">
+                                    <a
+                                        href="{{ url_for('cad_writer') }}"
+                                        class="px-3 py-1.5 text-xs font-bold text-brand-dark hover:text-brand-blue hover:bg-slate-100 rounded-xl transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime flex items-center gap-1.5 border border-line"
+                                        aria-label="Editar escritor Carlos Mendes"
+                                    >
+                                        <i class="bi bi-pencil-square" aria-hidden="true"></i>
+                                        <span>Editar</span>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr class="writer-row hover:bg-slate-50/80 transition-colors" data-name="Beatriz Lima" data-login="beatriz.lima" data-email="beatriz@techdirection.edu">
+                            <td class="py-4 px-6">
+                                <div tabindex="0" class="flex items-center gap-3 rounded-xl p-1 -m-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime">
+                                    <div class="w-9 h-9 rounded-full bg-emerald-700 text-white font-bold flex items-center justify-center text-xs shrink-0" aria-hidden="true">
+                                        BL
+                                    </div>
+                                    <div>
+                                        <p class="font-bold text-brand-dark text-sm">Beatriz Lima</p>
+                                        <p class="text-xs text-muted font-mono">@beatriz.lima</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-4 px-6 text-muted">beatriz@techdirection.edu</td>
+                            <td class="py-4 px-6 text-center font-bold text-brand-dark">2 trilhas</td>
+                            <td class="py-4 px-6">
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-success" aria-hidden="true"></span>
+                                    Ativo
+                                </span>
+                            </td>
+                            <td class="py-4 px-6 text-right">
+                                <div class="inline-flex items-center gap-2 justify-end">
+                                    <a
+                                        href="{{ url_for('cad_writer') }}"
+                                        class="px-3 py-1.5 text-xs font-bold text-brand-dark hover:text-brand-blue hover:bg-slate-100 rounded-xl transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime flex items-center gap-1.5 border border-line"
+                                        aria-label="Editar escritor Beatriz Lima"
+                                    >
+                                        <i class="bi bi-pencil-square" aria-hidden="true"></i>
+                                        <span>Editar</span>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="p-4 bg-slate-50 border-t border-line flex items-center justify-between text-xs text-muted">
+                <span>Mostrando 3 de 3 escritores cadastrados</span>
+                <span>Papel atribuído: <strong>Writer</strong> com acesso total de criação de trilhas</span>
+            </div>
+        </div>
+    </main>
+</div>
+{% endblock %}
+
+{% block footer %}
+    {% set footer_subtitle = 'Módulo Administrativo • Gestão de Escritores' %}
+    {% include 'partils/footer.html' %}
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/writers.js') }}"></script>
+{% endblock %}

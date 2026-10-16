@@ -1,0 +1,78 @@
+<div
+    id="modalRecoverPassword"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="modalRecoverTitle"
+    aria-describedby="modalRecoverDesc"
+    class="hidden fixed inset-0 z-50 bg-brand-dark/80 backdrop-blur-xs overflow-y-auto p-4 sm:p-6 flex items-center justify-center"
+>
+    <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl border border-line overflow-hidden relative animate-in fade-in zoom-in-95 duration-150">
+        <div class="p-6 sm:p-8">
+            <div class="flex items-start justify-between gap-4 mb-4">
+                <div class="w-12 h-12 rounded-xl bg-brand-light text-brand-blue flex items-center justify-center text-xl shrink-0" aria-hidden="true">
+                    <i class="bi bi-key-fill" aria-hidden="true"></i>
+                </div>
+                <button
+                    type="button"
+                    data-close-modal="modalRecoverPassword"
+                    aria-label="Fechar modal de recuperação de senha"
+                    class="p-2 -mr-2 -mt-2 rounded-lg text-muted hover:text-ink hover:bg-slate-100 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"
+                >
+                    <i class="bi bi-x-lg text-lg" aria-hidden="true"></i>
+                </button>
+            </div>
+
+            <div tabindex="0" class="rounded-xl p-2 -m-2 mb-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
+                <h2 id="modalRecoverTitle" class="text-xl sm:text-2xl font-extrabold text-brand-dark tracking-tight mb-2">
+                    Recuperar sua senha
+                </h2>
+
+                <p id="modalRecoverDesc" class="text-xs sm:text-sm text-muted leading-relaxed">
+                    Informe o e-mail cadastrado na sua conta. Enviaremos as instruções para você redefinir sua senha com segurança.
+                </p>
+            </div>
+
+            <form id="formRecoverPassword" class="space-y-4">
+                <div>
+                    <label for="recoveryEmail" class="block text-xs sm:text-sm font-bold text-ink mb-1.5">
+                        E-mail cadastrado <span class="text-danger" aria-hidden="true">*</span>
+                    </label>
+                    <input
+                        type="email"
+                        id="recoveryEmail"
+                        name="recoveryEmail"
+                        required
+                        autocomplete="email"
+                        placeholder="voce@exemplo.com"
+                        class="w-full px-4 py-3 text-sm rounded-xl bg-slate-50/75 border border-line text-ink placeholder-muted/60 focus:outline-none focus:ring-2 focus:ring-brand-lime focus:border-brand-blue focus:bg-white transition-all"
+                    >
+                </div>
+
+                <div id="recoveryFeedback" class="hidden p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-xs text-emerald-800" role="status" aria-live="polite">
+                    <div class="flex items-start gap-2">
+                        <i class="bi bi-check-circle-fill text-success text-sm shrink-0 mt-0.5" aria-hidden="true"></i>
+                        <span>Se houver uma conta associada a este e-mail, enviamos o link de recuperação. Verifique sua caixa de entrada e spam.</span>
+                    </div>
+                </div>
+
+                <div class="pt-2 flex flex-col-reverse sm:flex-row items-center gap-2 sm:gap-3">
+                    <button
+                        type="button"
+                        data-close-modal="modalRecoverPassword"
+                        class="w-full sm:w-auto px-5 py-3 rounded-xl border border-line hover:bg-slate-50 text-muted hover:text-ink font-semibold text-xs sm:text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime text-center"
+                    >
+                        Cancelar
+                    </button>
+                    <button
+                        type="submit"
+                        id="btnSubmitRecovery"
+                        class="w-full sm:flex-1 py-3 px-5 rounded-xl bg-brand-lime hover:bg-[#aedf1e] text-brand-dark font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-[0_3px_0_0_#0A1E3F] active:translate-y-[1px] active:shadow-none transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"
+                    >
+                        <span>Enviar link</span>
+                        <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

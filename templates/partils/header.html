@@ -1,0 +1,33 @@
+<header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-line shadow-xs">
+    <div class="max-w-[76rem] mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+            <a href="{{ url_for('dashboard') }}" class="flex items-center gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded-lg p-1" aria-label="Tech Direction - Ir para o início">
+                <img src="{{ url_for('static', filename='img/logo.svg') }}" alt="Logo Tech Direction" width="36" height="36" class="w-9 h-9 rounded-xl shrink-0 shadow-sm">
+                <span class="text-xl font-extrabold tracking-tight text-brand-dark">techdirection</span>
+            </a>
+        </div>
+
+        <nav aria-label="Menu institucional" class="flex items-center gap-6">
+            <ul class="flex items-center gap-6 list-none m-0 p-0 hidden md:flex">
+                <li><a href="#" class="text-xs sm:text-sm font-semibold text-muted hover:text-brand-blue transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-1 py-0.5">Sobre nós</a></li>
+                <li><a href="#" class="text-xs sm:text-sm font-semibold text-muted hover:text-brand-blue transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-1 py-0.5">FAQ</a></li>
+            </ul>
+
+            <div class="h-6 w-px bg-line hidden sm:block" aria-hidden="true"></div>
+
+            <a
+                href="{{ url_for('perfil') }}"
+                class="inline-flex items-center gap-2.5 p-1 sm:px-2.5 sm:py-1.5 rounded-xl border border-line bg-white hover:bg-slate-50 hover:border-brand-blue transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"
+                aria-label="Acessar meu perfil: Lucas Silva"
+            >
+                <div class="w-8 h-8 rounded-full bg-brand-dark text-white font-bold flex items-center justify-center text-xs shrink-0 shadow-xs" aria-hidden="true">
+                    LS
+                </div>
+                <div class="hidden sm:flex flex-col text-left">
+                    <span class="text-xs font-bold text-ink leading-tight">Lucas Silva</span>
+                    <span class="text-[10px] text-muted leading-tight font-medium">Meu perfil</span>
+                </div>
+            </a>
+        </nav>
+    </div>
+</header>

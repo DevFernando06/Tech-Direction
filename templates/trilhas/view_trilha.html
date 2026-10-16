@@ -1,0 +1,306 @@
+{% extends 'base.html' %}
+
+{% block title %}Fundamentos de HTML5 e Semântica Web - Tech Direction{% endblock %}
+{% block html_class %}bg-white scroll-smooth{% endblock %}
+{% block body_class %}bg-white{% endblock %}
+
+{% block header %}
+    {% include 'partils/header.html' %}
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-layout flex-1 flex">
+    {% include 'partils/sidebar.html' %}
+
+    <main class="flex-1 max-w-4xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10" id="main-content" tabindex="-1">
+        <!-- Hero da Trilha -->
+        <section aria-labelledby="trail-main-title" class="space-y-4">
+            <div class="flex items-center justify-between gap-4 mb-2">
+                <span 
+                    tabindex="0"
+                    class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-brand-light text-brand-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"
+                >
+                    HTML &amp; Estrutura Semântica
+                </span>
+                <div class="flex items-center gap-2">
+                    <a
+                        href="{{ url_for('cad_trilha') }}"
+                        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-line text-xs font-bold text-brand-blue hover:bg-brand-light/30 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"
+                        title="Editar esta trilha"
+                    >
+                        <i class="bi bi-pencil-square" aria-hidden="true"></i>
+                        <span>Editar Trilha</span>
+                    </a>
+                    <button
+                        type="button"
+                        id="btnBookmark"
+                        aria-label="Salvar trilha para depois"
+                        aria-pressed="false"
+                        class="p-2 rounded-xl text-muted hover:text-brand-dark hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"
+                    >
+                        <i class="bi bi-bookmark" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Título e Introdução acessíveis via Tab -->
+            <div 
+                tabindex="0"
+                class="rounded-2xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all"
+            >
+                <h1 id="trail-main-title" class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-brand-dark tracking-tight leading-[1.15] mb-3">
+                    Fundamentos de HTML5 e Estrutura Semântica
+                </h1>
+                <p class="text-base sm:text-lg text-muted leading-relaxed font-normal">
+                    Compreenda como organizar o conteúdo da web de forma acessível, compreensível para motores de busca e robusta para leitores de tela e assistentes digitais.
+                </p>
+            </div>
+
+            <!-- Metadados da Trilha -->
+            <div 
+                tabindex="0"
+                class="flex flex-wrap items-center gap-y-2 gap-x-6 text-xs sm:text-sm text-muted pt-3 border-t border-line rounded-xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all"
+            >
+                <div class="flex items-center gap-2">
+                    <div class="w-7 h-7 rounded-full bg-brand-dark text-white font-bold flex items-center justify-center text-xs" aria-hidden="true">
+                        TD
+                    </div>
+                    <span class="font-semibold text-ink">Equipe Tech Direction</span>
+                </div>
+
+                <div class="flex items-center gap-1.5">
+                    <i class="bi bi-clock text-brand-blue" aria-hidden="true"></i>
+                    <span>15 minutos de leitura</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Figura Ilustrativa da Trilha -->
+        <figure 
+            tabindex="0"
+            class="rounded-2xl overflow-hidden border border-line shadow-sm bg-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all"
+        >
+            <div class="relative w-full h-56 sm:h-80 lg:h-96 bg-gradient-to-r from-brand-dark to-slate-900 flex items-center justify-center p-8">
+                <div class="text-center space-y-3 relative z-10">
+                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-brand-lime shadow-md mb-2">
+                        <img src="{{ url_for('static', filename='img/html5.svg') }}" alt="Ícone oficial da tecnologia HTML5" class="w-10 h-10">
+                    </div>
+                    <p class="text-white font-extrabold text-2xl sm:text-3xl tracking-tight">Arquitetura Semântica da Web</p>
+                    <p class="text-slate-300 text-xs sm:text-sm max-w-md mx-auto">Do documento estruturado ao consumo universal por humanos e agentes de inteligência artificial.</p>
+                </div>
+                <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#B7E32B_1px,transparent_1px)] [background-size:16px_16px]" aria-hidden="true"></div>
+            </div>
+            <figcaption class="p-3 bg-slate-50 border-t border-line text-xs text-muted text-center italic">
+                Figura 1: A semântica garante clareza computacional, legibilidade e suporte a tecnologias assistivas.
+            </figcaption>
+        </figure>
+
+        <!-- Artigo Principal com Conteúdo -->
+        <article class="space-y-8">
+            <div class="prose max-w-none text-ink leading-relaxed space-y-6">
+                <!-- Seção 1: O que é HTML semântico -->
+                <div 
+                    tabindex="0"
+                    class="space-y-4 rounded-2xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all"
+                >
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-brand-dark tracking-tight">
+                        O que é HTML semântico e por que ele importa?
+                    </h2>
+
+                    <p class="text-base text-ink leading-relaxed">
+                        Quando escrevemos código para a internet, não estamos apenas desenhando caixas coloridas na tela de um computador moderno. Estamos gerando uma representação lógica de informação que precisa ser compreendida por pessoas com diferentes capacidades sensoriais, robôs de indexação e dispositivos variados.
+                    </p>
+
+                    <p class="text-base text-ink leading-relaxed">
+                        HTML semântico consiste no uso intencional de elementos que carregam significado intrínseco sobre seu conteúdo, em vez de depender exclusivamente de elementos genéricos e vazios de contexto como <code>&lt;div&gt;</code> e <code>&lt;span&gt;</code>.
+                    </p>
+                </div>
+
+                <!-- Destaque: Princípio do Design System -->
+                <div 
+                    tabindex="0"
+                    class="my-6 p-5 rounded-2xl bg-blue-50/70 border-l-4 border-brand-action focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all"
+                >
+                    <h3 class="text-sm font-bold text-brand-dark mb-1">Princípio do Design System: Acesso não é opcional</h3>
+                    <p class="text-xs sm:text-sm text-ink leading-relaxed">
+                        A estrutura da informação deve ser autossuficiente. Se todo o CSS for desativado, o documento ainda deve ser compreensível, navegável por teclado e perfeitamente anunciado por softwares leitores de tela como NVDA ou VoiceOver.
+                    </p>
+                </div>
+
+                <!-- Seção 2: Principais elementos e seus papéis -->
+                <div 
+                    tabindex="0"
+                    class="space-y-4 rounded-2xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all pt-2"
+                >
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-brand-dark tracking-tight">
+                        Principais elementos e seus papéis na página
+                    </h2>
+
+                    <p class="text-base text-ink leading-relaxed">
+                        Cada região da tela possui uma tag nativa específica. Conhecer e aplicar cada uma é a chave para uma experiência consistente:
+                    </p>
+                </div>
+
+                <!-- Grid de Elementos Semânticos -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6">
+                    <div 
+                        tabindex="0"
+                        class="p-4 rounded-xl border border-line bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all"
+                    >
+                        <span class="font-mono text-xs font-bold text-brand-action block mb-1">&lt;header&gt;</span>
+                        <p class="text-xs text-muted leading-relaxed">Apresenta o cabeçalho introdutório, identidade visual da marca e navegações principais.</p>
+                    </div>
+
+                    <div 
+                        tabindex="0"
+                        class="p-4 rounded-xl border border-line bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all"
+                    >
+                        <span class="font-mono text-xs font-bold text-brand-action block mb-1">&lt;nav&gt;</span>
+                        <p class="text-xs text-muted leading-relaxed">Agrupa links de navegação com <code>aria-label</code> descritivo para que o usuário possa saltar se desejar.</p>
+                    </div>
+
+                    <div 
+                        tabindex="0"
+                        class="p-4 rounded-xl border border-line bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all"
+                    >
+                        <span class="font-mono text-xs font-bold text-brand-action block mb-1">&lt;main&gt;</span>
+                        <p class="text-xs text-muted leading-relaxed">O conteúdo central e dominante do documento. Deve existir apenas um elemento principal visível por página.</p>
+                    </div>
+
+                    <div 
+                        tabindex="0"
+                        class="p-4 rounded-xl border border-line bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all"
+                    >
+                        <span class="font-mono text-xs font-bold text-brand-action block mb-1">&lt;article&gt; e &lt;section&gt;</span>
+                        <p class="text-xs text-muted leading-relaxed"><code>article</code> para composições independentes e distribuíveis; <code>section</code> para divisões temáticas com título.</p>
+                    </div>
+                </div>
+
+                <!-- Bloco de Código Semântico -->
+                <div class="code-block-container rounded-2xl overflow-hidden border border-slate-800 bg-brand-dark text-slate-100 my-6 shadow-sm">
+                    <div class="px-4 py-2 bg-slate-900 border-b border-slate-800 flex items-center justify-between text-xs text-slate-400">
+                        <span class="font-mono">exemplo-semantico.html</span>
+                        <button 
+                            type="button" 
+                            data-copy-code 
+                            class="hover:text-white flex items-center gap-1 text-[11px] font-bold px-2 py-1 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"
+                            aria-label="Copiar código de exemplo"
+                        >
+                            <span>Copiar</span>
+                        </button>
+                    </div>
+                    <pre 
+                        tabindex="0" 
+                        class="p-4 text-xs font-mono overflow-x-auto leading-relaxed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"
+                        aria-label="Bloco de código de exemplo HTML"
+                    ><code>&lt;!-- Exemplo de documento bem estruturado --&gt;
+&lt;header&gt;
+    &lt;h1&gt;Tech Direction&lt;/h1&gt;
+    &lt;nav aria-label="Menu principal"&gt;
+        &lt;ul&gt;
+            &lt;li&gt;&lt;a href="/trilhas"&gt;Trilhas&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="/faq"&gt;FAQ&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/nav&gt;
+&lt;/header&gt;
+
+&lt;main&gt;
+    &lt;article&gt;
+        &lt;h2&gt;Fundamentos de HTML5&lt;/h2&gt;
+        &lt;p&gt;Conteúdo autoral da leitura...&lt;/p&gt;
+    &lt;/article&gt;
+&lt;/main&gt;</code></pre>
+                </div>
+
+                <!-- Seção 3: Imagens e Cabeçalhos -->
+                <div 
+                    tabindex="0"
+                    class="space-y-4 rounded-2xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all pt-2"
+                >
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-brand-dark tracking-tight">
+                        Imagens com alt e ordem lógica de cabeçalhos
+                    </h2>
+
+                    <p class="text-base text-ink leading-relaxed">
+                        Uma imagem sem texto alternativo adequado pode transformar um formulário ou um tutorial em uma barreira intransponível para quem depende de um sintetizador de voz.
+                    </p>
+
+                    <div class="space-y-3 pl-4 border-l-2 border-brand-lime">
+                        <p class="text-sm text-ink font-semibold">Regras essenciais do Tech Direction:</p>
+                        <ul class="space-y-1.5 text-xs sm:text-sm text-muted list-disc list-inside">
+                            <li>Imagens informativas devem ter um texto descritivo claro no atributo <code>alt="..."</code>.</li>
+                            <li>Imagens puramente decorativas ou redundantes devem possuir <code>aria-hidden="true"</code> ou <code>alt=""</code> vazio.</li>
+                            <li>A ordem de cabeçalhos (<code>h1</code> &rarr; <code>h2</code> &rarr; <code>h3</code>) deve ser mantida sem saltos lógicos.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Seção 4: Referências -->
+            <section aria-labelledby="refs-heading" class="pt-8 border-t border-line space-y-4">
+                <div 
+                    tabindex="0"
+                    class="rounded-2xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all"
+                >
+                    <h2 id="refs-heading" class="text-2xl font-bold text-brand-dark tracking-tight">
+                        Referências e Leituras Complementares
+                    </h2>
+
+                    <p class="text-sm text-muted mt-1">
+                        Para se aprofundar nas especificações técnicas, recomendamos a consulta aos padrões oficiais da web:
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                    <a 
+                        href="https://developer.mozilla.org/pt-BR/docs/Web/HTML" 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        class="p-4 rounded-xl border border-line bg-slate-50 hover:bg-white hover:border-brand-blue transition-all group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"
+                        aria-label="MDN Web Docs - HTML, abre em nova aba"
+                    >
+                        <span class="text-xs font-bold text-brand-blue group-hover:underline flex items-center gap-1">
+                            MDN Web Docs - HTML
+                            <span aria-hidden="true">&nearr;</span>
+                        </span>
+                        <p class="text-xs text-muted mt-1">Guia de referência detalhado mantido pela comunidade Mozilla.</p>
+                    </a>
+
+                    <a 
+                        href="https://www.w3.org/WAI/" 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        class="p-4 rounded-xl border border-line bg-slate-50 hover:bg-white hover:border-brand-blue transition-all group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"
+                        aria-label="W3C Web Accessibility Initiative, abre em nova aba"
+                    >
+                        <span class="text-xs font-bold text-brand-blue group-hover:underline flex items-center gap-1">
+                            W3C Web Accessibility Initiative
+                            <span aria-hidden="true">&nearr;</span>
+                        </span>
+                        <p class="text-xs text-muted mt-1">Diretrizes de acessibilidade e critérios de conformidade da web.</p>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Rodapé de Ações de Navegação -->
+            <div class="pt-8 border-t border-line flex items-center justify-start">
+                <a
+                    href="{{ url_for('dashboard') }}"
+                    class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-line text-xs sm:text-sm font-bold text-brand-dark hover:bg-slate-50 hover:text-brand-blue transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"
+                >
+                    <i class="bi bi-arrow-left" aria-hidden="true"></i>
+                    <span>Voltar ao Início</span>
+                </a>
+            </div>
+        </article>
+    </main>
+</div>
+{% endblock %}
+
+{% block footer %}
+    {% include 'partils/footer.html' %}
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/view-trilha.js') }}"></script>
+{% endblock %}

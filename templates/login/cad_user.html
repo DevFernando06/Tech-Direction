@@ -1,41 +1,195 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
-    <title>Cadastro - Tech Direction</title>
-</head>
-<body>
-    <main>
-        <aside class="center">
-            <h1>Tech Direction</h1>
-        </aside>
+{% extends 'base.html' %}
 
-        <section class="center">
-            <form action="./login.html" method="post">
-                <h2>Bem-vindo (a)</h2>
-                <label for="userName">Nome <span class="required">*</span></label>
-                <input class="input-text" type="text" name="userName" id="userName" placeholder="Seu Nome" required>
-                <label for="login">Login <span class="required">*</span></label>
-                <input class="input-text" type="text" name="login" id="login" placeholder="Seu Nome" required>
-                <label for="userEmail">Email <span class="required">*</span></label>
-                <input class="input-text" type="email" name="userEmail" id="userEmail" placeholder="Seu email" required>
-                <label for="dateBirth">Data de Nascimento <span class="required">*</span></label>
-                <input class="input-text" type="date" name="dateBirth" id="dateBirth" placeholder="" required>
-                <label for="password">Senha <span class="required">*</span></label>
-                <input class="input-text" type="password" name="password" id="password" placeholder="Sua senha" required>
-                <label for="confirmPassword">Confirmar Senha <span class="required">*</span></label>
-                <input class="input-text" type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirme sua senha" required>
-                <button type="submit">Entrar</button>
-                <a class="forgot-password" href="#">Esqueci minha senha</a>
+{% block title %}Crie sua conta - Tech Direction{% endblock %}
+{% block body_class %}bg-white{% endblock %}
+
+{% block content %}
+<main class="min-h-screen flex flex-col lg:flex-row flex-1" id="main-content" tabindex="-1">
+    <aside aria-label="Apresentação da plataforma" class="w-full lg:w-[45%] xl:w-[42%] bg-brand-dark text-white p-8 sm:p-12 lg:p-16 flex flex-col justify-between relative overflow-hidden shrink-0">
+        <div class="absolute -right-24 top-1/2 -translate-y-1/2 w-96 h-96 pointer-events-none opacity-25 flex items-center justify-center" aria-hidden="true">
+            <div class="w-[360px] h-[360px] rounded-full border border-brand-blue flex items-center justify-center">
+                <div class="w-[260px] h-[260px] rounded-full border border-brand-blue flex items-center justify-center">
+                    <div class="w-[160px] h-[160px] rounded-full border border-brand-blue"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-3 relative z-10">
+            <img src="{{ url_for('static', filename='img/logo.svg') }}" alt="Logo Tech Direction" width="40" height="40" class="w-10 h-10 rounded-xl shrink-0 shadow-sm">
+            <span class="text-2xl font-extrabold tracking-tight text-white">techdirection</span>
+        </div>
+
+        <div tabindex="0" class="my-12 lg:my-0 relative z-10 rounded-2xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/10 text-white text-xs font-semibold w-fit mb-6 shadow-sm">
+                <i class="bi bi-stars text-brand-lime" aria-hidden="true"></i>
+                <span>Aprenda no seu ritmo</span>
+            </div>
+
+            <h2 class="text-4xl sm:text-5xl font-extrabold text-white tracking-tight leading-[1.1] mb-6">
+                Seu próximo<br>capítulo<br>começa agora.
+            </h2>
+
+            <p class="text-slate-300 text-base leading-relaxed mb-8 max-w-sm">
+                Crie sua conta gratuitamente e dê o primeiro passo na sua jornada em tecnologia.
+            </p>
+
+            <ul class="space-y-4">
+                <li class="flex items-center gap-3 text-slate-200 text-sm sm:text-base">
+                    <i class="bi bi-check-lg text-brand-lime text-lg shrink-0" aria-hidden="true"></i>
+                    <span>Leituras gratuitas e organizadas</span>
+                </li>
+                <li class="flex items-center gap-3 text-slate-200 text-sm sm:text-base">
+                    <i class="bi bi-check-lg text-brand-lime text-lg shrink-0" aria-hidden="true"></i>
+                    <span>Textos com imagens e referências</span>
+                </li>
+                <li class="flex items-center gap-3 text-slate-200 text-sm sm:text-base">
+                    <i class="bi bi-check-lg text-brand-lime text-lg shrink-0" aria-hidden="true"></i>
+                    <span>Evolução no seu tempo</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="mt-8 relative z-10">
+            <p class="text-xs text-slate-400">
+                &ldquo;Todo mundo merece a chance de construir o próprio futuro.&rdquo;
+            </p>
+        </div>
+    </aside>
+
+    <section aria-labelledby="register-heading" class="w-full flex-1 bg-white flex flex-col justify-between p-6 sm:p-10 lg:p-16 overflow-y-auto">
+        <nav aria-label="Navegação de retorno" class="mb-4">
+            <a href="{{ url_for('dashboard') }}" class="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-muted hover:text-brand-blue transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded-md px-1 py-1">
+                <i class="bi bi-arrow-left" aria-hidden="true"></i> Voltar para o início
+            </a>
+        </nav>
+
+        <div class="w-full max-w-lg mx-auto my-auto py-4">
+            <header tabindex="0" class="mb-6 rounded-2xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
+                <span class="block text-xs font-bold uppercase tracking-wider text-brand-blue mb-2">Conta gratuita</span>
+                <h1 id="register-heading" class="text-3xl sm:text-4xl font-extrabold text-ink tracking-tight mb-2">Crie sua conta</h1>
+                <p class="text-sm sm:text-base text-muted">Leva menos de 2 minutos.</p>
+            </header>
+
+            <form action="{{ url_for('cad_user') }}" method="post" class="space-y-4">
+                <div>
+                    <label for="userName" class="block text-xs sm:text-sm font-bold text-ink mb-1.5">
+                        Nome Completo <span class="text-danger" aria-hidden="true">*</span>
+                    </label>
+                    <input
+                        type="text"
+                        name="userName"
+                        id="userName"
+                        required
+                        autocomplete="name"
+                        placeholder="Seu nome completo"
+                        class="w-full px-4 py-3 text-sm rounded-xl bg-slate-50/75 border border-line text-ink placeholder-muted/60 focus:outline-none focus:ring-2 focus:ring-brand-lime focus:border-brand-blue focus:bg-white transition-all"
+                    >
+                </div>
+
+                <div>
+                    <label for="userEmail" class="block text-xs sm:text-sm font-bold text-ink mb-1.5">
+                        E-mail <span class="text-danger" aria-hidden="true">*</span>
+                    </label>
+                    <input
+                        type="email"
+                        name="userEmail"
+                        id="userEmail"
+                        required
+                        autocomplete="email"
+                        placeholder="voce@exemplo.com"
+                        class="w-full px-4 py-3 text-sm rounded-xl bg-slate-50/75 border border-line text-ink placeholder-muted/60 focus:outline-none focus:ring-2 focus:ring-brand-lime focus:border-brand-blue focus:bg-white transition-all"
+                    >
+                </div>
+
+                <div>
+                    <label for="dateBirth" class="block text-xs sm:text-sm font-bold text-ink mb-1.5">
+                        Data de nascimento <span class="text-danger" aria-hidden="true">*</span>
+                    </label>
+                    <input
+                        type="date"
+                        name="dateBirth"
+                        id="dateBirth"
+                        required
+                        autocomplete="bday"
+                        class="w-full px-4 py-3 text-sm rounded-xl bg-slate-50/75 border border-line text-ink placeholder-muted/60 focus:outline-none focus:ring-2 focus:ring-brand-lime focus:border-brand-blue focus:bg-white transition-all"
+                    >
+                </div>
+
+                <div>
+                    <label for="password" class="block text-xs sm:text-sm font-bold text-ink mb-1.5">
+                        Senha <span class="text-danger" aria-hidden="true">*</span>
+                    </label>
+                    <div class="relative">
+                        <input
+                            type="password"
+                            name="password"
+                            id="password"
+                            required
+                            minlength="8"
+                            autocomplete="new-password"
+                            aria-describedby="password-help"
+                            placeholder="Digite sua senha"
+                            class="w-full pl-4 pr-12 py-3 text-sm rounded-xl bg-slate-50/75 border border-line text-ink placeholder-muted/60 focus:outline-none focus:ring-2 focus:ring-brand-lime focus:border-brand-blue focus:bg-white transition-all"
+                        >
+                        <button
+                            type="button"
+                            id="togglePasswordBtn"
+                            data-toggle-password="password"
+                            aria-label="Mostrar senha"
+                            aria-pressed="false"
+                            class="absolute right-0 top-0 bottom-0 px-3.5 flex items-center justify-center text-muted hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded-r-xl"
+                        >
+                            <i class="bi bi-eye text-lg" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    <p id="password-help" class="text-xs text-muted mt-1.5">Use 8 ou mais caracteres.</p>
+                </div>
+
+                <div class="flex items-start gap-2.5 pt-1">
+                    <input
+                        type="checkbox"
+                        name="terms"
+                        id="terms"
+                        required
+                        class="mt-1 w-4 h-4 rounded border-line text-brand-blue focus:ring-brand-lime focus:ring-offset-1"
+                    >
+                    <label for="terms" class="text-xs sm:text-sm text-muted leading-relaxed cursor-pointer select-none">
+                        Li e concordo com os
+                        <a href="#" class="font-semibold text-brand-blue underline hover:text-brand-action focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded">Termos de Uso</a>
+                        e a
+                        <a href="#" class="font-semibold text-brand-blue underline hover:text-brand-action focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded">Política de Privacidade</a>.
+                    </label>
+                </div>
+
+                <div class="pt-2">
+                    <button
+                        type="submit"
+                        class="w-full py-3.5 px-6 rounded-xl bg-brand-lime hover:bg-[#aedf1e] text-brand-dark font-bold text-sm sm:text-base flex items-center justify-center gap-2 shadow-[0_4px_0_0_#0A1E3F] active:translate-y-[2px] active:shadow-[0_2px_0_0_#0A1E3F] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime focus-visible:ring-offset-2"
+                    >
+                        <span>Criar minha conta</span>
+                        <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                    </button>
+                </div>
+
+                <p class="text-center text-xs sm:text-sm text-muted pt-2">
+                    Já tem uma conta?
+                    <a href="{{ url_for('login') }}" class="font-bold text-brand-blue hover:text-brand-action hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-1 py-0.5">
+                        Entrar
+                    </a>
+                </p>
             </form>
-            <span>Ja tem conta? <a href="./login.html">Entrar</a></span>
-        </section> 
-     
-    </main>
+        </div>
 
-</body>
-</html>
+        <p class="text-center pt-6 text-xs text-muted">
+            Precisa de ajuda?
+            <a href="#" class="font-semibold text-brand-blue underline hover:text-brand-action focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-1 py-0.5">
+                Fale com a gente
+            </a>
+        </p>
+    </section>
+</main>
+{% endblock %}
 
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+{% endblock %}

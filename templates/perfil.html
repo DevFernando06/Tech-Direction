@@ -1,0 +1,255 @@
+{% extends 'base.html' %}
+
+{% block title %}Meu Perfil - Tech Direction{% endblock %}
+
+{% block header %}
+    {% include 'partils/header.html' %}
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-layout flex-1 flex">
+    {% include 'partils/sidebar.html' %}
+    <main class="flex-1 max-w-[76rem] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8" id="main-content" tabindex="-1">
+        <div class="mb-8 border-b border-line pb-6">
+            <nav aria-label="Breadcrumb" class="mb-2">
+                <ol class="flex items-center gap-2 text-xs text-muted font-medium">
+                    <li><a href="{{ url_for('dashboard') }}" class="hover:text-brand-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-1 py-0.5">Início</a></li>
+                    <li aria-hidden="true">/</li>
+                    <li><span class="text-ink font-semibold" aria-current="page">Meu Perfil</span></li>
+                </ol>
+            </nav>
+            <div tabindex="0" class="rounded-2xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-brand-dark tracking-tight">
+                    Meu Perfil
+                </h1>
+                <p class="text-sm text-muted mt-1 max-w-2xl">
+                    Visualize e edite seus dados de cadastro e credenciais de acesso na plataforma.
+                </p>
+            </div>
+        </div>
+
+        <form action="{{ url_for('perfil') }}" method="post" class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <div class="lg:col-span-8 space-y-8">
+                <section aria-labelledby="personal-data-heading" class="bg-white rounded-2xl border border-line p-6 sm:p-8 shadow-xs">
+                    <header tabindex="0" class="mb-6 flex items-center justify-between border-b border-line pb-4 rounded-xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
+                        <div>
+                            <h2 id="personal-data-heading" class="text-lg font-bold text-brand-dark">1. Dados Pessoais e de Cadastro</h2>
+                            <p class="text-xs text-muted mt-0.5">Suas informações cadastrais no sistema.</p>
+                        </div>
+                        <span class="text-xs font-semibold text-brand-blue bg-brand-light px-2.5 py-1 rounded-md">Identificação</span>
+                    </header>
+
+                    <div class="space-y-5">
+                        <div>
+                            <label for="userName" class="block text-xs sm:text-sm font-bold text-ink mb-1.5">
+                                Nome Completo <span class="text-danger" aria-hidden="true">*</span>
+                            </label>
+                            <input
+                                type="text"
+                                id="userName"
+                                name="userName"
+                                required
+                                autocomplete="name"
+                                value="Lucas Gabriel Silva"
+                                class="w-full px-4 py-3 text-sm rounded-xl bg-slate-50/75 border border-line text-ink focus:outline-none focus:ring-2 focus:ring-brand-lime focus:border-brand-blue focus:bg-white transition-all"
+                            >
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label for="userEmail" class="block text-xs sm:text-sm font-bold text-ink mb-1.5">
+                                    E-mail <span class="text-danger" aria-hidden="true">*</span>
+                                </label>
+                                <input
+                                    type="email"
+                                    id="userEmail"
+                                    name="userEmail"
+                                    required
+                                    autocomplete="email"
+                                    value="lucas.silva@techdirection.edu"
+                                    class="w-full px-4 py-3 text-sm rounded-xl bg-slate-50/75 border border-line text-ink focus:outline-none focus:ring-2 focus:ring-brand-lime focus:border-brand-blue focus:bg-white transition-all"
+                                >
+                            </div>
+
+                            <div>
+                                <label for="dateBirth" class="block text-xs sm:text-sm font-bold text-ink mb-1.5">
+                                    Data de Nascimento <span class="text-danger" aria-hidden="true">*</span>
+                                </label>
+                                <input
+                                    type="date"
+                                    id="dateBirth"
+                                    name="dateBirth"
+                                    required
+                                    autocomplete="bday"
+                                    value="2002-04-18"
+                                    class="w-full px-4 py-3 text-sm rounded-xl bg-slate-50/75 border border-line text-ink focus:outline-none focus:ring-2 focus:ring-brand-lime focus:border-brand-blue focus:bg-white transition-all"
+                                >
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="role" class="block text-xs sm:text-sm font-bold text-ink mb-1.5">
+                                Papel no Sistema (Role)
+                            </label>
+                            <input
+                                type="text"
+                                id="role"
+                                name="role"
+                                value="student (Aluno)"
+                                readonly
+                                aria-describedby="role-help"
+                                class="w-full px-4 py-3 text-sm rounded-xl bg-slate-100 border border-line text-muted cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-brand-lime"
+                            >
+                            <p id="role-help" class="text-xs text-muted mt-1">O papel de usuário é atribuído pelos administradores da plataforma.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section aria-labelledby="security-data-heading" class="bg-white rounded-2xl border border-line p-6 sm:p-8 shadow-xs">
+                    <header tabindex="0" class="mb-6 flex items-center justify-between border-b border-line pb-4 rounded-xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
+                        <div>
+                            <h2 id="security-data-heading" class="text-lg font-bold text-brand-dark">2. Alterar Senha de Acesso</h2>
+                            <p class="text-xs text-muted mt-0.5">Preencha os campos abaixo para modificar sua senha.</p>
+                        </div>
+                        <span class="text-xs font-semibold text-brand-blue bg-brand-light px-2.5 py-1 rounded-md">Segurança</span>
+                    </header>
+
+                    <div class="space-y-5">
+                        <div>
+                            <label for="currentPassword" class="block text-xs sm:text-sm font-bold text-ink mb-1.5">
+                                Senha Atual
+                            </label>
+                            <div class="relative">
+                                <input
+                                    type="password"
+                                    id="currentPassword"
+                                    name="currentPassword"
+                                    autocomplete="current-password"
+                                    placeholder="Digite sua senha atual"
+                                    class="w-full pl-4 pr-11 py-3 text-sm rounded-xl bg-slate-50/75 border border-line text-ink placeholder-muted/60 focus:outline-none focus:ring-2 focus:ring-brand-lime focus:border-brand-blue focus:bg-white transition-all"
+                                >
+                                <button
+                                    type="button"
+                                    data-toggle-password="currentPassword"
+                                    aria-label="Mostrar senha atual"
+                                    aria-pressed="false"
+                                    class="absolute right-0 top-0 bottom-0 px-3 flex items-center text-muted hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded-r-xl"
+                                >
+                                    <i class="bi bi-eye" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label for="newPassword" class="block text-xs sm:text-sm font-bold text-ink mb-1.5">
+                                    Nova Senha
+                                </label>
+                                <div class="relative">
+                                    <input
+                                        type="password"
+                                        id="newPassword"
+                                        name="newPassword"
+                                        minlength="8"
+                                        autocomplete="new-password"
+                                        placeholder="Mínimo 8 caracteres"
+                                        class="w-full pl-4 pr-11 py-3 text-sm rounded-xl bg-slate-50/75 border border-line text-ink placeholder-muted/60 focus:outline-none focus:ring-2 focus:ring-brand-lime focus:border-brand-blue focus:bg-white transition-all"
+                                    >
+                                    <button
+                                        type="button"
+                                        data-toggle-password="newPassword"
+                                        aria-label="Mostrar nova senha"
+                                        aria-pressed="false"
+                                        class="absolute right-0 top-0 bottom-0 px-3 flex items-center text-muted hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded-r-xl"
+                                    >
+                                        <i class="bi bi-eye" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label for="confirmNewPassword" class="block text-xs sm:text-sm font-bold text-ink mb-1.5">
+                                    Confirmar Nova Senha
+                                </label>
+                                <div class="relative">
+                                    <input
+                                        type="password"
+                                        id="confirmNewPassword"
+                                        name="confirmNewPassword"
+                                        minlength="8"
+                                        autocomplete="new-password"
+                                        placeholder="Repita a nova senha"
+                                        class="w-full pl-4 pr-11 py-3 text-sm rounded-xl bg-slate-50/75 border border-line text-ink placeholder-muted/60 focus:outline-none focus:ring-2 focus:ring-brand-lime focus:border-brand-blue focus:bg-white transition-all"
+                                    >
+                                    <button
+                                        type="button"
+                                        data-toggle-password="confirmNewPassword"
+                                        aria-label="Mostrar confirmação da nova senha"
+                                        aria-pressed="false"
+                                        class="absolute right-0 top-0 bottom-0 px-3 flex items-center text-muted hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded-r-xl"
+                                    >
+                                        <i class="bi bi-eye" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <aside class="lg:col-span-4 space-y-6">
+                <div class="bg-white rounded-2xl border border-line p-6 shadow-xs sticky top-24">
+                    <div tabindex="0" class="flex items-center gap-4 pb-6 border-b border-line mb-6 rounded-xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
+                        <div class="w-14 h-14 rounded-2xl bg-brand-dark text-white font-extrabold flex items-center justify-center text-lg shadow-sm shrink-0" aria-hidden="true">
+                            LS
+                        </div>
+                        <div>
+                            <h3 class="text-base font-bold text-brand-dark leading-tight">Lucas Gabriel Silva</h3>
+                            <p class="text-xs text-muted truncate mt-0.5">lucas.silva@techdirection.edu</p>
+                            <span class="inline-flex items-center gap-1.5 mt-2 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800">
+                                <span class="w-1.5 h-1.5 rounded-full bg-success" aria-hidden="true"></span>
+                                Conta Ativa
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <button
+                            type="submit"
+                            class="w-full py-3.5 px-6 rounded-xl bg-brand-lime hover:bg-[#aedf1e] text-brand-dark font-bold text-sm flex items-center justify-center gap-2 shadow-[0_4px_0_0_#0A1E3F] active:translate-y-[2px] active:shadow-none transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"
+                        >
+                            <span>Salvar Alterações</span>
+                            <i class="bi bi-check-lg text-lg" aria-hidden="true"></i>
+                        </button>
+
+                        <a
+                            href="{{ url_for('dashboard') }}"
+                            class="w-full py-2.5 px-4 rounded-xl border border-line hover:bg-slate-50 text-muted hover:text-ink font-semibold text-xs sm:text-sm flex items-center justify-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime text-center"
+                        >
+                            Voltar ao Dashboard
+                        </a>
+                    </div>
+
+                    <div class="mt-6 pt-6 border-t border-line">
+                        <a
+                            href="{{ url_for('login') }}"
+                            class="w-full py-2.5 px-4 rounded-xl text-danger hover:bg-red-50 font-semibold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-danger"
+                        >
+                            <i class="bi bi-box-arrow-right" aria-hidden="true"></i>
+                            <span>Sair da conta</span>
+                        </a>
+                    </div>
+                </div>
+            </aside>
+        </form>
+    </main>
+</div>
+{% endblock %}
+
+{% block footer %}
+    {% include 'partils/footer.html' %}
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+{% endblock %}

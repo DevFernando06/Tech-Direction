@@ -1,15 +1,19 @@
-/* Dashboard */
 .dashboard-layout {
     display: flex;
     min-height: 100vh;
     background-color: #f8fafc;
 }
 
-/* Sidebar */
 .sidebar {
     width: 240px;
     background-color: #0f172a;
     padding: 20px 10px;
+    position: fixed;
+    top: 4rem;
+    left: 0;
+    bottom: 0;
+    z-index: 30;
+    overflow-y: auto;
 }
 
 .sidebar-nav {
@@ -39,7 +43,6 @@
     color: #ffffff;
 }
 
-/* Conteudo Principal */
 .content {
     flex: 1;
     padding: 30px;
@@ -60,7 +63,6 @@
     margin-top: 5px;
 }
 
-/* Secao das Trilhas */
 .tracks-section {
     margin-top: 10px;
 }
@@ -71,13 +73,11 @@
     margin-bottom: 20px;
 }
 
-/* Grade de Cards das Trilhas */
 .tracks-grid {
     display: flex;
     gap: 20px;
 }
 
-/* Card Individual */
 .track-card {
     width: 300px;
     background-color: #ffffff;
@@ -86,7 +86,6 @@
     overflow: hidden;
 }
 
-/* Banner do Card */
 .card-banner {
     height: 160px;
     display: flex;
@@ -106,7 +105,6 @@
     background-color: #eab308;
 }
 
-/* Conteudo do Card */
 .card-content {
     padding: 20px;
 }
@@ -124,7 +122,6 @@
     line-height: 1.5;
 }
 
-/* Botões das Trilhas*/
 .btn-track {
     display: block;
     text-align: center;

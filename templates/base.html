@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-br" class="h-full {% block html_class %}{% endblock %}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Tech Direction{% endblock %}</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    {% block extra_css %}{% endblock %}
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="{{ url_for('static', filename='js/tailwind-config.js') }}"></script>
+</head>
+<body class="min-h-full font-sans antialiased text-ink flex flex-col {% block body_class %}bg-[#F8FAFC]{% endblock %}">
+    <a
+        href="#main-content"
+        class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:px-4 focus:py-2.5 focus:rounded-xl focus:bg-brand-lime focus:text-brand-dark focus:font-bold focus:text-xs sm:focus:text-sm focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-brand-dark"
+    >
+        Pular para o conteúdo principal
+    </a>
+
+    {% block header %}{% endblock %}
+
+    {% block content %}{% endblock %}
+
+    {% block footer %}{% endblock %}
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>
