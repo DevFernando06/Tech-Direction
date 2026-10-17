@@ -17,8 +17,7 @@
         <section aria-labelledby="trail-main-title" class="space-y-4">
             <div class="flex flex-wrap items-center justify-between gap-3 mb-2">
                 <span 
-                    tabindex="0"
-                    class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-brand-light text-brand-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"
+                    class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-brand-light text-brand-blue"
                 >
                     HTML &amp; Estrutura Semântica
                 </span>
@@ -43,11 +42,8 @@
                 </div>
             </div>
 
-            <!-- Título e Introdução acessíveis via Tab -->
-            <div 
-                tabindex="0"
-                class="rounded-2xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all"
-            >
+            <!-- Título e Introdução -->
+            <div>
                 <h1 id="trail-main-title" class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-brand-dark tracking-tight leading-[1.15] mb-3">
                     Fundamentos de HTML5 e Estrutura Semântica
                 </h1>
@@ -57,10 +53,7 @@
             </div>
 
             <!-- Metadados da Trilha -->
-            <div 
-                tabindex="0"
-                class="flex flex-wrap items-center gap-y-2 gap-x-6 text-xs sm:text-sm text-muted pt-3 border-t border-line rounded-xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all"
-            >
+            <div class="flex flex-wrap items-center gap-y-2 gap-x-6 text-xs sm:text-sm text-muted pt-3 border-t border-line">
                 <div class="flex items-center gap-2">
                     <div class="w-7 h-7 rounded-full bg-brand-dark text-white font-bold flex items-center justify-center text-xs" aria-hidden="true">
                         TD
@@ -76,10 +69,7 @@
         </section>
 
         <!-- Figura Ilustrativa da Trilha -->
-        <figure 
-            tabindex="0"
-            class="rounded-2xl overflow-hidden border border-line shadow-sm bg-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all"
-        >
+        <figure class="rounded-2xl overflow-hidden border border-line shadow-sm bg-slate-900">
             <div class="relative w-full h-56 sm:h-80 lg:h-96 bg-gradient-to-r from-brand-dark to-slate-900 flex items-center justify-center p-8">
                 <div class="text-center space-y-3 relative z-10">
                     <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-brand-lime shadow-md mb-2">
@@ -99,10 +89,7 @@
         <article class="space-y-8">
             <div class="prose max-w-none text-ink leading-relaxed space-y-6">
                 <!-- Seção 1: O que é HTML semântico -->
-                <div 
-                    tabindex="0"
-                    class="space-y-4 rounded-2xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all"
-                >
+                <div class="space-y-4">
                     <h2 class="text-2xl sm:text-3xl font-extrabold text-brand-dark tracking-tight">
                         O que é HTML semântico e por que ele importa?
                     </h2>
@@ -117,10 +104,7 @@
                 </div>
 
                 <!-- Destaque: Princípio do Design System -->
-                <div 
-                    tabindex="0"
-                    class="my-6 p-5 rounded-2xl bg-blue-50/70 border-l-4 border-brand-action focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all"
-                >
+                <div class="my-6 p-5 rounded-2xl bg-blue-50/70 border-l-4 border-brand-action">
                     <h3 class="text-sm font-bold text-brand-dark mb-1">Princípio do Design System: Acesso não é opcional</h3>
                     <p class="text-xs sm:text-sm text-ink leading-relaxed">
                         A estrutura da informação deve ser autossuficiente. Se todo o CSS for desativado, o documento ainda deve ser compreensível, navegável por teclado e perfeitamente anunciado por softwares leitores de tela como NVDA ou VoiceOver.
@@ -128,10 +112,7 @@
                 </div>
 
                 <!-- Seção 2: Principais elementos e seus papéis -->
-                <div 
-                    tabindex="0"
-                    class="space-y-4 rounded-2xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all pt-2"
-                >
+                <div class="space-y-4 pt-2">
                     <h2 class="text-2xl sm:text-3xl font-extrabold text-brand-dark tracking-tight">
                         Principais elementos e seus papéis na página
                     </h2>
@@ -143,34 +124,22 @@
 
                 <!-- Grid de Elementos Semânticos -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6">
-                    <div 
-                        tabindex="0"
-                        class="p-4 rounded-xl border border-line bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all"
-                    >
+                    <div class="p-4 rounded-xl border border-line bg-slate-50">
                         <span class="font-mono text-xs font-bold text-brand-action block mb-1">&lt;header&gt;</span>
                         <p class="text-xs text-muted leading-relaxed">Apresenta o cabeçalho introdutório, identidade visual da marca e navegações principais.</p>
                     </div>
 
-                    <div 
-                        tabindex="0"
-                        class="p-4 rounded-xl border border-line bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all"
-                    >
+                    <div class="p-4 rounded-xl border border-line bg-slate-50">
                         <span class="font-mono text-xs font-bold text-brand-action block mb-1">&lt;nav&gt;</span>
                         <p class="text-xs text-muted leading-relaxed">Agrupa links de navegação com <code>aria-label</code> descritivo para que o usuário possa saltar se desejar.</p>
                     </div>
 
-                    <div 
-                        tabindex="0"
-                        class="p-4 rounded-xl border border-line bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all"
-                    >
+                    <div class="p-4 rounded-xl border border-line bg-slate-50">
                         <span class="font-mono text-xs font-bold text-brand-action block mb-1">&lt;main&gt;</span>
                         <p class="text-xs text-muted leading-relaxed">O conteúdo central e dominante do documento. Deve existir apenas um elemento principal visível por página.</p>
                     </div>
 
-                    <div 
-                        tabindex="0"
-                        class="p-4 rounded-xl border border-line bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all"
-                    >
+                    <div class="p-4 rounded-xl border border-line bg-slate-50">
                         <span class="font-mono text-xs font-bold text-brand-action block mb-1">&lt;article&gt; e &lt;section&gt;</span>
                         <p class="text-xs text-muted leading-relaxed"><code>article</code> para composições independentes e distribuíveis; <code>section</code> para divisões temáticas com título.</p>
                     </div>
@@ -190,8 +159,7 @@
                         </button>
                     </div>
                     <pre 
-                        tabindex="0" 
-                        class="p-4 text-xs font-mono overflow-x-auto leading-relaxed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"
+                        class="p-4 text-xs font-mono overflow-x-auto leading-relaxed"
                         aria-label="Bloco de código de exemplo HTML"
                     ><code>&lt;!-- Exemplo de documento bem estruturado --&gt;
 &lt;header&gt;
@@ -213,10 +181,7 @@
                 </div>
 
                 <!-- Seção 3: Imagens e Cabeçalhos -->
-                <div 
-                    tabindex="0"
-                    class="space-y-4 rounded-2xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all pt-2"
-                >
+                <div class="space-y-4 pt-2">
                     <h2 class="text-2xl sm:text-3xl font-extrabold text-brand-dark tracking-tight">
                         Imagens com alt e ordem lógica de cabeçalhos
                     </h2>
@@ -238,10 +203,7 @@
 
             <!-- Seção 4: Referências -->
             <section aria-labelledby="refs-heading" class="pt-8 border-t border-line space-y-4">
-                <div 
-                    tabindex="0"
-                    class="rounded-2xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all"
-                >
+                <div>
                     <h2 id="refs-heading" class="text-2xl font-bold text-brand-dark tracking-tight">
                         Referências e Leituras Complementares
                     </h2>

@@ -21,7 +21,7 @@
                         <li><span class="text-ink font-semibold" aria-current="page">Nova Trilha de Ensino</span></li>
                     </ol>
                 </nav>
-                <div tabindex="0" class="rounded-2xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
+                <div>
                     <h1 class="text-2xl sm:text-3xl font-extrabold text-brand-dark tracking-tight">
                         Criar Trilha de Ensino
                     </h1>
@@ -60,7 +60,7 @@
         <form id="formTrail" action="{{ url_for('cad_trilha') }}" method="post" enctype="multipart/form-data" class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             <div class="lg:col-span-8 space-y-8">
                 <section aria-labelledby="step-1-heading" class="bg-white rounded-2xl border border-line p-5 sm:p-8 shadow-xs">
-                    <header tabindex="0" class="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-line pb-4 rounded-xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
+                    <header class="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-line pb-4">
                         <div>
                             <h2 id="step-1-heading" class="text-lg font-bold text-brand-dark">1. Dados Fundamentais da Trilha</h2>
                             <p class="text-xs text-muted mt-0.5">Identifique a trilha para os alunos no dashboard e na busca.</p>
@@ -152,7 +152,7 @@
                 </section>
 
                 <section aria-labelledby="step-2-heading" class="bg-white rounded-2xl border border-line p-5 sm:p-8 shadow-xs">
-                    <header tabindex="0" class="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-line pb-4 rounded-xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
+                    <header class="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-line pb-4">
                         <div>
                             <h2 id="step-2-heading" class="text-lg font-bold text-brand-dark">2. Imagem de Capa e Identidade Visual</h2>
                             <p class="text-xs text-muted mt-0.5">Adicione o arquivo de imagem local da trilha com acessibilidade obrigatória.</p>
@@ -212,7 +212,7 @@
                 </section>
 
                 <section aria-labelledby="step-3-heading" class="bg-white rounded-2xl border border-line p-5 sm:p-8 shadow-xs">
-                    <header tabindex="0" class="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-line pb-4 rounded-xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
+                    <header class="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-line pb-4">
                         <div>
                             <h2 id="step-3-heading" class="text-lg font-bold text-brand-dark">3. Conteúdo da Trilha</h2>
                             <p class="text-xs text-muted mt-0.5">Escreva o texto completo da trilha em um campo único, gravado como TEXT no banco de dados.</p>
@@ -267,7 +267,7 @@
                 </section>
 
                 <section aria-labelledby="step-4-heading" class="bg-white rounded-2xl border border-line p-5 sm:p-8 shadow-xs">
-                    <header tabindex="0" class="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-line pb-4 rounded-xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
+                    <header class="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-line pb-4">
                         <div>
                             <h2 id="step-4-heading" class="text-lg font-bold text-brand-dark">4. Referências e Leituras Complementares</h2>
                             <p class="text-xs text-muted mt-0.5">Cada trilha deve conter referências e fontes de autoridade.</p>
@@ -327,7 +327,7 @@
 
             <aside class="lg:col-span-4 space-y-6">
                 <div class="bg-white rounded-2xl border border-line p-6 shadow-xs sticky top-24">
-                    <div tabindex="0" class="rounded-xl p-2 -m-2 mb-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
+                    <div class="mb-5">
                         <h3 class="text-sm font-bold uppercase tracking-wider text-muted mb-4">Publicação da Trilha</h3>
 
                         <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-line">
@@ -372,7 +372,7 @@
                         </button>
                     </div>
 
-                    <div tabindex="0" class="mt-8 pt-6 border-t border-line rounded-xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
+                    <div class="mt-8 pt-6 border-t border-line">
                         <h4 class="text-xs font-bold uppercase tracking-wider text-brand-dark mb-3">
                             Checklist de Qualidade (Design System)
                         </h4>
@@ -412,7 +412,7 @@
                         <i class="bi bi-x-lg" aria-hidden="true"></i>
                     </button>
                 </div>
-                <div tabindex="0" class="p-6 sm:p-10 overflow-y-auto space-y-6 flex-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime focus-visible:ring-inset">
+                <div class="p-6 sm:p-10 overflow-y-auto space-y-6 flex-1">
                     <span id="prevBadge" class="inline-block px-3 py-1 rounded-md text-xs font-bold uppercase tracking-wider bg-brand-light text-brand-blue">Categoria</span>
                     <h2 id="prevTitle" class="text-2xl sm:text-3xl font-extrabold text-brand-dark">Título da Trilha</h2>
                     <p id="prevSummary" class="text-base text-muted leading-relaxed italic border-l-3 border-brand-action pl-4">Resumo da trilha...</p>

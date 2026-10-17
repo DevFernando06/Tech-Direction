@@ -20,7 +20,7 @@
                     <li><span class="text-ink font-semibold" aria-current="page">Novo Escritor</span></li>
                 </ol>
             </nav>
-            <div tabindex="0" class="rounded-2xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
+            <div>
                 <h1 class="text-2xl sm:text-3xl font-extrabold text-brand-dark tracking-tight">
                     Cadastrar Novo Escritor
                 </h1>
@@ -33,7 +33,7 @@
         <form action="{{ url_for('cad_writer') }}" method="post" class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             <div class="lg:col-span-8 space-y-8">
                 <section aria-labelledby="writer-id-heading" class="bg-white rounded-2xl border border-line p-5 sm:p-8 shadow-xs">
-                    <header tabindex="0" class="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-line pb-4 rounded-xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
+                    <header class="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-line pb-4">
                         <div>
                             <h2 id="writer-id-heading" class="text-lg font-bold text-brand-dark">1. Identificação do Escritor</h2>
                             <p class="text-xs text-muted mt-0.5">Informações públicas e de autoria que serão associadas às trilhas.</p>
@@ -107,7 +107,7 @@
                 </section>
 
                 <section aria-labelledby="writer-creds-heading" class="bg-white rounded-2xl border border-line p-5 sm:p-8 shadow-xs">
-                    <header tabindex="0" class="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-line pb-4 rounded-xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
+                    <header class="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-line pb-4">
                         <div>
                             <h2 id="writer-creds-heading" class="text-lg font-bold text-brand-dark">2. Credenciais de Acesso</h2>
                             <p class="text-xs text-muted mt-0.5">Defina a senha inicial que o escritor usará para entrar na plataforma.</p>
@@ -191,7 +191,7 @@
 
             <aside class="lg:col-span-4 space-y-6">
                 <div class="bg-white rounded-2xl border border-line p-6 shadow-xs">
-                    <div tabindex="0" class="rounded-xl p-2 -m-2 mb-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
+                    <div class="mb-6">
                         <h3 class="text-xs font-bold uppercase tracking-wider text-muted mb-3">
                             Papel no Sistema (Role)
                         </h3>
@@ -265,7 +265,7 @@
                     </div>
                 </div>
 
-                <div tabindex="0" class="p-4 rounded-xl bg-blue-50/60 border border-brand-blue/15 text-xs text-muted leading-relaxed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
+                <div class="p-4 rounded-xl bg-blue-50/60 border border-brand-blue/15 text-xs text-muted leading-relaxed">
                     <p class="font-bold text-brand-blue mb-1">Nota de Segurança:</p>
                     <p>Somente administradores autorizados têm permissão para cadastrar ou desativar perfis de escritores.</p>
                 </div>

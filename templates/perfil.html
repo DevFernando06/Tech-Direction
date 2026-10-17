@@ -18,7 +18,7 @@
                     <li><span class="text-ink font-semibold" aria-current="page">Meu Perfil</span></li>
                 </ol>
             </nav>
-            <div tabindex="0" class="rounded-2xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
+            <div>
                 <h1 class="text-2xl sm:text-3xl font-extrabold text-brand-dark tracking-tight">
                     Meu Perfil
                 </h1>
@@ -31,7 +31,7 @@
         <form action="{{ url_for('perfil') }}" method="post" class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             <div class="lg:col-span-8 space-y-8">
                 <section aria-labelledby="personal-data-heading" class="bg-white rounded-2xl border border-line p-5 sm:p-8 shadow-xs">
-                    <header tabindex="0" class="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-line pb-4 rounded-xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
+                    <header class="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-line pb-4">
                         <div>
                             <h2 id="personal-data-heading" class="text-lg font-bold text-brand-dark">1. Dados Pessoais e de Cadastro</h2>
                             <p class="text-xs text-muted mt-0.5">Suas informações cadastrais no sistema.</p>
@@ -106,7 +106,7 @@
                 </section>
 
                 <section aria-labelledby="security-data-heading" class="bg-white rounded-2xl border border-line p-5 sm:p-8 shadow-xs">
-                    <header tabindex="0" class="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-line pb-4 rounded-xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
+                    <header class="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-line pb-4">
                         <div>
                             <h2 id="security-data-heading" class="text-lg font-bold text-brand-dark">2. Alterar Senha de Acesso</h2>
                             <p class="text-xs text-muted mt-0.5">Preencha os campos abaixo para modificar sua senha.</p>
@@ -199,7 +199,7 @@
 
             <aside class="lg:col-span-4 space-y-6">
                 <div class="bg-white rounded-2xl border border-line p-6 shadow-xs sticky top-24">
-                    <div tabindex="0" class="flex items-center gap-4 pb-6 border-b border-line mb-6 rounded-xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
+                    <div class="flex items-center gap-4 pb-6 border-b border-line mb-6">
                         <div class="w-14 h-14 rounded-2xl bg-brand-dark text-white font-extrabold flex items-center justify-center text-lg shadow-sm shrink-0" aria-hidden="true">
                             LS
                         </div>

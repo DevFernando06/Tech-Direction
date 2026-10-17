@@ -13,11 +13,7 @@
     <main class="flex-1 min-w-0 max-w-[76rem] w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-8 sm:space-y-10" id="main-content" tabindex="-1">
         <!-- Hero / Boas-vindas -->
         <section aria-labelledby="welcome-heading" class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <!-- Bloco de Saudação acessível via Tab -->
-            <div 
-                tabindex="0" 
-                class="rounded-2xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime focus-visible:ring-offset-2 transition-all"
-            >
+            <div>
                 <span class="text-xs font-bold tracking-wider text-brand-blue uppercase">SUA JORNADA</span>
                 <h1 id="welcome-heading" class="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight mt-1">
                     Olá, estudante!
@@ -27,10 +23,9 @@
                 </p>
             </div>
 
-            <!-- Card de Sequência (Streak) acessível via Tab -->
+            <!-- Card de Sequência (Streak) -->
             <div 
-                tabindex="0" 
-                class="inline-flex items-center gap-3.5 bg-white border border-line rounded-2xl px-5 py-3 shadow-xs shrink-0 self-start sm:self-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime focus-visible:ring-offset-2 transition-all cursor-default"
+                class="inline-flex items-center gap-3.5 bg-white border border-line rounded-2xl px-5 py-3 shadow-xs shrink-0 self-start sm:self-auto"
                 aria-label="Frequência de estudos: 3 dias de sequência de acesso"
             >
                 <div class="w-9 h-9 rounded-xl bg-amber-50 border border-amber-200/50 flex items-center justify-center text-amber-500 text-base" aria-hidden="true">
@@ -45,11 +40,7 @@
 
         <!-- Seção de Trilhas -->
         <section aria-labelledby="trails-heading" class="space-y-6">
-            <!-- Cabeçalho da Seção acessível via Tab -->
-            <div 
-                tabindex="0"
-                class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 rounded-2xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all"
-            >
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
                 <div>
                     <span class="text-xs font-bold tracking-wider text-brand-blue uppercase">TRILHAS DE APRENDIZADO</span>
                     <h2 id="trails-heading" class="text-2xl sm:text-3xl font-extrabold text-brand-dark tracking-tight mt-1">
@@ -71,12 +62,11 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <!-- Card 1: HTML & CSS -->
                 <article aria-labelledby="title-html-css" class="bg-white rounded-3xl border border-line shadow-xs overflow-hidden flex flex-col hover:shadow-md hover:border-slate-300 transition-all">
-                    <!-- Banner Visual acessível via Tab -->
+                    <!-- Banner Visual -->
                     <div 
-                        tabindex="0" 
                         role="img" 
                         aria-label="Ilustração da trilha HTML e CSS com símbolo de tags de código"
-                        class="h-36 bg-[#FFEFEA] relative flex items-center justify-center overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime focus-visible:ring-inset transition-all"
+                        class="h-36 bg-[#FFEFEA] relative flex items-center justify-center overflow-hidden"
                     >
                         <span class="absolute right-6 top-1/2 -translate-y-1/2 text-5xl font-mono text-[#F8D4CC] opacity-70 select-none pointer-events-none" aria-hidden="true">
                             { }
@@ -88,11 +78,7 @@
 
                     <!-- Conteúdo Resumido e Ação -->
                     <div class="p-6 flex-1 flex flex-col justify-between">
-                        <!-- Conteúdo Resumido da Trilha acessível via Tab -->
-                        <div 
-                            tabindex="0"
-                            class="rounded-2xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all"
-                        >
+                        <div>
                             <div>
                                 <span class="text-[11px] font-extrabold tracking-wider text-brand-blue uppercase block mb-1">
                                     FUNDAMENTOS
@@ -138,12 +124,11 @@
 
                 <!-- Card 2: JavaScript -->
                 <article aria-labelledby="title-js" class="bg-white rounded-3xl border border-line shadow-xs overflow-hidden flex flex-col hover:shadow-md hover:border-slate-300 transition-all">
-                    <!-- Banner Visual acessível via Tab -->
+                    <!-- Banner Visual -->
                     <div 
-                        tabindex="0" 
                         role="img" 
                         aria-label="Ilustração da trilha JavaScript com ícone de camadas estruturais"
-                        class="h-36 bg-[#EAF3FE] relative flex items-center justify-center overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime focus-visible:ring-inset transition-all"
+                        class="h-36 bg-[#EAF3FE] relative flex items-center justify-center overflow-hidden"
                     >
                         <span class="absolute right-6 top-1/2 -translate-y-1/2 text-5xl font-mono text-[#CCE2FC] opacity-70 select-none pointer-events-none" aria-hidden="true">
                             { }
@@ -155,11 +140,7 @@
 
                     <!-- Conteúdo Resumido e Ação -->
                     <div class="p-6 flex-1 flex flex-col justify-between">
-                        <!-- Conteúdo Resumido da Trilha acessível via Tab -->
-                        <div 
-                            tabindex="0"
-                            class="rounded-2xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all"
-                        >
+                        <div>
                             <div>
                                 <span class="text-[11px] font-extrabold tracking-wider text-brand-blue uppercase block mb-1">
                                     PROGRAMAÇÃO
@@ -205,12 +186,11 @@
 
                 <!-- Card 3: React -->
                 <article aria-labelledby="title-react" class="bg-white rounded-3xl border border-line shadow-xs overflow-hidden flex flex-col hover:shadow-md hover:border-slate-300 transition-all">
-                    <!-- Banner Visual acessível via Tab -->
+                    <!-- Banner Visual -->
                     <div 
-                        tabindex="0" 
                         role="img" 
                         aria-label="Ilustração da trilha React com ícone de componentes em destaque"
-                        class="h-36 bg-[#F0F8DD] relative flex items-center justify-center overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime focus-visible:ring-inset transition-all"
+                        class="h-36 bg-[#F0F8DD] relative flex items-center justify-center overflow-hidden"
                     >
                         <span class="absolute right-6 top-1/2 -translate-y-1/2 text-5xl font-mono text-[#D8ECAE] opacity-70 select-none pointer-events-none" aria-hidden="true">
                             { }
@@ -222,11 +202,7 @@
 
                     <!-- Conteúdo Resumido e Ação -->
                     <div class="p-6 flex-1 flex flex-col justify-between">
-                        <!-- Conteúdo Resumido da Trilha acessível via Tab -->
-                        <div 
-                            tabindex="0"
-                            class="rounded-2xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all"
-                        >
+                        <div>
                             <div>
                                 <span class="text-[11px] font-extrabold tracking-wider text-brand-blue uppercase block mb-1">
                                     PRÓXIMO PASSO

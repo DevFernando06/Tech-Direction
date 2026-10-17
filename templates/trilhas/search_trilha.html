@@ -20,7 +20,7 @@
                         <li><span class="text-ink font-semibold" aria-current="page">Trilhas de Aprendizado</span></li>
                     </ol>
                 </nav>
-                <div tabindex="0" class="rounded-2xl p-2 -m-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
+                <div>
                     <h1 class="text-2xl sm:text-3xl font-extrabold text-brand-dark tracking-tight">
                         Trilhas de Aprendizado
                     </h1>
@@ -40,7 +40,7 @@
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-8">
-            <div tabindex="0" class="bg-white p-5 rounded-2xl border border-line shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
+            <div class="bg-white p-5 rounded-2xl border border-line shadow-xs">
                 <span class="text-xs font-bold uppercase tracking-wider text-muted block mb-1">Total de Trilhas</span>
                 <div class="flex items-baseline justify-between">
                     <span class="text-3xl font-extrabold text-brand-dark" id="visibleTrailsCount">5</span>
@@ -48,7 +48,7 @@
                 </div>
             </div>
 
-            <div tabindex="0" class="bg-white p-5 rounded-2xl border border-line shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
+            <div class="bg-white p-5 rounded-2xl border border-line shadow-xs">
                 <span class="text-xs font-bold uppercase tracking-wider text-muted block mb-1">Publicadas</span>
                 <div class="flex items-baseline justify-between">
                     <span class="text-3xl font-extrabold text-brand-dark">3</span>
@@ -56,7 +56,7 @@
                 </div>
             </div>
 
-            <div tabindex="0" class="bg-white p-5 rounded-2xl border border-line shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime transition-all">
+            <div class="bg-white p-5 rounded-2xl border border-line shadow-xs">
                 <span class="text-xs font-bold uppercase tracking-wider text-muted block mb-1">Em Rascunho</span>
                 <div class="flex items-baseline justify-between">
                     <span class="text-3xl font-extrabold text-amber-600">2</span>
@@ -129,12 +129,12 @@
                             data-status="publicada"
                         >
                             <td class="py-4 px-6">
-                                <div tabindex="0" class="flex items-center gap-3 rounded-xl p-1 -m-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime">
+                                <div class="flex items-center gap-3">
                                     <div class="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center shrink-0 border border-orange-200">
                                         <img src="{{ url_for('static', filename='img/html5.svg') }}" alt="Logo HTML5" class="w-6 h-6">
                                     </div>
                                     <div>
-                                        <p class="font-bold text-brand-dark text-sm hover:text-brand-blue transition-colors">
+                                        <p class="font-bold text-brand-dark text-sm">
                                             Fundamentos de HTML5 e Estrutura Semântica
                                         </p>
                                         <p class="text-xs text-muted line-clamp-1">
@@ -188,12 +188,12 @@
                             data-status="publicada"
                         >
                             <td class="py-4 px-6">
-                                <div tabindex="0" class="flex items-center gap-3 rounded-xl p-1 -m-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime">
+                                <div class="flex items-center gap-3">
                                     <div class="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center shrink-0 border border-blue-200">
                                         <img src="{{ url_for('static', filename='img/css3.svg') }}" alt="Logo CSS3" class="w-6 h-6">
                                     </div>
                                     <div>
-                                        <p class="font-bold text-brand-dark text-sm hover:text-brand-blue transition-colors">
+                                        <p class="font-bold text-brand-dark text-sm">
                                             CSS Moderno: Flexbox, Grid e Layouts Fluidos
                                         </p>
                                         <p class="text-xs text-muted line-clamp-1">
@@ -247,12 +247,12 @@
                             data-status="publicada"
                         >
                             <td class="py-4 px-6">
-                                <div tabindex="0" class="flex items-center gap-3 rounded-xl p-1 -m-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime">
+                                <div class="flex items-center gap-3">
                                     <div class="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center shrink-0 border border-amber-200">
                                         <img src="{{ url_for('static', filename='img/javascript.svg') }}" alt="Logo JavaScript" class="w-6 h-6">
                                     </div>
                                     <div>
-                                        <p class="font-bold text-brand-dark text-sm hover:text-brand-blue transition-colors">
+                                        <p class="font-bold text-brand-dark text-sm">
                                             JavaScript Essencial: Lógica e Interatividade
                                         </p>
                                         <p class="text-xs text-muted line-clamp-1">
@@ -306,12 +306,12 @@
                             data-status="rascunho"
                         >
                             <td class="py-4 px-6">
-                                <div tabindex="0" class="flex items-center gap-3 rounded-xl p-1 -m-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime">
+                                <div class="flex items-center gap-3">
                                     <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center shrink-0 border border-purple-200" aria-hidden="true">
                                         <i class="bi bi-universal-access text-xl" aria-hidden="true"></i>
                                     </div>
                                     <div>
-                                        <p class="font-bold text-brand-dark text-sm hover:text-brand-blue transition-colors">
+                                        <p class="font-bold text-brand-dark text-sm">
                                             Guia Prático de Acessibilidade Web (WCAG AA)
                                         </p>
                                         <p class="text-xs text-muted line-clamp-1">
@@ -365,12 +365,12 @@
                             data-status="rascunho"
                         >
                             <td class="py-4 px-6">
-                                <div tabindex="0" class="flex items-center gap-3 rounded-xl p-1 -m-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime">
+                                <div class="flex items-center gap-3">
                                     <div class="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center shrink-0 border border-orange-200">
                                         <img src="{{ url_for('static', filename='img/html5.svg') }}" alt="Logo HTML5" class="w-6 h-6">
                                     </div>
                                     <div>
-                                        <p class="font-bold text-brand-dark text-sm hover:text-brand-blue transition-colors">
+                                        <p class="font-bold text-brand-dark text-sm">
                                             Semântica Avançada, Metadados e SEO Técnico
                                         </p>
                                         <p class="text-xs text-muted line-clamp-1">
