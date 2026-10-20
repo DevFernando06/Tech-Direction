@@ -16,7 +16,7 @@
             <div>
                 <span class="text-xs font-bold tracking-wider text-brand-blue uppercase">SUA JORNADA</span>
                 <h1 id="welcome-heading" class="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight mt-1">
-                    Olá, estudante!
+                    Olá, {{ primeiro_nome }}!
                 </h1>
                 <p class="text-sm text-muted mt-1.5 max-w-xl">
                     Explore conteúdos autorais, referências e links selecionados para você.
@@ -111,7 +111,7 @@
                         <!-- Botão de Ação -->
                         <div class="mt-4">
                             <a
-                                href="{{ url_for('view_trilha') }}"
+                                href="{{ url_for('view_trilha', slug='html-css') }}"
                                 class="w-full py-3 px-4 rounded-xl bg-brand-dark hover:bg-slate-800 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"
                                 aria-label="Explorar a trilha de HTML e CSS"
                             >
@@ -173,7 +173,7 @@
                         <!-- Botão de Ação -->
                         <div class="mt-4">
                             <a
-                                href="{{ url_for('view_trilha') }}"
+                                href="{{ url_for('view_trilha', slug='javascript') }}"
                                 class="w-full py-3 px-4 rounded-xl bg-brand-dark hover:bg-slate-800 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"
                                 aria-label="Explorar a trilha de JavaScript"
                             >
@@ -235,7 +235,7 @@
                         <!-- Botão de Ação -->
                         <div class="mt-4">
                             <a
-                                href="{{ url_for('view_trilha') }}"
+                                href="{{ url_for('view_trilha', slug='react') }}"
                                 class="w-full py-3 px-4 rounded-xl bg-brand-dark hover:bg-slate-800 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"
                                 aria-label="Explorar a trilha de React"
                             >

@@ -29,13 +29,13 @@
             <a
                 href="{{ url_for('perfil') }}"
                 class="inline-flex items-center gap-2.5 p-1 sm:px-2.5 sm:py-1.5 rounded-xl border border-line bg-white hover:bg-slate-50 hover:border-brand-blue transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"
-                aria-label="Acessar meu perfil: Lucas Silva"
+                aria-label="Acessar meu perfil: {{ usuario_nome }}"
             >
                 <div class="w-8 h-8 rounded-full bg-brand-dark text-white font-bold flex items-center justify-center text-xs shrink-0 shadow-xs" aria-hidden="true">
-                    LS
+                    {{ usuario_iniciais }}
                 </div>
                 <div class="hidden sm:flex flex-col text-left">
-                    <span class="text-xs font-bold text-ink leading-tight">Lucas Silva</span>
+                    <span class="text-xs font-bold text-ink leading-tight">{{ usuario_nome }}</span>
                     <span class="text-[10px] text-muted leading-tight font-medium">Meu perfil</span>
                 </div>
             </a>
