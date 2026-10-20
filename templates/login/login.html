@@ -70,6 +70,15 @@
                 <p class="text-sm sm:text-base text-muted">Continue de onde você parou.</p>
             </header>
 
+            {# Mensagens do servidor (erros e avisos de sucesso) #}
+            {% with mensagens = get_flashed_messages(with_categories=true) %}
+                {% for categoria, mensagem in mensagens %}
+                    <div role="alert" class="mb-5 px-4 py-3 rounded-xl border text-sm font-semibold {% if categoria == 'sucesso' %}bg-green-50 border-green-200 text-green-700{% else %}bg-red-50 border-red-200 text-danger{% endif %}">
+                        {{ mensagem }}
+                    </div>
+                {% endfor %}
+            {% endwith %}
+
             <form action="{{ url_for('login') }}" method="post" class="space-y-5">
                 <div>
                     <label for="login" class="block text-xs sm:text-sm font-bold text-ink mb-1.5">
