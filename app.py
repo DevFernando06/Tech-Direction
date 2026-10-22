@@ -48,12 +48,12 @@ def injetar_usuario():
     return {"usuario_nome": nome, "usuario_iniciais": iniciais(nome)}
 
 
-def login_obrigatorio(f):
+def login_obrigatorio(f):           #DESATIVADO PARA TEMPORARIAMENTE
     @wraps(f)
     def wrapper(*args, **kwargs):
-        if "usuario_id" not in session:
-            flash("Faça login para acessar essa página.", "erro")
-            return redirect(url_for("login"))
+        #if "usuario_id" not in session:
+           # flash("Faça login para acessar essa página.", "erro")
+          #  return redirect(url_for("login"))
         return f(*args, **kwargs)
     return wrapper
 
