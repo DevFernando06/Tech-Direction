@@ -5,12 +5,64 @@ from functools import wraps
 from flask import Flask, abort, flash, jsonify, redirect, render_template, request, session, url_for
 from werkzeug.security import check_password_hash, generate_password_hash
 
-app = Flask(__name__)
+app = Flask(
+    __name__,
+    static_url_path="",
+    static_folder="static",
+)
 app.secret_key = "troque-esta-chave-em-producao"  # necessária para session e flash
 app.permanent_session_lifetime = timedelta(days=30)  # usado no "Lembrar de mim"
 
-# "Banco de dados" hardcodado na memória
-usuarios = []
+# ---------------------------------------------------------------------------
+# "Banco de dados" em memória
+# ---------------------------------------------------------------------------
+usuarios = [
+    {
+        "id": 1,
+        "nome": "Lucas Silva",
+        "email": "lucas@techdirection.edu",
+        "nascimento": "2000-05-10",
+        "data_nascimento": date(2000, 5, 10),
+        "roles": ["student"],
+        "senha_hash": generate_password_hash("12345678"),
+    },
+    {
+        "id": 2,
+        "nome": "Admin Tech Direction",
+        "email": "admin@techdirection.edu",
+        "nascimento": "1990-01-01",
+        "data_nascimento": date(1990, 1, 1),
+        "roles": ["admin"],
+        "senha_hash": generate_password_hash("12345678"),
+    },
+    {
+        "id": 3,
+        "nome": "Mariana Vasconcelos",
+        "email": "mariana@techdirection.edu",
+        "nascimento": "1992-03-15",
+        "data_nascimento": date(1992, 3, 15),
+        "roles": ["writer"],
+        "senha_hash": generate_password_hash("12345678"),
+    },
+    {
+        "id": 4,
+        "nome": "Carlos Mendes",
+        "email": "carlos@techdirection.edu",
+        "nascimento": "1989-07-22",
+        "data_nascimento": date(1989, 7, 22),
+        "roles": ["writer"],
+        "senha_hash": generate_password_hash("12345678"),
+    },
+    {
+        "id": 5,
+        "nome": "Beatriz Lima",
+        "email": "beatriz@techdirection.edu",
+        "nascimento": "1995-11-02",
+        "data_nascimento": date(1995, 11, 2),
+        "roles": ["writer"],
+        "senha_hash": generate_password_hash("12345678"),
+    },
+]
 
 EMAIL_REGEX = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
 TAMANHO_MIN_SENHA = 8
@@ -21,6 +73,39 @@ TRILHAS = {
     "javascript": "JavaScript",
     "react": "React",
 }
+
+trilhas = [
+    {
+        "id": 1,
+        "slug": "html-css",
+        "categoria": "Fundamentos",
+        "titulo": "HTML & CSS",
+        "descricao": "Entenda como a web é estruturada, estilizada e publicada, com exemplos e referências.",
+        "autor": "Equipe Tech Direction",
+        "leituras": 6,
+        "referencias": 12,
+    },
+    {
+        "id": 2,
+        "slug": "javascript",
+        "categoria": "Programação",
+        "titulo": "JavaScript",
+        "descricao": "Uma introdução visual à linguagem que dá vida à web, com conceitos, imagens e links úteis.",
+        "autor": "Marina Lima",
+        "leituras": 8,
+        "referencias": 15,
+    },
+    {
+        "id": 3,
+        "slug": "react",
+        "categoria": "Próximo passo",
+        "titulo": "React",
+        "descricao": "Conheça a biblioteca, seu ecossistema e as ideias por trás de interfaces baseadas em componentes.",
+        "autor": "André Costa",
+        "leituras": 7,
+        "referencias": 10,
+    },
+]
 
 
 def buscar_por_email(email):
@@ -134,7 +219,9 @@ def cad_user_post():
         "id": len(usuarios) + 1,
         "nome": nome,
         "email": email,
+        "nascimento": data_nasc_str,
         "data_nascimento": data_nasc,
+        "roles": ["student"],
         "senha_hash": generate_password_hash(senha),
     })
     flash("Conta criada com sucesso! Faça login.", "sucesso")
@@ -146,19 +233,39 @@ def cad_user_post():
 @login_obrigatorio
 def dashboard():
     nome = session["nome"]
-    return render_template("trilhas/dashboard.html", nome=nome, primeiro_nome=nome.split()[0])
+    return render_template(
+        "dashboard.html",
+        nome=nome,
+        primeiro_nome=nome.split()[0],
+        trilhas=trilhas,
+    )
 
 
 # url_for('view_trilha') -> /trilha (abre a primeira trilha)
 # url_for('view_trilha', slug='react') -> /trilha/react
-@app.get("/trilha", defaults={"slug": None})
-@app.get("/trilha/<slug>")
+# url_for('view_trilha', id=1) -> /trilha/1
+@app.get("/trilha", defaults={"slug": None, "id": None})
+@app.get("/trilha/<int:id>", defaults={"slug": None})
+@app.get("/trilha/<slug>", defaults={"id": None})
 @login_obrigatorio
-def view_trilha(slug):
-    slug = slug or next(iter(TRILHAS))
-    if slug not in TRILHAS:
-        abort(404)
-    return render_template("trilhas/view_trilha.html", slug=slug, titulo=TRILHAS[slug])
+def view_trilha(slug, id):
+    if id is not None:
+        trilha = next((t for t in trilhas if t["id"] == id), None)
+        if trilha is None:
+            abort(404)
+        slug = trilha["slug"]
+    else:
+        slug = slug or next(iter(TRILHAS))
+        if slug not in TRILHAS:
+            abort(404)
+        trilha = next((t for t in trilhas if t["slug"] == slug), None)
+
+    return render_template(
+        "trilhas/view_trilha.html",
+        slug=slug,
+        titulo=TRILHAS[slug],
+        trilha=trilha,
+    )
 
 
 # ---------- RECUPERAR SENHA (modal do login) ----------
@@ -183,29 +290,53 @@ def recuperar_senha():
 @login_obrigatorio
 def search_trilha():
     q = request.args.get("q", "").strip()
-    trilhas = {slug: titulo for slug, titulo in TRILHAS.items() if q.lower() in titulo.lower()}
-    return render_template("trilhas/search_trilha.html", trilhas=trilhas, q=q)
+    termo = q.lower()
+    resultado = [
+        t for t in trilhas
+        if not termo or termo in " ".join(
+            [t["titulo"], t["categoria"], t["descricao"], t["autor"]]
+        ).lower()
+    ]
+    return render_template(
+        "trilhas/search_trilha.html",
+        trilhas=resultado,
+        termo=termo,
+        q=q,
+    )
 
 
 @app.get("/trilhas/nova")
 @login_obrigatorio
 def cad_trilha():
-    # O POST (salvar a trilha) entra quando o formulário dessa página estiver pronto
-    return render_template("admin/cad_trilha.html")
+    return render_template("trilhas/cad_trilha.html")
+
+
+@app.post("/trilhas/nova")
+@login_obrigatorio
+def cad_trilha_post():
+    # Por enquanto não salva nada: volta para a lista de trilhas
+    return redirect(url_for("search_trilha"))
 
 
 # ---------- ESCRITORES ----------
 @app.get("/escritores")
 @login_obrigatorio
 def writers():
-    return render_template("escritores/writers.html")
+    escritores = [u for u in usuarios if "writer" in u.get("roles", [])]
+    return render_template("admin/writers.html", escritores=escritores)
 
 
 @app.get("/escritores/novo")
 @login_obrigatorio
 def cad_writer():
-    # O POST (salvar o escritor) entra quando o formulário dessa página estiver pronto
     return render_template("admin/cad_writer.html")
+
+
+@app.post("/escritores/novo")
+@login_obrigatorio
+def cad_writer_post():
+    # Por enquanto não salva nada: volta para a lista de escritores
+    return redirect(url_for("writers"))
 
 
 # ---------- PERFIL ----------
@@ -213,7 +344,7 @@ def cad_writer():
 @login_obrigatorio
 def perfil():
     usuario = buscar_por_id(session["usuario_id"])
-    return render_template("perfil/perfil.html", usuario=usuario)
+    return render_template("perfil.html", usuario=usuario)
 
 
 @app.get("/logout")
