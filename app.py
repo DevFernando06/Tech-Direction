@@ -179,7 +179,7 @@ def cad_user_post():
 def dashboard():
     nome = session["nome"]
     return render_template(
-        "trilhas/dashboard.html", nome=nome, primeiro_nome=nome.split()[0]
+        "dashboard.html", nome=nome, primeiro_nome=nome.split()[0]     #tava buscando em trilhas antes
     )
 
 
@@ -230,14 +230,14 @@ def search_trilha():
 @login_obrigatorio
 def cad_trilha():
     # O POST (salvar a trilha) entra quando o formulário dessa página estiver pronto
-    return render_template("admin/cad_trilha.html")
+    return render_template("trilhas/cad_trilha.html")
 
 
 # ---------- ESCRITORES ----------
 @app.get("/escritores")
 @login_obrigatorio
 def writers():
-    return render_template("escritores/writers.html")
+    return render_template("admin/writers.html")
 
 
 @app.get("/escritores/novo")
@@ -252,7 +252,7 @@ def cad_writer():
 @login_obrigatorio
 def perfil():
     usuario = buscar_por_id(session["usuario_id"])
-    return render_template("perfil/perfil.html", usuario=usuario)
+    return render_template("perfil.html", usuario=usuario)
 
 
 @app.get("/logout")
