@@ -10,7 +10,7 @@
 <div class="flex-1 flex relative">
     {% include 'partils/sidebar.html' %}
     <main class="flex-1 min-w-0 max-w-[76rem] w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8" id="main-content" tabindex="-1">
-        <div class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-line pb-6">
+        <header class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-line pb-6">
             <div>
                 <nav aria-label="Breadcrumb" class="mb-2">
                     <ol class="flex flex-wrap items-center gap-2 text-xs text-muted font-medium">
@@ -21,14 +21,12 @@
                         <li><span class="text-ink font-semibold" aria-current="page">Nova Trilha de Ensino</span></li>
                     </ol>
                 </nav>
-                <div>
-                    <h1 class="text-2xl sm:text-3xl font-extrabold text-brand-dark tracking-tight">
-                        Criar Trilha de Ensino
-                    </h1>
-                    <p class="text-sm text-muted mt-1 max-w-2xl">
-                        Escreva textos autorais, adicione imagens locais com acessibilidade e referências para construir uma trilha inclusiva.
-                    </p>
-                </div>
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-brand-dark tracking-tight">
+                    Criar Trilha de Ensino
+                </h1>
+                <p class="text-sm text-muted mt-1 max-w-2xl">
+                    Escreva textos autorais, adicione imagens locais com acessibilidade e referências para construir uma trilha inclusiva.
+                </p>
             </div>
             
             <div class="flex flex-wrap items-center gap-3">
@@ -55,7 +53,7 @@
                     <i class="bi bi-arrow-right" aria-hidden="true"></i>
                 </button>
             </div>
-        </div>
+        </header>
 
         <form id="formTrail" action="{{ url_for('cad_trilha') }}" method="post" enctype="multipart/form-data" class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             <div class="lg:col-span-8 space-y-8">
@@ -202,12 +200,12 @@
                             </div>
                         </div>
 
-                        <div id="coverPreviewContainer" class="hidden border border-line rounded-xl p-3 bg-slate-50">
-                            <span class="text-xs font-bold text-muted uppercase block mb-2">Pré-visualização da Capa:</span>
+                        <figure id="coverPreviewContainer" class="hidden border border-line rounded-xl p-3 bg-slate-50">
+                            <figcaption class="text-xs font-bold text-muted uppercase block mb-2">Pré-visualização da Capa:</figcaption>
                             <div class="relative w-full h-48 sm:h-64 rounded-lg overflow-hidden bg-slate-200">
                                 <img id="coverPreviewImage" src="{{ url_for('static', filename='img/logo.svg') }}" alt="Pré-visualização da imagem de capa selecionada para a trilha" class="w-full h-full object-cover">
                             </div>
-                        </div>
+                        </figure>
                     </div>
                 </section>
 
@@ -325,10 +323,10 @@
                 </section>
             </div>
 
-            <aside class="lg:col-span-4 space-y-6">
+            <aside aria-label="Publicação e checklist de qualidade" class="lg:col-span-4 space-y-6">
                 <div class="bg-white rounded-2xl border border-line p-6 shadow-xs sticky top-24">
-                    <div class="mb-5">
-                        <h3 class="text-sm font-bold uppercase tracking-wider text-muted mb-4">Publicação da Trilha</h3>
+                    <section aria-labelledby="publish-heading" class="mb-5">
+                        <h3 id="publish-heading" class="text-sm font-bold uppercase tracking-wider text-muted mb-4">Publicação da Trilha</h3>
 
                         <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-line">
                             <span class="text-xs font-semibold text-muted">Status do documento:</span>
@@ -337,7 +335,7 @@
                                 Rascunho
                             </span>
                         </div>
-                    </div>
+                    </section>
 
                     <div class="mb-5">
                         <label for="authorName" class="block text-xs font-bold text-ink mb-1.5">
@@ -372,8 +370,8 @@
                         </button>
                     </div>
 
-                    <div class="mt-8 pt-6 border-t border-line">
-                        <h4 class="text-xs font-bold uppercase tracking-wider text-brand-dark mb-3">
+                    <section aria-labelledby="checklist-heading" class="mt-8 pt-6 border-t border-line">
+                        <h4 id="checklist-heading" class="text-xs font-bold uppercase tracking-wider text-brand-dark mb-3">
                             Checklist de Qualidade (Design System)
                         </h4>
                         <ul class="space-y-2.5 text-xs text-muted">
@@ -390,7 +388,7 @@
                                 <span>Contém links e referências complementares confiáveis.</span>
                             </li>
                         </ul>
-                    </div>
+                    </section>
                 </div>
             </aside>
         </form>
@@ -402,8 +400,8 @@
             aria-labelledby="previewModalTitle"
             class="hidden fixed inset-0 z-50 bg-brand-dark/80 backdrop-blur-xs overflow-y-auto p-4 sm:p-6 lg:p-10 flex items-center justify-center"
         >
-            <div class="bg-white w-full max-w-4xl rounded-2xl shadow-2xl border border-line overflow-hidden flex flex-col max-h-[90vh]">
-                <div class="p-4 sm:px-6 bg-slate-50 border-b border-line flex items-center justify-between">
+            <article class="bg-white w-full max-w-4xl rounded-2xl shadow-2xl border border-line overflow-hidden flex flex-col max-h-[90vh]">
+                <header class="p-4 sm:px-6 bg-slate-50 border-b border-line flex items-center justify-between">
                     <div>
                         <span class="text-xs font-bold uppercase text-brand-blue tracking-wider">Simulação do Aluno</span>
                         <h3 id="previewModalTitle" class="text-base font-bold text-brand-dark">Pré-visualização da Leitura</h3>
@@ -411,19 +409,19 @@
                     <button type="button" data-toggle-preview aria-label="Fechar pré-visualização" class="p-2 rounded-lg text-muted hover:text-ink hover:bg-slate-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime">
                         <i class="bi bi-x-lg" aria-hidden="true"></i>
                     </button>
-                </div>
+                </header>
                 <div class="p-6 sm:p-10 overflow-y-auto space-y-6 flex-1">
                     <span id="prevBadge" class="inline-block px-3 py-1 rounded-md text-xs font-bold uppercase tracking-wider bg-brand-light text-brand-blue">Categoria</span>
                     <h2 id="prevTitle" class="text-2xl sm:text-3xl font-extrabold text-brand-dark">Título da Trilha</h2>
                     <p id="prevSummary" class="text-base text-muted leading-relaxed italic border-l-3 border-brand-action pl-4">Resumo da trilha...</p>
                     <div id="prevContentArea" class="space-y-6 pt-4 border-t border-line text-sm text-ink leading-relaxed"></div>
                 </div>
-                <div class="p-4 bg-slate-50 border-t border-line flex justify-end">
+                <footer class="p-4 bg-slate-50 border-t border-line flex justify-end">
                     <button type="button" data-toggle-preview class="px-5 py-2 rounded-xl bg-brand-dark text-white text-xs font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime">
                         Fechar Visualização
                     </button>
-                </div>
-            </div>
+                </footer>
+            </article>
         </div>
     </main>
 </div>

@@ -14,16 +14,16 @@
             </div>
         </div>
 
-        <div class="flex items-center gap-3 relative z-10">
+        <header class="flex items-center gap-3 relative z-10">
             <img src="{{ url_for('static', filename='img/logo.svg') }}" alt="Logo Tech Direction" width="40" height="40" class="w-10 h-10 rounded-xl shrink-0 shadow-sm">
             <span class="text-2xl font-extrabold tracking-tight text-white">techdirection</span>
-        </div>
+        </header>
 
         <div class="my-12 lg:my-0 relative z-10">
-            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/10 text-white text-xs font-semibold w-fit mb-6 shadow-sm">
+            <p class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/10 text-white text-xs font-semibold w-fit mb-6 shadow-sm">
                 <i class="bi bi-stars text-brand-lime" aria-hidden="true"></i>
                 <span>Aprenda no seu ritmo</span>
-            </div>
+            </p>
 
             <h2 class="text-4xl sm:text-5xl font-extrabold text-white tracking-tight leading-[1.1] mb-6">
                 Seu próximo<br>capítulo<br>começa agora.
@@ -49,11 +49,9 @@
             </ul>
         </div>
 
-        <div class="mt-8 relative z-10">
-            <p class="text-xs text-slate-400">
-                &ldquo;Todo mundo merece a chance de construir o próprio futuro.&rdquo;
-            </p>
-        </div>
+        <blockquote class="mt-8 relative z-10 text-xs text-slate-400">
+            &ldquo;Todo mundo merece a chance de construir o próprio futuro.&rdquo;
+        </blockquote>
     </aside>
 
     <section aria-labelledby="register-heading" class="w-full flex-1 bg-white flex flex-col justify-between p-6 sm:p-10 lg:p-16 overflow-y-auto">

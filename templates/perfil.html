@@ -10,7 +10,7 @@
 <div class="flex-1 flex relative">
     {% include 'partils/sidebar.html' %}
     <main class="flex-1 min-w-0 max-w-[76rem] w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8" id="main-content" tabindex="-1">
-        <div class="mb-8 border-b border-line pb-6">
+        <header class="mb-8 border-b border-line pb-6">
             <nav aria-label="Breadcrumb" class="mb-2">
                 <ol class="flex flex-wrap items-center gap-2 text-xs text-muted font-medium">
                     <li><a href="{{ url_for('dashboard') }}" class="hover:text-brand-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-1 py-0.5">Início</a></li>
@@ -18,15 +18,13 @@
                     <li><span class="text-ink font-semibold" aria-current="page">Meu Perfil</span></li>
                 </ol>
             </nav>
-            <div>
-                <h1 class="text-2xl sm:text-3xl font-extrabold text-brand-dark tracking-tight">
-                    Meu Perfil
-                </h1>
-                <p class="text-sm text-muted mt-1 max-w-2xl">
-                    Visualize e edite seus dados de cadastro e credenciais de acesso na plataforma.
-                </p>
-            </div>
-        </div>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-brand-dark tracking-tight">
+                Meu Perfil
+            </h1>
+            <p class="text-sm text-muted mt-1 max-w-2xl">
+                Visualize e edite seus dados de cadastro e credenciais de acesso na plataforma.
+            </p>
+        </header>
 
         <form action="{{ url_for('perfil') }}" method="post" class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             <div class="lg:col-span-8 space-y-8">
@@ -197,12 +195,12 @@
                 </section>
             </div>
 
-            <aside class="lg:col-span-4 space-y-6">
+            <aside aria-label="Resumo da conta e ações" class="lg:col-span-4 space-y-6">
                 <div class="bg-white rounded-2xl border border-line p-6 shadow-xs sticky top-24">
-                    <div class="flex items-center gap-4 pb-6 border-b border-line mb-6">
-                        <div class="w-14 h-14 rounded-2xl bg-brand-dark text-white font-extrabold flex items-center justify-center text-lg shadow-sm shrink-0" aria-hidden="true">
+                    <header class="flex items-center gap-4 pb-6 border-b border-line mb-6">
+                        <span class="w-14 h-14 rounded-2xl bg-brand-dark text-white font-extrabold flex items-center justify-center text-lg shadow-sm shrink-0" aria-hidden="true">
                             LS
-                        </div>
+                        </span>
                         <div>
                             <h3 class="text-base font-bold text-brand-dark leading-tight">Lucas Gabriel Silva</h3>
                             <p class="text-xs text-muted truncate mt-0.5">lucas.silva@techdirection.edu</p>
@@ -211,7 +209,7 @@
                                 Conta Ativa
                             </span>
                         </div>
-                    </div>
+                    </header>
 
                     <div class="space-y-3">
                         <button
@@ -230,7 +228,7 @@
                         </a>
                     </div>
 
-                    <div class="mt-6 pt-6 border-t border-line">
+                    <footer class="mt-6 pt-6 border-t border-line">
                         <a
                             href="{{ url_for('login') }}"
                             class="w-full py-2.5 px-4 rounded-xl text-danger hover:bg-red-50 font-semibold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-danger"
@@ -238,7 +236,7 @@
                             <i class="bi bi-box-arrow-right" aria-hidden="true"></i>
                             <span>Sair da conta</span>
                         </a>
-                    </div>
+                    </footer>
                 </div>
             </aside>
         </form>

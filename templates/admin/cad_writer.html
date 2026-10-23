@@ -10,7 +10,7 @@
 <div class="flex-1 flex relative">
     {% include 'partils/sidebar.html' %}
     <main class="flex-1 min-w-0 max-w-[76rem] w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8" id="main-content" tabindex="-1">
-        <div class="mb-8 border-b border-line pb-6">
+        <header class="mb-8 border-b border-line pb-6">
             <nav aria-label="Breadcrumb" class="mb-2">
                 <ol class="flex flex-wrap items-center gap-2 text-xs text-muted font-medium">
                     <li><a href="{{ url_for('dashboard') }}" class="hover:text-brand-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-1 py-0.5">Início</a></li>
@@ -20,15 +20,13 @@
                     <li><span class="text-ink font-semibold" aria-current="page">Novo Escritor</span></li>
                 </ol>
             </nav>
-            <div>
-                <h1 class="text-2xl sm:text-3xl font-extrabold text-brand-dark tracking-tight">
-                    Cadastrar Novo Escritor
-                </h1>
-                <p class="text-sm text-muted mt-1 max-w-2xl">
-                    Crie contas de escritores para que colaboradores publiquem trilhas de conhecimento e gerenciem conteúdos educativos na plataforma.
-                </p>
-            </div>
-        </div>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-brand-dark tracking-tight">
+                Cadastrar Novo Escritor
+            </h1>
+            <p class="text-sm text-muted mt-1 max-w-2xl">
+                Crie contas de escritores para que colaboradores publiquem trilhas de conhecimento e gerenciem conteúdos educativos na plataforma.
+            </p>
+        </header>
 
         <form action="{{ url_for('cad_writer') }}" method="post" class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             <div class="lg:col-span-8 space-y-8">
@@ -189,18 +187,18 @@
                 </section>
             </div>
 
-            <aside class="lg:col-span-4 space-y-6">
+            <aside aria-label="Papel, permissões e status da conta" class="lg:col-span-4 space-y-6">
                 <div class="bg-white rounded-2xl border border-line p-6 shadow-xs">
-                    <div class="mb-6">
-                        <h3 class="text-xs font-bold uppercase tracking-wider text-muted mb-3">
+                    <section aria-labelledby="role-heading" class="mb-6">
+                        <h3 id="role-heading" class="text-xs font-bold uppercase tracking-wider text-muted mb-3">
                             Papel no Sistema (Role)
                         </h3>
 
                         <div class="p-4 rounded-xl bg-brand-light/50 border border-brand-blue/20 mb-5">
-                            <div class="flex items-center gap-2 mb-1">
+                            <p class="flex items-center gap-2 mb-1">
                                 <span class="w-2.5 h-2.5 rounded-full bg-brand-blue" aria-hidden="true"></span>
-                                <span class="text-sm font-bold text-brand-dark">Writer (Escritor)</span>
-                            </div>
+                                <strong class="text-sm font-bold text-brand-dark">Writer (Escritor)</strong>
+                            </p>
                             <p class="text-xs text-muted leading-relaxed">
                                 Papel dedicado à criação, revisão e manutenção de conteúdos e trilhas de aprendizagem.
                             </p>
@@ -231,7 +229,7 @@
                                 <span class="text-[11px] text-muted">(Excluir/arquivar trilhas)</span>
                             </li>
                         </ul>
-                    </div>
+                    </section>
 
                     <fieldset class="pt-4 border-t border-line mb-6">
                         <legend class="block text-xs font-bold text-ink mb-2">Status da Conta</legend>
@@ -265,10 +263,10 @@
                     </div>
                 </div>
 
-                <div class="p-4 rounded-xl bg-blue-50/60 border border-brand-blue/15 text-xs text-muted leading-relaxed">
+                <aside aria-label="Nota de segurança" class="p-4 rounded-xl bg-blue-50/60 border border-brand-blue/15 text-xs text-muted leading-relaxed">
                     <p class="font-bold text-brand-blue mb-1">Nota de Segurança:</p>
                     <p>Somente administradores autorizados têm permissão para cadastrar ou desativar perfis de escritores.</p>
-                </div>
+                </aside>
             </aside>
         </form>
     </main>

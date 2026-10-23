@@ -8,21 +8,21 @@
 >
     <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl border border-line overflow-hidden relative animate-in fade-in zoom-in-95 duration-150">
         <div class="p-6 sm:p-8">
-            <div class="flex items-start justify-between gap-4 mb-4">
-                <div class="w-12 h-12 rounded-xl bg-brand-light text-brand-blue flex items-center justify-center text-xl shrink-0" aria-hidden="true">
-                    <i class="bi bi-key-fill" aria-hidden="true"></i>
+            <header class="mb-4">
+                <div class="flex items-start justify-between gap-4 mb-4">
+                    <span class="w-12 h-12 rounded-xl bg-brand-light text-brand-blue flex items-center justify-center text-xl shrink-0" aria-hidden="true">
+                        <i class="bi bi-key-fill" aria-hidden="true"></i>
+                    </span>
+                    <button
+                        type="button"
+                        data-close-modal="modalRecoverPassword"
+                        aria-label="Fechar modal de recuperação de senha"
+                        class="p-2 -mr-2 -mt-2 rounded-lg text-muted hover:text-ink hover:bg-slate-100 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"
+                    >
+                        <i class="bi bi-x-lg text-lg" aria-hidden="true"></i>
+                    </button>
                 </div>
-                <button
-                    type="button"
-                    data-close-modal="modalRecoverPassword"
-                    aria-label="Fechar modal de recuperação de senha"
-                    class="p-2 -mr-2 -mt-2 rounded-lg text-muted hover:text-ink hover:bg-slate-100 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"
-                >
-                    <i class="bi bi-x-lg text-lg" aria-hidden="true"></i>
-                </button>
-            </div>
 
-            <div class="mb-4">
                 <h2 id="modalRecoverTitle" class="text-xl sm:text-2xl font-extrabold text-brand-dark tracking-tight mb-2">
                     Recuperar sua senha
                 </h2>
@@ -30,7 +30,7 @@
                 <p id="modalRecoverDesc" class="text-xs sm:text-sm text-muted leading-relaxed">
                     Informe o e-mail cadastrado na sua conta. Enviaremos as instruções para você redefinir sua senha com segurança.
                 </p>
-            </div>
+            </header>
 
             <form id="formRecoverPassword" class="space-y-4">
                 <div>
@@ -48,14 +48,12 @@
                     >
                 </div>
 
-                <div id="recoveryFeedback" class="hidden p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-xs text-emerald-800" role="status" aria-live="polite">
-                    <div class="flex items-start gap-2">
-                        <i class="bi bi-check-circle-fill text-success text-sm shrink-0 mt-0.5" aria-hidden="true"></i>
-                        <span>Se houver uma conta associada a este e-mail, enviamos o link de recuperação. Verifique sua caixa de entrada e spam.</span>
-                    </div>
-                </div>
+                <p id="recoveryFeedback" class="hidden p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-xs text-emerald-800 flex items-start gap-2" role="status" aria-live="polite">
+                    <i class="bi bi-check-circle-fill text-success text-sm shrink-0 mt-0.5" aria-hidden="true"></i>
+                    <span>Se houver uma conta associada a este e-mail, enviamos o link de recuperação. Verifique sua caixa de entrada e spam.</span>
+                </p>
 
-                <div class="pt-2 flex flex-col-reverse sm:flex-row items-center gap-2 sm:gap-3">
+                <footer class="pt-2 flex flex-col-reverse sm:flex-row items-center gap-2 sm:gap-3">
                     <button
                         type="button"
                         data-close-modal="modalRecoverPassword"
@@ -71,7 +69,7 @@
                         <span>Enviar link</span>
                         <i class="bi bi-arrow-right" aria-hidden="true"></i>
                     </button>
-                </div>
+                </footer>
             </form>
         </div>
     </div>
