@@ -1,0 +1,263 @@
+{% extends 'base.html' %}
+
+{% block title %}Cadastro de Post - Tech Direction{% endblock %}
+
+{% block header %}
+{% include 'partils/header.html' %}
+{% endblock %}
+
+{% block content %}
+<div class="flex-1 flex relative">
+    {% include 'partils/sidebar.html' %}
+
+    <main class="flex-1 min-w-0 max-w-[76rem] w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8" id="main-content"
+        tabindex="-1">
+        <header class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-line pb-6">
+            <div>
+                <nav aria-label="Breadcrumb" class="mb-2">
+                    <ol class="flex flex-wrap items-center gap-2 text-xs text-muted font-medium">
+                        <li><a href="{{ url_for('dashboard') }}"
+                                class="hover:text-brand-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-1 py-0.5">Início</a>
+                        </li>
+                        <li aria-hidden="true">/</li>
+                        <li><a href="{{ url_for('search_post') }}"
+                                class="hover:text-brand-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-1 py-0.5">Posts</a>
+                        </li>
+                        <li aria-hidden="true">/</li>
+                        <li><span class="text-ink font-semibold" aria-current="page">Novo Post</span></li>
+                    </ol>
+                </nav>
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-brand-dark tracking-tight">
+                    Criar Novo Post
+                </h1>
+                <p class="text-sm text-muted mt-1 max-w-2xl">
+                    Defina os dados principais do post e adicione uma ou mais seções com subtítulo, texto e imagem.
+                </p>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-3 shrink-0">
+                <a href="{{ url_for('search_post') }}"
+                    class="px-3.5 py-2 text-xs sm:text-sm font-semibold text-muted hover:text-brand-dark transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded-lg">
+                    Cancelar
+                </a>
+                <button type="button" id="btnPreviewToggle" data-toggle-preview aria-haspopup="dialog"
+                    aria-controls="previewModal"
+                    class="px-3.5 py-2 text-xs sm:text-sm font-bold text-brand-dark bg-slate-100 hover:bg-slate-200 border border-line rounded-xl transition-all flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime">
+                    <i class="bi bi-eye text-muted" aria-hidden="true"></i>
+                    <span id="previewBtnText">Pré-visualizar</span>
+                </button>
+                <button type="submit" form="formPost"
+                    class="py-2 px-4 sm:px-5 rounded-xl bg-brand-lime hover:bg-[#aedf1e] text-brand-dark font-bold text-xs sm:text-sm flex items-center gap-1.5 shadow-[0_3px_0_0_#0A1E3F] active:translate-y-[1px] active:shadow-none transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime">
+                    <span>Publicar Post</span>
+                    <i class="bi bi-check2-circle" aria-hidden="true"></i>
+                </button>
+            </div>
+        </header>
+
+        <form id="formPost" action="{{ url_for('cad_post_post') }}" method="post" enctype="multipart/form-data"
+            class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <div class="lg:col-span-8 space-y-8">
+                <!-- Passo 1: Dados do Post (tabela posts) -->
+                <section aria-labelledby="step-1-heading"
+                    class="bg-white rounded-2xl border border-line p-5 sm:p-8 shadow-xs">
+                    <header
+                        class="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-line pb-4">
+                        <div>
+                            <h2 id="step-1-heading" class="text-lg font-bold text-brand-dark">1. Dados do Post</h2>
+                            <p class="text-xs text-muted mt-0.5">Informações principais do post.</p>
+                        </div>
+                        <span
+                            class="text-xs font-semibold text-brand-blue bg-brand-light px-2.5 py-1 rounded-md w-fit shrink-0">Passo
+                            1 de 2</span>
+                    </header>
+
+                    <div class="space-y-5">
+                        <div>
+                            <label for="postTitle" class="block text-xs sm:text-sm font-bold text-ink mb-1.5">
+                                Título do Post <span class="text-danger" aria-hidden="true">*</span>
+                            </label>
+                            <input type="text" id="postTitle" name="title" required maxlength="255"
+                                placeholder="Ex: Fundamentos de HTML5 e Estrutura Semântica"
+                                class="w-full px-4 py-3 text-sm rounded-xl bg-slate-50/75 border border-line text-ink placeholder-muted/60 focus:outline-none focus:ring-2 focus:ring-brand-lime focus:border-brand-blue focus:bg-white transition-all">
+                        </div>
+
+                        <div>
+                            <label for="postDescription" class="block text-xs sm:text-sm font-bold text-ink mb-1.5">
+                                Descrição do Post
+                            </label>
+                            <textarea id="postDescription" name="description" rows="3"
+                                aria-describedby="description-help"
+                                placeholder="Apresente de forma direta o que o leitor vai aprender neste post."
+                                class="w-full px-4 py-3 text-sm rounded-xl bg-slate-50/75 border border-line text-ink placeholder-muted/60 focus:outline-none focus:ring-2 focus:ring-brand-lime focus:border-brand-blue focus:bg-white transition-all"></textarea>
+                            <p id="description-help" class="text-xs text-muted mt-1">Resumo exibido no topo do post e
+                                nos cards de busca.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Passo 2: Seções do Post -->
+                <section aria-labelledby="step-2-heading"
+                    class="bg-white rounded-2xl border border-line p-5 sm:p-8 shadow-xs">
+                    <header
+                        class="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-line pb-4">
+                        <div>
+                            <h2 id="step-2-heading" class="text-lg font-bold text-brand-dark">2. Seções do Post</h2>
+                            <p class="text-xs text-muted mt-0.5">Adicione um ou mais blocos com subtítulo, texto e
+                                imagem opcional.</p>
+                        </div>
+                        <span
+                            class="text-xs font-semibold text-brand-blue bg-brand-light px-2.5 py-1 rounded-md w-fit shrink-0">Passo
+                            2 de 2</span>
+                    </header>
+
+                    <div id="sectionsContainer" class="space-y-6">
+                        <article
+                            class="post-section-item rounded-2xl border border-line bg-slate-50/50 p-4 sm:p-5 space-y-4">
+                            <div class="flex items-center justify-between gap-2 border-b border-line pb-3">
+                                <span
+                                    class="section-badge inline-flex items-center gap-1.5 text-xs font-bold text-brand-dark">
+                                    <span
+                                        class="w-6 h-6 rounded-lg bg-brand-dark text-white flex items-center justify-center text-[11px]">1</span>
+                                    Seção 1
+                                </span>
+                                <button type="button"
+                                    class="btn-remove-section hidden px-2.5 py-1 rounded-lg text-xs font-semibold text-danger hover:bg-red-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime">
+                                    <i class="bi bi-trash" aria-hidden="true"></i> Remover
+                                </button>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs sm:text-sm font-bold text-ink mb-1.5">
+                                    Subtítulo da Seção
+                                </label>
+                                <input type="text" name="section_subtitle[]" maxlength="255"
+                                    placeholder="Ex: Por que usar tags semânticas?"
+                                    class="section-subtitle-input w-full px-4 py-2.5 text-sm rounded-xl bg-white border border-line text-ink placeholder-muted/60 focus:outline-none focus:ring-2 focus:ring-brand-lime focus:border-brand-blue transition-all">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs sm:text-sm font-bold text-ink mb-1.5">
+                                    Texto da Seção <span class="text-danger" aria-hidden="true">*</span>
+                                </label>
+                                <div class="flex flex-wrap items-center gap-1.5 p-1.5 bg-slate-100 rounded-t-xl border-t border-x border-line text-xs"
+                                    role="toolbar" aria-label="Ferramentas de formatação do texto">
+                                    <button type="button" data-format-prefix="**" data-format-suffix="**"
+                                        class="btn-format px-2.5 py-1 rounded font-bold hover:bg-white text-ink border border-transparent hover:border-line"
+                                        title="Negrito">B</button>
+                                    <button type="button" data-format-prefix="*" data-format-suffix="*"
+                                        class="btn-format px-2.5 py-1 rounded italic hover:bg-white text-ink border border-transparent hover:border-line"
+                                        title="Itálico">I</button>
+                                    <button type="button" data-format-prefix="`" data-format-suffix="`"
+                                        class="btn-format px-2.5 py-1 rounded font-mono hover:bg-white text-ink border border-transparent hover:border-line"
+                                        title="Código">&lt;/&gt;</button>
+                                    <button type="button" data-format-prefix="\n- " data-format-suffix="\n"
+                                        class="btn-format px-2.5 py-1 rounded hover:bg-white text-ink border border-transparent hover:border-line"
+                                        title="Lista">&bull; Lista</button>
+                                </div>
+                                <textarea name="section_text[]" rows="6" required
+                                    placeholder="Escreva o conteúdo desta seção..."
+                                    class="section-text-input w-full px-4 py-3 text-sm rounded-b-xl bg-white border border-line text-ink placeholder-muted/60 focus:outline-none focus:ring-2 focus:ring-brand-lime focus:border-brand-blue transition-all leading-relaxed"></textarea>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs sm:text-sm font-bold text-ink mb-1.5">
+                                    Imagem da Seção (opcional)
+                                </label>
+                                <input type="file" name="section_img[]" accept="image/*"
+                                    class="section-img-input w-full text-xs text-muted file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-brand-dark file:text-white hover:file:bg-brand-blue cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded-xl">
+                                <figure
+                                    class="section-img-preview hidden mt-3 border border-line rounded-xl p-2 bg-white">
+                                    <img src="" alt="Pré-visualização da imagem da seção"
+                                        class="section-img-preview-el w-full max-h-48 object-cover rounded-lg">
+                                </figure>
+                            </div>
+                        </article>
+                    </div>
+
+                    <div class="mt-5 pt-4 border-t border-line flex justify-end">
+                        <button type="button" id="btnAddSection"
+                            class="px-4 py-2.5 rounded-xl bg-brand-light hover:bg-blue-100 text-brand-blue font-bold text-xs sm:text-sm flex items-center gap-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime">
+                            <i class="bi bi-plus-circle" aria-hidden="true"></i>
+                            <span>Adicionar Nova Seção</span>
+                        </button>
+                    </div>
+                </section>
+            </div>
+
+            <aside aria-label="Publicação do post" class="lg:col-span-4 space-y-6">
+                <div class="bg-white rounded-2xl border border-line p-6 shadow-xs sticky top-24">
+                    <section aria-labelledby="publish-heading" class="mb-5">
+                        <h3 id="publish-heading" class="text-sm font-bold uppercase tracking-wider text-muted mb-4">
+                            Publicação do Post</h3>
+
+                        <label for="postStatus" class="block text-xs font-bold text-ink mb-1.5">
+                            Status de publicação
+                        </label>
+                        <select id="postStatus" name="status"
+                            class="w-full px-3.5 py-2.5 text-sm rounded-xl bg-slate-50/75 border border-line text-ink focus:outline-none focus:ring-2 focus:ring-brand-lime">
+                            <option value="true" selected>Ativo (Publicado)</option>
+                            <option value="false">Inativo (Rascunho)</option>
+                        </select>
+                    </section>
+
+                    <div class="space-y-3 pt-2">
+                        <button type="submit"
+                            class="w-full py-3 px-4 rounded-xl bg-brand-lime hover:bg-[#aedf1e] text-brand-dark font-bold text-sm flex items-center justify-center gap-2 shadow-[0_4px_0_0_#0A1E3F] active:translate-y-[2px] active:shadow-none transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime">
+                            <span>Salvar Post Agora</span>
+                            <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                        </button>
+                    </div>
+
+                </div>
+            </aside>
+        </form>
+
+        <!-- Modal de Pré-visualização -->
+        <div
+            id="previewModal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="previewModalTitle"
+            class="fixed inset-0 z-50 bg-brand-dark/80 backdrop-blur-xs hidden items-center justify-center p-4"
+        >
+            <div class="bg-white w-full max-w-3xl max-h-[85vh] rounded-2xl border border-line shadow-2xl overflow-hidden flex flex-col">
+                <header class="px-6 py-4 bg-slate-50 border-b border-line flex items-center justify-between">
+                    <div>
+                        <span class="text-xs font-bold uppercase text-brand-blue tracking-wider">Simulação de
+                            Leitura</span>
+                        <h3 id="previewModalTitle" class="text-base font-bold text-brand-dark">Pré-visualização do Post
+                        </h3>
+                    </div>
+                    <button type="button" data-toggle-preview aria-label="Fechar pré-visualização"
+                        class="p-2 rounded-lg text-muted hover:text-ink hover:bg-slate-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime">
+                        <i class="bi bi-x-lg" aria-hidden="true"></i>
+                    </button>
+                </header>
+                <div class="p-6 sm:p-8 overflow-y-auto space-y-6">
+                    <h2 id="prevTitle" class="text-2xl sm:text-3xl font-extrabold text-brand-dark">Título do Post</h2>
+                    <p id="prevDescription"
+                        class="text-base text-muted leading-relaxed italic border-l-3 border-brand-action pl-4">
+                        Descrição do post...</p>
+                    <div id="prevSectionsArea"
+                        class="space-y-6 pt-4 border-t border-line text-sm text-ink leading-relaxed"></div>
+                </div>
+                <footer class="px-6 py-3 bg-slate-50 border-t border-line flex justify-end">
+                    <button type="button" data-toggle-preview
+                        class="px-5 py-2 rounded-xl bg-brand-dark text-white text-xs font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime">
+                        Fechar Prévia
+                    </button>
+                </footer>
+            </div>
+        </div>
+    </main>
+</div>
+{% endblock %}
+
+{% block footer %}
+{% set footer_subtitle = 'Plataforma Educacional • Autoria de Conteúdo' %}
+{% include 'partils/footer.html' %}
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/cad-post.js') }}"></script>
+{% endblock %}

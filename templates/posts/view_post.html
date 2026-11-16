@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ post.title }} - Tech Direction{% endblock %}
+{% block html_class %}bg-white scroll-smooth{% endblock %}
+{% block body_class %}bg-white{% endblock %}
+
+{% block header %}
+    {% include 'partils/header.html' %}
+{% endblock %}
+
+{% block content %}
+<div class="flex-1 flex relative">
+    {% include 'partils/sidebar.html' %}
+
+    <main class="flex-1 min-w-0 max-w-4xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-8 sm:space-y-10" id="main-content" tabindex="-1">
+        <!-- Cabeçalho do Post -->
+        <header aria-labelledby="post-main-title" class="space-y-4">
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-2">
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider {{ 'bg-emerald-50 text-success' if post.status else 'bg-amber-100 text-amber-800' }}">
+                    {{ 'Publicado' if post.status else 'Rascunho' }}
+                </span>
+                <div class="flex items-center gap-2">
+                    <a
+                        href="{{ url_for('cad_post') }}"
+                        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-line text-xs font-bold text-brand-blue hover:bg-brand-light/30 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"
+                        title="Criar novo post"
+                    >
+                        <i class="bi bi-plus-square" aria-hidden="true"></i>
+                        <span>Novo Post</span>
+                    </a>
+                    <a
+                        href="{{ url_for('search_post') }}"
+                        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-line text-xs font-bold text-ink hover:bg-slate-100 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"
+                    >
+                        <i class="bi bi-arrow-left" aria-hidden="true"></i>
+                        <span>Todos os Posts</span>
+                    </a>
+                </div>
+            </div>
+
+            <div>
+                <h1 id="post-main-title" class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-brand-dark tracking-tight leading-[1.15] mb-3">
+                    {{ post.title }}
+                </h1>
+                {% if post.description %}
+                <p class="text-base sm:text-lg text-muted leading-relaxed font-normal">
+                    {{ post.description }}
+                </p>
+                {% endif %}
+            </div>
+        </header>
+
+        <!-- Seções do Post (post_sections ordenadas por display_order) -->
+        <article class="space-y-8 pt-6 border-t border-line">
+            {% for section in post.sections|sort(attribute='display_order') %}
+                {% if section.status %}
+                <section class="space-y-4">
+                    {% if section.subtitle %}
+                    <h2 class="text-xl sm:text-2xl font-bold text-brand-dark">
+                        {{ section.subtitle }}
+                    </h2>
+                    {% endif %}
+
+                    {% if section.url_img %}
+                    <figure class="rounded-2xl overflow-hidden border border-line bg-slate-50">
+                        <img
+                            src="{{ section.url_img }}"
+                            alt="{{ section.subtitle or post.title }}"
+                            class="w-full max-h-96 object-cover"
+                        >
+                    </figure>
+                    {% endif %}
+
+                    <div class="text-sm sm:text-base text-ink leading-relaxed whitespace-pre-line">
+                        {{ section.text }}
+                    </div>
+                </section>
+                {% endif %}
+            {% else %}
+                <p class="text-sm text-muted italic">Este post ainda não possui seções cadastradas.</p>
+            {% endfor %}
+        </article>
+    </main>
+</div>
+{% endblock %}
+
+{% block footer %}
+    {% set footer_subtitle = 'Plataforma Educacional • Leitura de Conteúdo' %}
+    {% include 'partils/footer.html' %}
+{% endblock %}

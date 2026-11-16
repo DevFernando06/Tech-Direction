@@ -1,4 +1,6 @@
+import os
 import re
+import uuid
 from datetime import date, datetime, timedelta
 from functools import wraps
 
@@ -14,6 +16,10 @@ from flask import (
     url_for,
 )
 from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.utils import secure_filename
+
+UPLOAD_POSTS_DIR = os.path.join("static", "uploads", "posts")
+ALLOWED_IMAGE_EXTENSIONS = {"png", "jpg", "jpeg", "webp", "gif", "svg"}
 
 app = Flask(__name__)
 app.secret_key = "troque-esta-chave-em-producao"  # necessária para session e flash
@@ -35,12 +41,13 @@ usuarios = [
 EMAIL_REGEX = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
 TAMANHO_MIN_SENHA = 8
 
-# Trilhas disponíveis (slug na URL -> título)
-TRILHAS = {
-    "html-css": "HTML & CSS",
-    "javascript": "JavaScript",
-    "react": "React",
-}
+# Posts armazenados em memória até a integração com o PostgreSQL
+POSTS = {}
+
+
+def gerar_slug(texto):
+    slug = re.sub(r"[^a-z0-9]+", "-", texto.strip().lower()).strip("-")
+    return slug or f"post-{len(POSTS) + 1}"
 
 
 def buscar_por_email(email):
@@ -179,20 +186,27 @@ def cad_user_post():
 def dashboard():
     nome = session["nome"]
     return render_template(
-        "dashboard.html", nome=nome, primeiro_nome=nome.split()[0]     #tava buscando em trilhas antes
+        "dashboard.html",
+        nome=nome,
+        primeiro_nome=nome.split()[0],
+        posts=POSTS,
     )
 
 
-# url_for('view_trilha') -> /trilha (abre a primeira trilha)
-# url_for('view_trilha', slug='react') -> /trilha/react
-@app.get("/trilha", defaults={"slug": None})
-@app.get("/trilha/<slug>")
+# url_for('view_post') -> /post (abre o primeiro post)
+# url_for('view_post', slug='react') -> /post/react
+@app.get("/post", defaults={"slug": None})
+@app.get("/post/<slug>")
 @login_obrigatorio
-def view_trilha(slug):
-    slug = slug or next(iter(TRILHAS))
-    if slug not in TRILHAS:
+def view_post(slug):
+    if slug is None:
+        slug = next(iter(POSTS), None)
+        if slug is None:
+            return redirect(url_for("search_post"))
+    post = POSTS.get(slug)
+    if not post:
         abort(404)
-    return render_template("trilhas/view_trilha.html", slug=slug, titulo=TRILHAS[slug])
+    return render_template("posts/view_post.html", slug=slug, post=post, titulo=post["title"])
 
 
 # ---------- RECUPERAR SENHA (modal do login) ----------
@@ -215,22 +229,84 @@ def recuperar_senha():
     )
 
 
-# ---------- TRILHAS: busca e cadastro ----------
-@app.get("/trilhas")
+# ---------- POSTS: busca e cadastro ----------
+@app.get("/posts")
 @login_obrigatorio
-def search_trilha():
+def search_post():
     q = request.args.get("q", "").strip()
-    trilhas = {
-        slug: titulo for slug, titulo in TRILHAS.items() if q.lower() in titulo.lower()
+    posts = {
+        slug: post for slug, post in POSTS.items() if q.lower() in post["title"].lower()
     }
-    return render_template("trilhas/search_trilha.html", trilhas=trilhas, q=q)
+    return render_template("posts/search_post.html", posts=posts, q=q)
 
 
-@app.get("/trilhas/nova")
+@app.get("/posts/novo")
 @login_obrigatorio
-def cad_trilha():
-    # O POST (salvar a trilha) entra quando o formulário dessa página estiver pronto
-    return render_template("trilhas/cad_trilha.html")
+def cad_post():
+    return render_template("posts/cad_post.html")
+
+
+def salvar_imagem_secao(arquivo):
+    if not arquivo or not arquivo.filename:
+        return None
+    nome_seguro = secure_filename(arquivo.filename)
+    ext = nome_seguro.rsplit(".", 1)[-1].lower() if "." in nome_seguro else ""
+    if ext not in ALLOWED_IMAGE_EXTENSIONS:
+        return None
+    pasta_destino = os.path.join(app.root_path, UPLOAD_POSTS_DIR)
+    os.makedirs(pasta_destino, exist_ok=True)
+    nome_unico = f"{uuid.uuid4().hex}_{nome_seguro}"
+    arquivo.save(os.path.join(pasta_destino, nome_unico))
+    return url_for("static", filename=f"uploads/posts/{nome_unico}")
+
+
+@app.post("/posts/novo")
+@login_obrigatorio
+def cad_post_post():
+    title = request.form.get("title", "").strip()
+    description = request.form.get("description", "").strip()
+    status = request.form.get("status", "true") == "true"
+
+    subtitles = request.form.getlist("section_subtitle[]")
+    texts = request.form.getlist("section_text[]")
+    imagens = request.files.getlist("section_img[]")
+
+    sections = []
+    for idx, text in enumerate(texts, start=1):
+        text_clean = text.strip()
+        subtitle_clean = subtitles[idx - 1].strip() if idx - 1 < len(subtitles) else ""
+        arquivo_img = imagens[idx - 1] if idx - 1 < len(imagens) else None
+        url_img = salvar_imagem_secao(arquivo_img)
+        if text_clean:
+            sections.append(
+                {
+                    "subtitle": subtitle_clean or None,
+                    "text": text_clean,
+                    "url_img": url_img,
+                    "display_order": len(sections) + 1,
+                    "status": True,
+                }
+            )
+
+    if not title or not sections:
+        flash("Informe o título do post e pelo menos uma seção com texto.", "erro")
+        return render_template("posts/cad_post.html")
+
+    slug = gerar_slug(title)
+    if slug in POSTS:
+        slug = f"{slug}-{len(POSTS) + 1}"
+
+    POSTS[slug] = {
+        "id_post": len(POSTS) + 1,
+        "id_user": session.get("usuario_id", 1),
+        "title": title,
+        "description": description or None,
+        "status": status,
+        "sections": sections,
+    }
+
+    flash("Post criado com sucesso!", "sucesso")
+    return redirect(url_for("view_post", slug=slug))
 
 
 # ---------- ESCRITORES ----------

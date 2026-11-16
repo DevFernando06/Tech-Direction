@@ -1,10 +1,11 @@
 from permissions import Permissions
 
 roles = {
-    "admin": [Permissions.READ_TRAIL, Permissions.CREATE_TRAIL, Permissions.UPDATE_TRAIL, Permissions.DELETE_TRAIL],
-    "writer": [Permissions.READ_TRAIL, Permissions.CREATE_TRAIL, Permissions.UPDATE_TRAIL, Permissions.DELETE_TRAIL],
-    "student": [Permissions.READ_TRAIL] 
+    "admin": [Permissions.READ_POST, Permissions.CREATE_POST, Permissions.UPDATE_POST, Permissions.DELETE_POST],
+    "writer": [Permissions.READ_POST, Permissions.CREATE_POST, Permissions.UPDATE_POST, Permissions.DELETE_POST],
+    "student": [Permissions.READ_POST],
 }
+
 
 def validate_access(user_roles: list, permission_expected: str) -> bool:
     for role in user_roles:
