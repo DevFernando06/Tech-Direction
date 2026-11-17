@@ -1,6 +1,8 @@
 import os
 import re
 import uuid
+from permissions import Permissions
+from roles import validate_access
 from datetime import date, datetime, timedelta
 from functools import wraps
 
@@ -25,18 +27,24 @@ app = Flask(__name__)
 app.secret_key = "troque-esta-chave-em-producao"  # necessária para session e flash
 app.permanent_session_lifetime = timedelta(days=30)  # usado no "Lembrar de mim"
 
-app.config["MODO_DEV_SEM_LOGIN"] = True        # Se True, ignora login e senha
+app.config["MODO_DEV_SEM_LOGIN"] = False        # Se True, ignora login e senha
 
-# "Banco de dados" hardcodado na memória
+# "Banco de dados" e usuários de TESTE, SEM CONEXÃO COM BD
+
+SENHA_PADRAO = generate_password_hash("12345678")
 
 usuarios = [
-    {
-        "id": 1,
-        "nome": "admin",
-        "email": "teste@teste.com",
-        "senha_hash": generate_password_hash("123456"),
-    }
+    {"id": 1, "nome": "admin", "email": "teste@teste.com",
+     "senha_hash": generate_password_hash("123456"), "roles": ["admin"]},
+    {"id": 2, "nome": "Mariana Vasconcelos", "email": "mariana@techdirection.edu",
+     "senha_hash": SENHA_PADRAO, "roles": ["writer"]},
+    {"id": 3, "nome": "Carlos Mendes", "email": "carlos@techdirection.edu",
+     "senha_hash": SENHA_PADRAO, "roles": ["writer"]},
+    {"id": 4, "nome": "Lucas Silva", "email": "lucas@techdirection.edu",
+     "senha_hash": SENHA_PADRAO, "roles": ["student"]},
 ]
+
+#role foi adicionado aos usuários para verificar autorização de acesso!
 
 EMAIL_REGEX = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
 TAMANHO_MIN_SENHA = 8
@@ -67,13 +75,45 @@ def iniciais(nome):
         return partes[0][0].upper()
     return (partes[0][0] + partes[-1][0]).upper()
 
+def roles_do_usuario(): # retorna o papél do usuário (roles)
+    return session.get("roles", []) 
+
+def pode(permissao):  # verifica se o usuário tem a permissão necessária
+    return validate_access(roles_do_usuario(), permissao) 
+
+def e_autor(post): # verifica se um post é do usuário logado
+    return post["id_user"] == session.get("usuario_id")
+
+def pode_editar_post(post):
+    return pode(Permissions.UPDATE_ANY_POST) or (
+        pode(Permissions.UPDATE_POST) and e_autor(post)
+    ) # define se o usuário pode editar post (se ele for autor do post ou adm)
+
+def pode_excluir_post(post):
+    return pode(Permissions.DELETE_ANY_POST) or (
+        pode(Permissions.DELETE_POST) and e_autor(post)
+    ) # define se o usuário pode excluir um post (autor ou admin)
+
+def pode_ver_post(post):
+    if not pode(Permissions.READ_POST):
+        return False
+    return post["status"] or pode_editar_post(post)
+    # rescunho = status false; apenas o autor/admin podem ver  
+
+
 
 @app.context_processor
 def injetar_usuario():
     """Deixa o nome e as iniciais disponíveis em TODOS os templates (header, sidebar...)."""
     nome = session.get("nome", "")
-    return {"usuario_nome": nome, "usuario_iniciais": iniciais(nome),"modo_dev_sem_login": app.config.get("MODO_DEV_SEM_LOGIN", False),}
-
+    return {
+        "usuario_nome": nome,
+        "usuario_iniciais": iniciais(nome),
+        "modo_dev_sem_login": app.config.get("MODO_DEV_SEM_LOGIN", False),
+        "pode": pode,
+        "pode_editar_post": pode_editar_post,
+        "pode_excluir_post": pode_excluir_post,
+    }
 
 def login_obrigatorio(f):
     @wraps(f)
@@ -82,9 +122,18 @@ def login_obrigatorio(f):
             flash("Faça login para acessar essa página.", "erro")
             return redirect(url_for("login"))
         return f(*args, **kwargs)
-
     return wrapper
 
+
+def permissao_obrigatoria(permissao):
+    def decorator(f):
+        @wraps(f)
+        def wrapper(*args, **kwargs):
+            if not pode(permissao):
+                abort(403)
+            return f(*args, **kwargs)
+        return wrapper
+    return decorator
 
 @app.get("/")
 def index():
@@ -104,6 +153,7 @@ def login_post():
         session.clear()
         session["usuario_id"] = 1
         session["nome"] = "admin"
+        session["roles"] = ["admin"]
         return redirect(url_for("dashboard"))
 
 # ---- fluxo normal (só roda se MODO_DEV_SEM_LOGIN = False) ----
@@ -118,6 +168,7 @@ def login_post():
         session.clear()
         session["usuario_id"] = usuario["id"]
         session["nome"] = usuario["nome"]
+        session["roles"] = usuario["roles"] 
         session.permanent = lembrar  # True = sessão dura 30 dias
         return redirect(url_for("dashboard"))
 
@@ -174,6 +225,7 @@ def cad_user_post():
             "email": email,
             "data_nascimento": data_nasc,
             "senha_hash": generate_password_hash(senha),
+            "roles": ["student"],
         }
     )
     flash("Conta criada com sucesso! Faça login.", "sucesso")
@@ -200,11 +252,11 @@ def dashboard():
 @login_obrigatorio
 def view_post(slug):
     if slug is None:
-        slug = next(iter(POSTS), None)
+        slug = next((s for s, p in POSTS.items() if pode_ver_post(p)), None)
         if slug is None:
             return redirect(url_for("search_post"))
     post = POSTS.get(slug)
-    if not post:
+    if not post or not pode_ver_post(post):
         abort(404)
     return render_template("posts/view_post.html", slug=slug, post=post, titulo=post["title"])
 
@@ -235,13 +287,15 @@ def recuperar_senha():
 def search_post():
     q = request.args.get("q", "").strip()
     posts = {
-        slug: post for slug, post in POSTS.items() if q.lower() in post["title"].lower()
+        slug: post for slug, post in POSTS.items() 
+        if pode_ver_post(post) and q.lower() in post["title"].lower()
     }
     return render_template("posts/search_post.html", posts=posts, q=q)
 
 
 @app.get("/posts/novo")
 @login_obrigatorio
+@permissao_obrigatoria(Permissions.CREATE_POST)
 def cad_post():
     return render_template("posts/cad_post.html")
 
@@ -262,6 +316,7 @@ def salvar_imagem_secao(arquivo):
 
 @app.post("/posts/novo")
 @login_obrigatorio
+@permissao_obrigatoria(Permissions.CREATE_POST)
 def cad_post_post():
     title = request.form.get("title", "").strip()
     description = request.form.get("description", "").strip()
@@ -309,15 +364,30 @@ def cad_post_post():
     return redirect(url_for("view_post", slug=slug))
 
 
+@app.post("/post/<slug>/excluir")
+@login_obrigatorio
+def excluir_post(slug):
+    post = POSTS.get(slug)
+    if not post or not pode_ver_post(post):
+        abort(404)
+    if not pode_excluir_post(post):
+        abort(403)
+    del POSTS[slug]
+    flash("Post excluído com sucesso!", "sucesso")
+    return redirect(url_for("search_post"))
+
+
 # ---------- ESCRITORES ----------
 @app.get("/escritores")
 @login_obrigatorio
+@permissao_obrigatoria(Permissions.MANAGE_WRITERS)
 def writers():
     return render_template("admin/writers.html")
 
 
 @app.get("/escritores/novo")
 @login_obrigatorio
+@permissao_obrigatoria(Permissions.MANAGE_WRITERS)
 def cad_writer():
     # O POST (salvar o escritor) entra quando o formulário dessa página estiver pronto
     return render_template("admin/cad_writer.html")

@@ -11,6 +11,8 @@
     {% include 'partils/sidebar.html' %}
 
     <main class="flex-1 min-w-0 max-w-[76rem] w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8" id="main-content" tabindex="-1">
+        {% include 'partils/flash.html' %}
+        
         <header class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-line pb-6">
             <div>
                 <nav aria-label="Breadcrumb" class="mb-2">
@@ -28,6 +30,7 @@
                 </p>
             </div>
 
+            {% if pode('CREATE_POST') %}
             <a
                 href="{{ url_for('cad_post') }}"
                 class="w-full md:w-auto justify-center py-3 px-5 rounded-xl bg-brand-lime hover:bg-[#aedf1e] text-brand-dark font-bold text-sm flex items-center gap-2 shadow-[0_4px_0_0_#0A1E3F] active:translate-y-[2px] active:shadow-none transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime shrink-0"
@@ -35,6 +38,8 @@
                 <i class="bi bi-plus-lg" aria-hidden="true"></i>
                 <span>Novo Post</span>
             </a>
+            {% endif %}
+
         </header>
 
         <section aria-label="Resumo de métricas dos posts" class="mb-8">

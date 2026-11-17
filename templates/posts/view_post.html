@@ -13,6 +13,7 @@
     {% include 'partils/sidebar.html' %}
 
     <main class="flex-1 min-w-0 max-w-4xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-8 sm:space-y-10" id="main-content" tabindex="-1">
+        {% include 'partils/flash.html' %} <!-- Cabeçalho do Post -->
         <!-- Cabeçalho do Post -->
         <header aria-labelledby="post-main-title" class="space-y-4">
             <div class="flex flex-wrap items-center justify-between gap-3 mb-2">
@@ -20,6 +21,7 @@
                     {{ 'Publicado' if post.status else 'Rascunho' }}
                 </span>
                 <div class="flex items-center gap-2">
+                    {% if pode('CREATE_POST') %}
                     <a
                         href="{{ url_for('cad_post') }}"
                         class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-line text-xs font-bold text-brand-blue hover:bg-brand-light/30 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"
@@ -28,6 +30,8 @@
                         <i class="bi bi-plus-square" aria-hidden="true"></i>
                         <span>Novo Post</span>
                     </a>
+                    {% endif %}
+
                     <a
                         href="{{ url_for('search_post') }}"
                         class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-line text-xs font-bold text-ink hover:bg-slate-100 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"
@@ -35,6 +39,16 @@
                         <i class="bi bi-arrow-left" aria-hidden="true"></i>
                         <span>Todos os Posts</span>
                     </a>
+
+                    {% if pode_excluir_post(post) %}
+                    <form action="{{ url_for('excluir_post', slug=slug) }}" method="post" class="inline"
+                        onsubmit="return confirm('Excluir este post?');">
+                        <button type="submit" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-line text-xs font-bold text-danger hover:bg-red-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime">
+                            <i class="bi bi-trash" aria-hidden="true"></i>
+                            <span>Excluir</span>
+                        </button>
+                    </form>
+                    {% endif %}
                 </div>
             </div>
 
