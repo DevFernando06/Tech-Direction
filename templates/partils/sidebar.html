@@ -46,6 +46,7 @@
                         <span>Posts</span>
                     </a>
                 </li>
+                {% if pode('MANAGE_WRITERS') %}
                 <li>
                     <a
                         href="{{ url_for('writers') }}"
@@ -56,6 +57,7 @@
                         <span>Escritores</span>
                     </a>
                 </li>
+                {% endif %}
             </ul>
         </div>
 

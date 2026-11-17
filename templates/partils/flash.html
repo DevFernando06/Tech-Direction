@@ -1,0 +1,8 @@
+{% with mensagens = get_flashed_messages(with_categories=true) %}
+    {% for categoria, mensagem in mensagens %}
+        <div role="status" class="mb-5 px-4 py-3 rounded-xl border text-sm font-semibold {% if categoria == 'sucesso' %}bg-green-50 border-green-200 text-green-700{% else %}bg-red-50 border-red-200 text-danger{% endif %}">
+            {{ mensagem }}
+        </div>
+    {% endfor %}
+{% endwith %}
+<!-- Mostra mensagem de post criado/excluido -->
