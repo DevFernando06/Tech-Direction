@@ -75,8 +75,9 @@ def iniciais(nome):
         return partes[0][0].upper()
     return (partes[0][0] + partes[-1][0]).upper()
 
-def roles_do_usuario(): # retorna o papél do usuário (roles)
-    return session.get("roles", []) 
+def roles_do_usuario():
+    usuario = buscar_por_id(session.get("usuario_id"))
+    return usuario["roles"] if usuario else [] # pega roles do BD e não da sessão
 
 def pode(permissao):  # verifica se o usuário tem a permissão necessária
     return validate_access(roles_do_usuario(), permissao) 
@@ -241,7 +242,7 @@ def dashboard():
         "dashboard.html",
         nome=nome,
         primeiro_nome=nome.split()[0],
-        posts=POSTS,
+                posts={s: p for s, p in POSTS.items() if pode_ver_post(p)},
     )
 
 
@@ -347,9 +348,12 @@ def cad_post_post():
         flash("Informe o título do post e pelo menos uma seção com texto.", "erro")
         return render_template("posts/cad_post.html")
 
-    slug = gerar_slug(title)
-    if slug in POSTS:
-        slug = f"{slug}-{len(POSTS) + 1}"
+    base = gerar_slug(title)
+    slug = base
+    n = 2
+    while slug in POSTS:
+        slug = f"{base}-{n}"
+        n += 1
 
     POSTS[slug] = {
         "id_post": len(POSTS) + 1,
@@ -382,15 +386,53 @@ def excluir_post(slug):
 @login_obrigatorio
 @permissao_obrigatoria(Permissions.MANAGE_WRITERS)
 def writers():
-    return render_template("admin/writers.html")
+    escritores = [u for u in usuarios if "writer" in u["roles"]] #os roles são cumulativos, verifico se o usuário tem writer no roles
+    posts_por_autor = {
+        u["id"]: sum(1 for p in POSTS.values() if p["id_user"] == u["id"])
+        for u in escritores
+    }
+    return render_template(
+        "admin/writers.html", escritores=escritores, posts_por_autor=posts_por_autor
+    )
 
 
 @app.get("/escritores/novo")
 @login_obrigatorio
 @permissao_obrigatoria(Permissions.MANAGE_WRITERS)
 def cad_writer():
-    # O POST (salvar o escritor) entra quando o formulário dessa página estiver pronto
-    return render_template("admin/cad_writer.html")
+    candidatos = [  #todos estudantes são candidatos a escritores
+        u for u in usuarios 
+        if "writer" not in u["roles"] and "admin" not in u["roles"]
+    ]
+    return render_template("admin/cad_writer.html", candidatos=candidatos)
+
+@app.post("/escritores/novo") #adicionar status de escritor
+@login_obrigatorio
+@permissao_obrigatoria(Permissions.MANAGE_WRITERS)
+def cad_writer_post():
+    usuario = buscar_por_id(request.form.get("user_id", type=int))
+    if usuario is None:
+        flash("Usuário não encontrado.", "erro")
+        return redirect(url_for("cad_writer"))
+    if "writer" in usuario["roles"] or "admin" in usuario["roles"]:
+        flash("Esse usuário já tem permissão para criar posts.", "erro")
+        return redirect(url_for("cad_writer"))
+
+    usuario["roles"].append("writer")
+    flash(f"{usuario['nome']} agora é escritor.", "sucesso")
+    return redirect(url_for("writers"))
+
+
+@app.post("/escritores/<int:id_usuario>/remover") # remover status de escritor
+@login_obrigatorio
+@permissao_obrigatoria(Permissions.MANAGE_WRITERS)
+def remover_writer(id_usuario):
+    usuario = buscar_por_id(id_usuario)
+    if usuario is None or "writer" not in usuario["roles"]:
+        abort(404)
+    usuario["roles"].remove("writer")
+    flash(f"{usuario['nome']} não é mais escritor.", "sucesso")
+    return redirect(url_for("writers"))
 
 
 # ---------- PERFIL ----------
