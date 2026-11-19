@@ -88,6 +88,7 @@
                         id="login"
                         {% if not modo_dev_sem_login %}required{% endif %}
                         autocomplete="email"
+                        value="{{ email or '' }}"
                         placeholder="voce@exemplo.com"
                         class="w-full px-4 py-3.5 text-sm rounded-xl bg-slate-50/75 border border-line text-ink placeholder-muted/60 focus:outline-none focus:ring-2 focus:ring-brand-lime focus:border-brand-blue focus:bg-white transition-all"
                     >

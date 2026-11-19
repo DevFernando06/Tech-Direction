@@ -81,14 +81,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const recoveryForm = document.getElementById('formRecoverPassword');
     if (recoveryForm) {
-        recoveryForm.addEventListener('submit', (e) => {
+        recoveryForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const feedback = document.getElementById('recoveryFeedback');
+            const feedbackText = feedback ? feedback.querySelector('span') : null;
             const submitBtn = document.getElementById('btnSubmitRecovery');
-            if (feedback) feedback.classList.remove('hidden');
+            const recoveryEmail = document.getElementById('recoveryEmail').value.trim();
+
             if (submitBtn) {
                 submitBtn.disabled = true;
                 submitBtn.classList.add('opacity-70', 'cursor-not-allowed');
+            }
+
+            let mensagem = 'Não foi possível enviar agora. Tente novamente em instantes.';
+            try {
+                const response = await fetch('/recuperar-senha', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ recoveryEmail })
+                });
+                const dados = await response.json().catch(() => ({}));
+                if (dados.mensagem) mensagem = dados.mensagem;
+            } catch (erro) {
+                // mantém a mensagem padrão de falha
+            }
+
+            if (feedbackText) feedbackText.textContent = mensagem;
+            if (feedback) feedback.classList.remove('hidden');
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('opacity-70', 'cursor-not-allowed');
             }
         });
     }
