@@ -1,8 +1,6 @@
 import os
 import re
 import uuid
-from dotenv import load_dotenv
-import usuarios_repo
 from permissions import Permissions
 from roles import validate_access
 from datetime import date, datetime, timedelta
@@ -25,16 +23,11 @@ from werkzeug.utils import secure_filename
 UPLOAD_POSTS_DIR = os.path.join("static", "uploads", "posts")
 ALLOWED_IMAGE_EXTENSIONS = {"png", "jpg", "jpeg", "webp", "gif", "svg"}
 
-load_dotenv()  # lê o arquivo .env (SECRET_KEY e MODO_DEV_SEM_LOGIN)
-
 app = Flask(__name__)
-# Em produção, defina SECRET_KEY no .env; o valor padrão serve apenas para desenvolvimento
-app.secret_key = os.getenv("SECRET_KEY", "troque-esta-chave-em-producao")  # necessária para session e flash
+app.secret_key = "troque-esta-chave-em-producao"  # necessária para session e flash
 app.permanent_session_lifetime = timedelta(days=30)  # usado no "Lembrar de mim"
 
-USAR_BANCO = usuarios_repo.configurado()  # True se DATABASE_URL estiver no .env
-
-app.config["MODO_DEV_SEM_LOGIN"] = os.getenv("MODO_DEV_SEM_LOGIN", "0") == "1"  # Se True, ignora login e senha
+app.config["MODO_DEV_SEM_LOGIN"] = False        # Se True, ignora login e senha
 
 # "Banco de dados" e usuários de TESTE, SEM CONEXÃO COM BD
 
@@ -65,16 +58,25 @@ def gerar_slug(texto):
     return slug or f"post-{len(POSTS) + 1}"
 
 
+def proximo_id_post():
+    return max((p["id_post"] for p in POSTS.values()), default=0) + 1
+
+
+def slug_unico(titulo):
+    base = gerar_slug(titulo)
+    slug, n = base, 2
+    while slug in POSTS:
+        slug = f"{base}-{n}"
+        n += 1
+    return slug
+
+
 def buscar_por_email(email):
-    if USAR_BANCO:
-        return usuarios_repo.buscar_por_email(email)
     email = email.strip().lower()
     return next((u for u in usuarios if u["email"] == email), None)
 
 
 def buscar_por_id(usuario_id):
-    if USAR_BANCO:
-        return usuarios_repo.buscar_por_id(usuario_id)
     return next((u for u in usuarios if u["id"] == usuario_id), None)
 
 
@@ -86,9 +88,8 @@ def iniciais(nome):
         return partes[0][0].upper()
     return (partes[0][0] + partes[-1][0]).upper()
 
-def roles_do_usuario():
-    usuario = buscar_por_id(session.get("usuario_id"))
-    return usuario["roles"] if usuario else [] # pega roles do BD e não da sessão
+def roles_do_usuario(): # retorna o papél do usuário (roles)
+    return session.get("roles", []) 
 
 def pode(permissao):  # verifica se o usuário tem a permissão necessária
     return validate_access(roles_do_usuario(), permissao) 
@@ -186,7 +187,7 @@ def login_post():
 
     # Mensagem genérica: não revela se o erro foi no e-mail ou na senha
     flash("E-mail ou senha inválidos.", "erro")
-    return render_template("login/login.html", email=email), 401  # mantém o e-mail digitado
+    return redirect(url_for("login"))
 
 
 # ---------- CADASTRO ----------
@@ -230,24 +231,16 @@ def cad_user_post():
         flash(erro, "erro")
         return render_template("login/cad_user.html", dados=dados)
 
-    senha_hash = generate_password_hash(senha)
-    if USAR_BANCO:
-        try:
-            usuarios_repo.criar_usuario(nome, email, data_nasc, senha_hash)
-        except usuarios_repo.EmailJaCadastrado:
-            flash("Esse e-mail já está cadastrado.", "erro")
-            return render_template("login/cad_user.html", dados=dados)
-    else:
-        usuarios.append(
-            {
-                "id": len(usuarios) + 1,
-                "nome": nome,
-                "email": email,
-                "data_nascimento": data_nasc,
-                "senha_hash": senha_hash,
-                "roles": ["student"],
-            }
-        )
+    usuarios.append(
+        {
+            "id": len(usuarios) + 1,
+            "nome": nome,
+            "email": email,
+            "data_nascimento": data_nasc,
+            "senha_hash": generate_password_hash(senha),
+            "roles": ["student"],
+        }
+    )
     flash("Conta criada com sucesso! Faça login.", "sucesso")
     return redirect(url_for("login"))
 
@@ -257,11 +250,12 @@ def cad_user_post():
 @login_obrigatorio
 def dashboard():
     nome = session["nome"]
+    posts_visiveis = {s: p for s, p in POSTS.items() if pode_ver_post(p)}
     return render_template(
         "dashboard.html",
         nome=nome,
         primeiro_nome=nome.split()[0],
-                posts={s: p for s, p in POSTS.items() if pode_ver_post(p)},
+        posts=posts_visiveis,
     )
 
 
@@ -333,6 +327,38 @@ def salvar_imagem_secao(arquivo):
     arquivo.save(os.path.join(pasta_destino, nome_unico))
     return url_for("static", filename=f"uploads/posts/{nome_unico}")
 
+def montar_secoes(form, files):
+    subtitles = form.getlist("section_subtitle[]")
+    texts = form.getlist("section_text[]")
+    imagens = files.getlist("section_img[]")
+    imagens_atuais = form.getlist("section_img_atual[]")
+
+    sections = []
+    for idx, text in enumerate(texts):
+        text_clean = text.strip()
+        if not text_clean:
+            continue
+
+        subtitle_clean = subtitles[idx].strip() if idx < len(subtitles) else ""
+        arquivo_img = imagens[idx] if idx < len(imagens) else None
+        url_img = salvar_imagem_secao(arquivo_img)
+
+        # Sem imagem nova: mantém a que já existia (só aceita caminhos da nossa pasta)
+        if url_img is None and idx < len(imagens_atuais):
+            atual = imagens_atuais[idx]
+            if atual.startswith("/static/uploads/posts/"):
+                url_img = atual
+
+        sections.append(
+            {
+                "subtitle": subtitle_clean or None,
+                "text": text_clean,
+                "url_img": url_img,
+                "display_order": len(sections) + 1,
+                "status": True,
+            }
+        )
+    return sections
 
 @app.post("/posts/novo")
 @login_obrigatorio
@@ -341,41 +367,16 @@ def cad_post_post():
     title = request.form.get("title", "").strip()
     description = request.form.get("description", "").strip()
     status = request.form.get("status", "true") == "true"
-
-    subtitles = request.form.getlist("section_subtitle[]")
-    texts = request.form.getlist("section_text[]")
-    imagens = request.files.getlist("section_img[]")
-
-    sections = []
-    for idx, text in enumerate(texts, start=1):
-        text_clean = text.strip()
-        subtitle_clean = subtitles[idx - 1].strip() if idx - 1 < len(subtitles) else ""
-        arquivo_img = imagens[idx - 1] if idx - 1 < len(imagens) else None
-        url_img = salvar_imagem_secao(arquivo_img)
-        if text_clean:
-            sections.append(
-                {
-                    "subtitle": subtitle_clean or None,
-                    "text": text_clean,
-                    "url_img": url_img,
-                    "display_order": len(sections) + 1,
-                    "status": True,
-                }
-            )
+    sections = montar_secoes(request.form, request.files)
 
     if not title or not sections:
         flash("Informe o título do post e pelo menos uma seção com texto.", "erro")
         return render_template("posts/cad_post.html")
 
-    base = gerar_slug(title)
-    slug = base
-    n = 2
-    while slug in POSTS:
-        slug = f"{base}-{n}"
-        n += 1
+    slug = slug_unico(title)
 
     POSTS[slug] = {
-        "id_post": len(POSTS) + 1,
+        "id_post": proximo_id_post(),
         "id_user": session.get("usuario_id", 1),
         "title": title,
         "description": description or None,
@@ -386,6 +387,42 @@ def cad_post_post():
     flash("Post criado com sucesso!", "sucesso")
     return redirect(url_for("view_post", slug=slug))
 
+@app.get("/post/<slug>/editar")
+@login_obrigatorio
+def edit_post(slug):
+    post = POSTS.get(slug)
+    if not post or not pode_ver_post(post):
+        abort(404)
+    if not pode_editar_post(post):
+        abort(403)
+    return render_template("posts/cad_post.html", slug=slug, post=post)
+
+
+@app.post("/post/<slug>/editar")
+@login_obrigatorio
+def edit_post_post(slug):
+    post = POSTS.get(slug)
+    if not post or not pode_ver_post(post):
+        abort(404)
+    if not pode_editar_post(post):
+        abort(403)
+
+    title = request.form.get("title", "").strip()
+    description = request.form.get("description", "").strip()
+    status = request.form.get("status", "true") == "true"
+    sections = montar_secoes(request.form, request.files)
+
+    if not title or not sections:
+        flash("Informe o título do post e pelo menos uma seção com texto.", "erro")
+        return render_template("posts/cad_post.html", slug=slug, post=post)
+
+    post["title"] = title
+    post["description"] = description or None
+    post["status"] = status
+    post["sections"] = sections
+
+    flash("Post atualizado com sucesso!", "sucesso")
+    return redirect(url_for("view_post", slug=slug))
 
 @app.post("/post/<slug>/excluir")
 @login_obrigatorio
@@ -405,53 +442,15 @@ def excluir_post(slug):
 @login_obrigatorio
 @permissao_obrigatoria(Permissions.MANAGE_WRITERS)
 def writers():
-    escritores = [u for u in usuarios if "writer" in u["roles"]] #os roles são cumulativos, verifico se o usuário tem writer no roles
-    posts_por_autor = {
-        u["id"]: sum(1 for p in POSTS.values() if p["id_user"] == u["id"])
-        for u in escritores
-    }
-    return render_template(
-        "admin/writers.html", escritores=escritores, posts_por_autor=posts_por_autor
-    )
+    return render_template("admin/writers.html")
 
 
 @app.get("/escritores/novo")
 @login_obrigatorio
 @permissao_obrigatoria(Permissions.MANAGE_WRITERS)
 def cad_writer():
-    candidatos = [  #todos estudantes são candidatos a escritores
-        u for u in usuarios 
-        if "writer" not in u["roles"] and "admin" not in u["roles"]
-    ]
-    return render_template("admin/cad_writer.html", candidatos=candidatos)
-
-@app.post("/escritores/novo") #adicionar status de escritor
-@login_obrigatorio
-@permissao_obrigatoria(Permissions.MANAGE_WRITERS)
-def cad_writer_post():
-    usuario = buscar_por_id(request.form.get("user_id", type=int))
-    if usuario is None:
-        flash("Usuário não encontrado.", "erro")
-        return redirect(url_for("cad_writer"))
-    if "writer" in usuario["roles"] or "admin" in usuario["roles"]:
-        flash("Esse usuário já tem permissão para criar posts.", "erro")
-        return redirect(url_for("cad_writer"))
-
-    usuario["roles"].append("writer")
-    flash(f"{usuario['nome']} agora é escritor.", "sucesso")
-    return redirect(url_for("writers"))
-
-
-@app.post("/escritores/<int:id_usuario>/remover") # remover status de escritor
-@login_obrigatorio
-@permissao_obrigatoria(Permissions.MANAGE_WRITERS)
-def remover_writer(id_usuario):
-    usuario = buscar_por_id(id_usuario)
-    if usuario is None or "writer" not in usuario["roles"]:
-        abort(404)
-    usuario["roles"].remove("writer")
-    flash(f"{usuario['nome']} não é mais escritor.", "sucesso")
-    return redirect(url_for("writers"))
+    # O POST (salvar o escritor) entra quando o formulário dessa página estiver pronto
+    return render_template("admin/cad_writer.html")
 
 
 # ---------- PERFIL ----------
