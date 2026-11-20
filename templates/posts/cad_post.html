@@ -92,6 +92,29 @@
                             <p id="description-help" class="text-xs text-muted mt-1">Resumo exibido no topo do post e
                                 nos cards de busca.</p>
                         </div>
+
+                        {% if icones is defined and icones %}
+                        {% set selected_icon = post.get('icon', icones[0][0]) if post is defined and post else icones[0][0] %}
+                        <div>
+                            <span class="block text-xs sm:text-sm font-bold text-ink mb-2">
+                                Ícone do Card
+                            </span>
+                            <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2.5" role="radiogroup" aria-label="Escolha o ícone do card do post">
+                                {% for icone_classe, icone_label in icones %}
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="icon" value="{{ icone_classe }}"
+                                        {% if selected_icon == icone_classe %}checked{% endif %}
+                                        class="peer sr-only">
+                                    <span class="flex flex-col items-center justify-center gap-1.5 p-3 rounded-xl border border-line bg-slate-50/75 text-muted hover:border-brand-blue/50 hover:text-brand-dark peer-checked:border-brand-blue peer-checked:bg-brand-light/70 peer-checked:text-brand-blue peer-focus-visible:ring-2 peer-focus-visible:ring-brand-lime transition-all text-center">
+                                        <i class="bi {{ icone_classe }} text-xl" aria-hidden="true"></i>
+                                        <span class="text-[10px] font-semibold leading-tight line-clamp-1">{{ icone_label }}</span>
+                                    </span>
+                                </label>
+                                {% endfor %}
+                            </div>
+                            <p class="text-xs text-muted mt-1.5">Exibido no destaque do card deste post no início.</p>
+                        </div>
+                        {% endif %}
                     </div>
                 </section>
 

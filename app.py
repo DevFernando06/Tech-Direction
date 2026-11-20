@@ -52,6 +52,27 @@ TAMANHO_MIN_SENHA = 8
 # Posts armazenados em memória até a integração com o PostgreSQL
 POSTS = {}
 
+POST_ICONS = [
+    ("bi-code-slash", "Código / Web"),
+    ("bi-layers", "Camadas / Arquitetura"),
+    ("bi-stars", "Destaque / Framework"),
+    ("bi-terminal", "Terminal / CLI"),
+    ("bi-database", "Banco de Dados"),
+    ("bi-braces", "Lógica / Programação"),
+    ("bi-cpu", "Hardware / CPU"),
+    ("bi-robot", "Inteligência Artificial"),
+    ("bi-globe", "Web / Redes"),
+    ("bi-shield-check", "Segurança"),
+    ("bi-phone", "Mobile"),
+    ("bi-git", "Git / Versionamento"),
+    ("bi-book", "Guia / Fundamentos"),
+]
+POST_ICON_IDS = {icone for icone, _ in POST_ICONS}
+
+
+def icone_valido(icone):
+    return icone if icone in POST_ICON_IDS else POST_ICONS[0][0]
+
 
 def gerar_slug(texto):
     slug = re.sub(r"[^a-z0-9]+", "-", texto.strip().lower()).strip("-")
@@ -251,11 +272,13 @@ def cad_user_post():
 def dashboard():
     nome = session["nome"]
     posts_visiveis = {s: p for s, p in POSTS.items() if pode_ver_post(p)}
+    autores = {u["id"]: u["nome"] for u in usuarios}
     return render_template(
         "dashboard.html",
         nome=nome,
         primeiro_nome=nome.split()[0],
         posts=posts_visiveis,
+        autores=autores,
     )
 
 
@@ -311,7 +334,7 @@ def search_post():
 @login_obrigatorio
 @permissao_obrigatoria(Permissions.CREATE_POST)
 def cad_post():
-    return render_template("posts/cad_post.html")
+    return render_template("posts/cad_post.html", icones=POST_ICONS)
 
 
 def salvar_imagem_secao(arquivo):
@@ -366,12 +389,13 @@ def montar_secoes(form, files):
 def cad_post_post():
     title = request.form.get("title", "").strip()
     description = request.form.get("description", "").strip()
+    icon = icone_valido(request.form.get("icon", "").strip())
     status = request.form.get("status", "true") == "true"
     sections = montar_secoes(request.form, request.files)
 
     if not title or not sections:
         flash("Informe o título do post e pelo menos uma seção com texto.", "erro")
-        return render_template("posts/cad_post.html")
+        return render_template("posts/cad_post.html", icones=POST_ICONS)
 
     slug = slug_unico(title)
 
@@ -380,6 +404,7 @@ def cad_post_post():
         "id_user": session.get("usuario_id", 1),
         "title": title,
         "description": description or None,
+        "icon": icon,
         "status": status,
         "sections": sections,
     }
@@ -395,7 +420,7 @@ def edit_post(slug):
         abort(404)
     if not pode_editar_post(post):
         abort(403)
-    return render_template("posts/cad_post.html", slug=slug, post=post)
+    return render_template("posts/cad_post.html", slug=slug, post=post, icones=POST_ICONS)
 
 
 @app.post("/post/<slug>/editar")
@@ -409,15 +434,17 @@ def edit_post_post(slug):
 
     title = request.form.get("title", "").strip()
     description = request.form.get("description", "").strip()
+    icon = icone_valido(request.form.get("icon", "").strip())
     status = request.form.get("status", "true") == "true"
     sections = montar_secoes(request.form, request.files)
 
     if not title or not sections:
         flash("Informe o título do post e pelo menos uma seção com texto.", "erro")
-        return render_template("posts/cad_post.html", slug=slug, post=post)
+        return render_template("posts/cad_post.html", slug=slug, post=post, icones=POST_ICONS)
 
     post["title"] = title
     post["description"] = description or None
+    post["icon"] = icon
     post["status"] = status
     post["sections"] = sections
 
@@ -442,15 +469,57 @@ def excluir_post(slug):
 @login_obrigatorio
 @permissao_obrigatoria(Permissions.MANAGE_WRITERS)
 def writers():
-    return render_template("admin/writers.html")
+    escritores = [u for u in usuarios if "writer" in u["roles"]]
+    posts_por_autor = {
+        u["id"]: sum(1 for p in POSTS.values() if p["id_user"] == u["id"])
+        for u in escritores
+    }
+    return render_template(
+        "admin/writers.html",
+        escritores=escritores,
+        posts_por_autor=posts_por_autor,
+    )
+
+
+@app.post("/escritores/<int:id_usuario>/remover")
+@login_obrigatorio
+@permissao_obrigatoria(Permissions.MANAGE_WRITERS)
+def remover_writer(id_usuario):
+    usuario = buscar_por_id(id_usuario)
+    if not usuario:
+        abort(404)
+    if "writer" in usuario["roles"]:
+        usuario["roles"].remove("writer")
+        if not usuario["roles"]:
+            usuario["roles"].append("student")
+        flash(f"Papel de escritor removido de {usuario['nome']}.", "sucesso")
+    return redirect(url_for("writers"))
 
 
 @app.get("/escritores/novo")
 @login_obrigatorio
 @permissao_obrigatoria(Permissions.MANAGE_WRITERS)
 def cad_writer():
-    # O POST (salvar o escritor) entra quando o formulário dessa página estiver pronto
-    return render_template("admin/cad_writer.html")
+    candidatos = [
+        u for u in usuarios if "writer" not in u["roles"] and "admin" not in u["roles"]
+    ]
+    return render_template("admin/cad_writer.html", candidatos=candidatos)
+
+
+@app.post("/escritores/novo")
+@login_obrigatorio
+@permissao_obrigatoria(Permissions.MANAGE_WRITERS)
+def cad_writer_post():
+    user_id = request.form.get("user_id", type=int)
+    usuario = buscar_por_id(user_id)
+    if not usuario or "admin" in usuario["roles"]:
+        flash("Selecione um usuário válido.", "erro")
+        return redirect(url_for("cad_writer"))
+
+    if "writer" not in usuario["roles"]:
+        usuario["roles"].append("writer")
+    flash(f"{usuario['nome']} agora é escritor(a)!", "sucesso")
+    return redirect(url_for("writers"))
 
 
 # ---------- PERFIL ----------
