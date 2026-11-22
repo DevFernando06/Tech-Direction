@@ -101,6 +101,11 @@ def buscar_por_id(usuario_id):
     return next((u for u in usuarios if u["id"] == usuario_id), None)
 
 
+def nome_autor(post):
+    autor = buscar_por_id(post["id_user"])
+    return autor["nome"] if autor else "Desconhecido"
+
+
 def iniciais(nome):
     partes = nome.split()
     if not partes:
@@ -147,6 +152,7 @@ def injetar_usuario():
         "pode": pode,
         "pode_editar_post": pode_editar_post,
         "pode_excluir_post": pode_excluir_post,
+        "nome_autor": nome_autor,
     }
 
 def login_obrigatorio(f):
@@ -321,6 +327,7 @@ def recuperar_senha():
 # ---------- POSTS: busca e cadastro ----------
 @app.get("/posts")
 @login_obrigatorio
+@permissao_obrigatoria(Permissions.CREATE_POST)
 def search_post():
     q = request.args.get("q", "").strip()
     posts = {
