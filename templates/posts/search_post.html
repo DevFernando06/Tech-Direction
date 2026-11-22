@@ -112,6 +112,7 @@
                     <thead>
                         <tr class="bg-slate-50 border-b border-line text-[11px] font-bold uppercase tracking-wider text-muted">
                             <th scope="col" class="py-3.5 px-6">Post</th>
+                            <th scope="col" class="py-3.5 px-6">Autor</th>
                             <th scope="col" class="py-3.5 px-6 text-center">Seções</th>
                             <th scope="col" class="py-3.5 px-6 text-center">Status</th>
                             <th scope="col" class="py-3.5 px-6 text-right">Ações</th>
@@ -132,6 +133,7 @@
                                 <p class="text-xs text-muted mt-0.5 line-clamp-1">{{ post.description }}</p>
                                 {% endif %}
                             </td>
+                            <td class="py-4 px-6 text-ink">{{ nome_autor(post) }}</td>
                             <td class="py-4 px-6 text-center font-semibold text-ink">
                                 {{ post.sections|length }}
                             </td>
