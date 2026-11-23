@@ -10,6 +10,7 @@
 <div class="flex-1 flex relative">
     {% include 'partils/sidebar.html' %}
     <main class="flex-1 min-w-0 max-w-[76rem] w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8" id="main-content" tabindex="-1">
+        {% include 'partils/flash.html' %}
         <header class="mb-8 border-b border-line pb-6">
             <nav aria-label="Breadcrumb" class="mb-2">
                 <ol class="flex flex-wrap items-center gap-2 text-xs text-muted font-medium">
@@ -48,7 +49,7 @@
                                 name="userName"
                                 required
                                 autocomplete="name"
-                                value="Lucas Gabriel Silva"
+                                value="{{ usuario.nome }}"
                                 class="w-full px-4 py-3 text-sm rounded-xl bg-slate-50/75 border border-line text-ink focus:outline-none focus:ring-2 focus:ring-brand-lime focus:border-brand-blue focus:bg-white transition-all"
                             >
                         </div>
@@ -64,7 +65,7 @@
                                     name="userEmail"
                                     required
                                     autocomplete="email"
-                                    value="lucas.silva@techdirection.edu"
+                                    value="{{ usuario.email }}"
                                     class="w-full px-4 py-3 text-sm rounded-xl bg-slate-50/75 border border-line text-ink focus:outline-none focus:ring-2 focus:ring-brand-lime focus:border-brand-blue focus:bg-white transition-all"
                                 >
                             </div>
@@ -79,7 +80,7 @@
                                     name="dateBirth"
                                     required
                                     autocomplete="bday"
-                                    value="2002-04-18"
+                                    value="{{ usuario.data_nascimento or '' }}"
                                     class="w-full px-4 py-3 text-sm rounded-xl bg-slate-50/75 border border-line text-ink focus:outline-none focus:ring-2 focus:ring-brand-lime focus:border-brand-blue focus:bg-white transition-all"
                                 >
                             </div>
@@ -93,7 +94,7 @@
                                 type="text"
                                 id="role"
                                 name="role"
-                                value="student (Aluno)"
+                                value="{{ usuario.roles|join(', ') }}"
                                 readonly
                                 aria-describedby="role-help"
                                 class="w-full px-4 py-3 text-sm rounded-xl bg-slate-100 border border-line text-muted cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-brand-lime"
@@ -199,11 +200,11 @@
                 <div class="bg-white rounded-2xl border border-line p-6 shadow-xs sticky top-24">
                     <header class="flex items-center gap-4 pb-6 border-b border-line mb-6">
                         <span class="w-14 h-14 rounded-2xl bg-brand-dark text-white font-extrabold flex items-center justify-center text-lg shadow-sm shrink-0" aria-hidden="true">
-                            LS
+                            {{ usuario_iniciais }}
                         </span>
                         <div>
-                            <h3 class="text-base font-bold text-brand-dark leading-tight">Lucas Gabriel Silva</h3>
-                            <p class="text-xs text-muted truncate mt-0.5">lucas.silva@techdirection.edu</p>
+                            <h3 class="text-base font-bold text-brand-dark leading-tight">{{ usuario.nome }}</h3>
+                            <p class="text-xs text-muted truncate mt-0.5">{{ usuario.email }}</p>
                             <span class="inline-flex items-center gap-1.5 mt-2 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800">
                                 <span class="w-1.5 h-1.5 rounded-full bg-success" aria-hidden="true"></span>
                                 Conta Ativa
