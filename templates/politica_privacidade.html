@@ -1,0 +1,203 @@
+{% extends 'base.html' %}
+
+{% block title %}Política de Privacidade - Tech Direction{% endblock %}
+
+{% block header %}
+    {% if usuario_logado %}
+        {% include 'partils/header.html' %}
+    {% else %}
+        <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-line shadow-xs">
+            <div class="max-w-[76rem] mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+                <a href="{{ url_for('login') }}" class="flex items-center gap-2.5 sm:gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded-lg p-1 min-w-0" aria-label="Tech Direction - Ir para a tela de login">
+                    <img src="{{ url_for('static', filename='img/logo.svg') }}" alt="Logo Tech Direction" width="36" height="36" class="w-9 h-9 rounded-xl shrink-0 shadow-sm">
+                    <span class="text-lg sm:text-xl font-extrabold tracking-tight text-brand-dark truncate">techdirection</span>
+                </a>
+
+                <nav aria-label="Menu institucional" class="flex items-center gap-3 sm:gap-5">
+                    <a
+                        href="{{ url_for('quem_somos') }}"
+                        class="hidden sm:inline-block text-xs sm:text-sm font-semibold text-muted hover:text-brand-blue transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-1.5 py-1"
+                    >
+                        Quem Somos
+                    </a>
+                    <a
+                        href="{{ url_for('login') }}"
+                        class="py-2 px-3.5 rounded-xl border border-line bg-white hover:bg-slate-50 text-ink font-semibold text-xs sm:text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"
+                    >
+                        Entrar
+                    </a>
+                    <a
+                        href="{{ url_for('cad_user') }}"
+                        class="py-2 px-4 rounded-xl bg-brand-lime hover:bg-[#aedf1e] text-brand-dark font-bold text-xs sm:text-sm shadow-[0_3px_0_0_#0A1E3F] active:translate-y-[1px] active:shadow-none transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"
+                    >
+                        Criar conta
+                    </a>
+                </nav>
+            </div>
+        </header>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="flex-1 flex relative">
+    {% if usuario_logado %}
+        {% include 'partils/sidebar.html' %}
+    {% endif %}
+
+    <main class="flex-1 min-w-0 max-w-[76rem] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-8" id="main-content" tabindex="-1">
+        <!-- Breadcrumb -->
+        <nav aria-label="Breadcrumb">
+            <ol class="flex flex-wrap items-center gap-2 text-xs text-muted font-medium list-none p-0 m-0">
+                <li>
+                    <a
+                        href="{{ url_for('dashboard') if usuario_logado else url_for('login') }}"
+                        class="hover:text-brand-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-1 py-0.5"
+                    >
+                        {{ 'Início' if usuario_logado else 'Entrar' }}
+                    </a>
+                </li>
+                <li aria-hidden="true">/</li>
+                <li><span class="text-ink font-semibold" aria-current="page">Política de Privacidade</span></li>
+            </ol>
+        </nav>
+
+        <!-- Cabeçalho da Página -->
+        <header class="border-b border-line pb-6 space-y-3">
+            <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-light text-brand-blue text-xs font-bold uppercase tracking-wider">
+                <i class="bi bi-shield-lock" aria-hidden="true"></i>
+                <span>Transparência e LGPD</span>
+            </span>
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight">
+                Política de Privacidade
+            </h1>
+            <p class="text-sm sm:text-base text-muted max-w-3xl leading-relaxed">
+                No <strong>Tech Direction</strong>, respeitamos a sua privacidade. Esta página explica, de forma clara e direta, quais dados pessoais coletamos, por que os utilizamos e como você pode gerenciá-los.
+            </p>
+        </header>
+
+        <!-- Conteúdo da Política -->
+        <div class="space-y-6 max-w-4xl">
+            <section aria-labelledby="sec-dados" class="bg-white rounded-2xl border border-line p-6 sm:p-8 shadow-xs space-y-3">
+                <h2 id="sec-dados" class="text-lg sm:text-xl font-extrabold text-brand-dark">
+                    1. Quais dados coletamos
+                </h2>
+                <p class="text-sm sm:text-base text-muted leading-relaxed">
+                    Para criar e manter sua conta na plataforma, solicitamos apenas informações essenciais:
+                </p>
+                <ul class="list-disc pl-5 space-y-1.5 text-sm sm:text-base text-muted leading-relaxed">
+                    <li><strong class="text-ink">Dados de cadastro:</strong> nome completo, endereço de e-mail e data de nascimento.</li>
+                    <li><strong class="text-ink">Credenciais de acesso:</strong> senha de acesso, armazenada exclusivamente em formato criptografado (hash seguro).</li>
+                    <li><strong class="text-ink">Atividade na plataforma:</strong> papel atribuído à conta (estudante, escritor ou administrador), progresso de leitura e conteúdos publicados por escritores autorizados.</li>
+                </ul>
+            </section>
+
+            <section aria-labelledby="sec-uso" class="bg-white rounded-2xl border border-line p-6 sm:p-8 shadow-xs space-y-3">
+                <h2 id="sec-uso" class="text-lg sm:text-xl font-extrabold text-brand-dark">
+                    2. Como utilizamos seus dados
+                </h2>
+                <p class="text-sm sm:text-base text-muted leading-relaxed">
+                    Seus dados são utilizados exclusivamente para viabilizar o uso seguro e personalizado do Tech Direction:
+                </p>
+                <ul class="list-disc pl-5 space-y-1.5 text-sm sm:text-base text-muted leading-relaxed">
+                    <li>Autenticar seu acesso e manter sua sessão ativa com segurança;</li>
+                    <li>Personalizar a interface com seu nome e exibir os conteúdos adequados ao seu perfil;</li>
+                    <li>Permitir a recuperação de acesso em caso de esquecimento de senha;</li>
+                    <li>Identificar a autoria de posts publicados por escritores da plataforma.</li>
+                </ul>
+            </section>
+
+            <section aria-labelledby="sec-seguranca" class="bg-white rounded-2xl border border-line p-6 sm:p-8 shadow-xs space-y-3">
+                <h2 id="sec-seguranca" class="text-lg sm:text-xl font-extrabold text-brand-dark">
+                    3. Armazenamento e segurança
+                </h2>
+                <p class="text-sm sm:text-base text-muted leading-relaxed">
+                    Adotamos boas práticas técnicas para proteger suas informações contra acessos não autorizados. As senhas nunca são salvas em texto puro, utilizando algoritmos modernos de hash, e as áreas administrativas são protegidas por controle de permissões baseado em papéis.
+                </p>
+            </section>
+
+            <section aria-labelledby="sec-cookies" class="bg-white rounded-2xl border border-line p-6 sm:p-8 shadow-xs space-y-3">
+                <h2 id="sec-cookies" class="text-lg sm:text-xl font-extrabold text-brand-dark">
+                    4. Cookies e sessões
+                </h2>
+                <p class="text-sm sm:text-base text-muted leading-relaxed">
+                    Utilizamos cookies estritamente necessários para manter sua sessão autenticada enquanto você navega pela plataforma. Caso você marque a opção <em>&ldquo;Lembrar de mim&rdquo;</em> no login, a sessão poderá permanecer ativa por até 30 dias no dispositivo utilizado. Não utilizamos cookies de rastreamento publicitário.
+                </p>
+            </section>
+
+            <section aria-labelledby="sec-compartilhamento" class="bg-white rounded-2xl border border-line p-6 sm:p-8 shadow-xs space-y-3">
+                <h2 id="sec-compartilhamento" class="text-lg sm:text-xl font-extrabold text-brand-dark">
+                    5. Compartilhamento de dados
+                </h2>
+                <p class="text-sm sm:text-base text-muted leading-relaxed">
+                    O Tech Direction <strong>não vende, aluga ou comercializa</strong> seus dados pessoais. Suas informações não são compartilhadas com terceiros, exceto quando estritamente necessário para cumprimento de obrigação legal ou ordem judicial.
+                </p>
+            </section>
+
+            <section aria-labelledby="sec-direitos" class="bg-white rounded-2xl border border-line p-6 sm:p-8 shadow-xs space-y-3">
+                <h2 id="sec-direitos" class="text-lg sm:text-xl font-extrabold text-brand-dark">
+                    6. Seus direitos (LGPD)
+                </h2>
+                <p class="text-sm sm:text-base text-muted leading-relaxed">
+                    Em conformidade com a Lei Geral de Proteção de Dados (Lei nº 13.709/2018), você tem direito a confirmar a existência de tratamento, acessar e corrigir seus dados pessoais, bem como solicitar a exclusão de sua conta.
+                </p>
+                {% if usuario_logado %}
+                <p class="text-sm sm:text-base text-muted leading-relaxed">
+                    Você pode visualizar e atualizar seus dados cadastrais e sua senha a qualquer momento em
+                    <a href="{{ url_for('perfil') }}" class="font-semibold text-brand-blue underline hover:text-brand-action focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded">
+                        Meu Perfil
+                    </a>.
+                </p>
+                {% else %}
+                <p class="text-sm sm:text-base text-muted leading-relaxed">
+                    Após entrar na sua conta, você poderá visualizar e atualizar seus dados cadastrais e sua senha a qualquer momento na página <strong>Meu Perfil</strong>.
+                </p>
+                {% endif %}
+            </section>
+        </div>
+
+        <!-- Ação de retorno -->
+        <div class="pt-2 flex flex-wrap items-center gap-3">
+            {% if usuario_logado %}
+                <a
+                    href="{{ url_for('dashboard') }}"
+                    class="py-2.5 px-5 rounded-xl bg-brand-dark hover:bg-slate-800 text-white font-bold text-sm inline-flex items-center gap-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"
+                >
+                    <i class="bi bi-arrow-left" aria-hidden="true"></i>
+                    <span>Voltar para o Início</span>
+                </a>
+            {% else %}
+                <a
+                    href="{{ url_for('cad_user') }}"
+                    class="py-2.5 px-5 rounded-xl bg-brand-lime hover:bg-[#aedf1e] text-brand-dark font-bold text-sm inline-flex items-center gap-2 shadow-[0_3px_0_0_#0A1E3F] active:translate-y-[1px] active:shadow-none transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"
+                >
+                    <span>Ir para o cadastro</span>
+                    <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                </a>
+                <a
+                    href="{{ url_for('login') }}"
+                    class="py-2.5 px-5 rounded-xl border border-line bg-white hover:bg-slate-50 text-ink font-semibold text-sm inline-flex items-center gap-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"
+                >
+                    <span>Voltar para o login</span>
+                </a>
+            {% endif %}
+        </div>
+    </main>
+</div>
+{% endblock %}
+
+{% block footer %}
+    {% if usuario_logado %}
+        {% include 'partils/footer.html' %}
+    {% else %}
+        <footer class="mt-auto border-t border-line bg-white py-6 text-center text-xs text-muted">
+            <div class="max-w-[76rem] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <p>&copy; Tech Direction &bull; Plataforma Educacional Inclusiva</p>
+                <nav aria-label="Links do rodapé" class="flex flex-wrap items-center justify-center gap-4 text-brand-blue font-semibold">
+                    <a href="{{ url_for('login') }}" class="hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-1 py-0.5">Entrar</a>
+                    <a href="{{ url_for('quem_somos') }}" class="hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-1 py-0.5">Quem Somos</a>
+                    <a href="{{ url_for('politica_privacidade') }}" class="hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-1 py-0.5">Política de Privacidade</a>
+                </nav>
+            </div>
+        </footer>
+    {% endif %}
+{% endblock %}

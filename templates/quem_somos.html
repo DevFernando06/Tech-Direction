@@ -1,0 +1,229 @@
+{% extends 'base.html' %}
+
+{% block title %}Quem Somos - Tech Direction{% endblock %}
+
+{% block header %}
+    {% if usuario_logado %}
+        {% include 'partils/header.html' %}
+    {% else %}
+        <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-line shadow-xs">
+            <div class="max-w-[76rem] mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+                <a href="{{ url_for('login') }}" class="flex items-center gap-2.5 sm:gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded-lg p-1 min-w-0" aria-label="Tech Direction - Ir para a tela de login">
+                    <img src="{{ url_for('static', filename='img/logo.svg') }}" alt="Logo Tech Direction" width="36" height="36" class="w-9 h-9 rounded-xl shrink-0 shadow-sm">
+                    <span class="text-lg sm:text-xl font-extrabold tracking-tight text-brand-dark truncate">techdirection</span>
+                </a>
+
+                <nav aria-label="Menu institucional" class="flex items-center gap-3 sm:gap-5">
+                    <a
+                        href="{{ url_for('politica_privacidade') }}"
+                        class="hidden sm:inline-block text-xs sm:text-sm font-semibold text-muted hover:text-brand-blue transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-1.5 py-1"
+                    >
+                        Política de Privacidade
+                    </a>
+                    <a
+                        href="{{ url_for('login') }}"
+                        class="py-2 px-3.5 rounded-xl border border-line bg-white hover:bg-slate-50 text-ink font-semibold text-xs sm:text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"
+                    >
+                        Entrar
+                    </a>
+                    <a
+                        href="{{ url_for('cad_user') }}"
+                        class="py-2 px-4 rounded-xl bg-brand-lime hover:bg-[#aedf1e] text-brand-dark font-bold text-xs sm:text-sm shadow-[0_3px_0_0_#0A1E3F] active:translate-y-[1px] active:shadow-none transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"
+                    >
+                        Criar conta
+                    </a>
+                </nav>
+            </div>
+        </header>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="flex-1 flex relative">
+    {% if usuario_logado %}
+        {% include 'partils/sidebar.html' %}
+    {% endif %}
+
+    <main class="flex-1 min-w-0 max-w-[76rem] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-10 sm:space-y-12" id="main-content" tabindex="-1">
+        <!-- Breadcrumb -->
+        <nav aria-label="Breadcrumb">
+            <ol class="flex flex-wrap items-center gap-2 text-xs text-muted font-medium list-none p-0 m-0">
+                <li>
+                    <a
+                        href="{{ url_for('dashboard') if usuario_logado else url_for('login') }}"
+                        class="hover:text-brand-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-1 py-0.5"
+                    >
+                        {{ 'Início' if usuario_logado else 'Entrar' }}
+                    </a>
+                </li>
+                <li aria-hidden="true">/</li>
+                <li><span class="text-ink font-semibold" aria-current="page">Quem Somos</span></li>
+            </ol>
+        </nav>
+
+        <!-- Hero Institucional -->
+        <section aria-labelledby="about-heading" class="bg-brand-dark text-white rounded-3xl p-8 sm:p-12 lg:p-14 relative overflow-hidden shadow-sm">
+            <div class="absolute -right-24 -top-24 w-80 h-80 rounded-full border border-brand-blue/40 pointer-events-none" aria-hidden="true"></div>
+            <div class="absolute -right-12 -top-12 w-56 h-56 rounded-full border border-brand-blue/30 pointer-events-none" aria-hidden="true"></div>
+
+            <div class="relative z-10 max-w-3xl space-y-5">
+                <p class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/15 text-xs font-semibold text-white w-fit">
+                    <i class="bi bi-compass text-brand-lime" aria-hidden="true"></i>
+                    <span>Sobre a plataforma</span>
+                </p>
+
+                <h1 id="about-heading" class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-[1.1]">
+                    Educação em tecnologia clara, gratuita e acessível para todos.
+                </h1>
+
+                <p class="text-slate-200 text-base sm:text-lg leading-relaxed max-w-2xl">
+                    O <strong class="text-white font-bold">Tech Direction</strong> é uma plataforma educacional inclusiva criada para orientar quem deseja explorar o universo da tecnologia com leituras estruturadas, linguagem direta e referências confiáveis.
+                </p>
+            </div>
+        </section>
+
+        <!-- Pilares / Valores -->
+        <section aria-labelledby="pillars-heading" class="space-y-6">
+            <header class="max-w-2xl">
+                <span class="text-xs font-bold tracking-wider text-brand-blue uppercase">NOSSOS PILARES</span>
+                <h2 id="pillars-heading" class="text-2xl sm:text-3xl font-extrabold text-brand-dark tracking-tight mt-1">
+                    O que guia cada conteúdo publicado
+                </h2>
+                <p class="text-sm sm:text-base text-muted mt-2 leading-relaxed">
+                    Acreditamos que o primeiro passo em tecnologia não precisa ser intimidador. Construímos a experiência pensando em clareza, autonomia e inclusão.
+                </p>
+            </header>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <article class="bg-white rounded-3xl border border-line p-6 sm:p-7 shadow-xs space-y-4">
+                    <span class="w-12 h-12 rounded-2xl bg-[#EAF3FE] text-brand-blue flex items-center justify-center text-xl" aria-hidden="true">
+                        <i class="bi bi-journal-bookmark-fill"></i>
+                    </span>
+                    <h3 class="text-lg font-extrabold text-brand-dark">Leitura orientada</h3>
+                    <p class="text-sm text-muted leading-relaxed">
+                        Organizamos conteúdos autorais em seções objetivas, combinando explicações didáticas, imagens ilustrativas e contexto prático para facilitar o entendimento.
+                    </p>
+                </article>
+
+                <article class="bg-white rounded-3xl border border-line p-6 sm:p-7 shadow-xs space-y-4">
+                    <span class="w-12 h-12 rounded-2xl bg-[#F0F8DD] text-[#6d8714] flex items-center justify-center text-xl" aria-hidden="true">
+                        <i class="bi bi-universal-access-circle"></i>
+                    </span>
+                    <h3 class="text-lg font-extrabold text-brand-dark">Acessibilidade real</h3>
+                    <p class="text-sm text-muted leading-relaxed">
+                        Navegação por teclado, alto contraste, leitura compatível com tecnologias assistivas e respeito à redução de movimento fazem parte da base do projeto.
+                    </p>
+                </article>
+
+                <article class="bg-white rounded-3xl border border-line p-6 sm:p-7 shadow-xs space-y-4">
+                    <span class="w-12 h-12 rounded-2xl bg-[#FFEFEA] text-brand-coral flex items-center justify-center text-xl" aria-hidden="true">
+                        <i class="bi bi-clock-history"></i>
+                    </span>
+                    <h3 class="text-lg font-extrabold text-brand-dark">No seu próprio ritmo</h3>
+                    <p class="text-sm text-muted leading-relaxed">
+                        Sem pressa e sem barreiras financeiras: você escolhe por onde começar, revisita os temas quando precisar e constrói sua jornada com confiança.
+                    </p>
+                </article>
+            </div>
+        </section>
+
+        <!-- Como funciona -->
+        <section aria-labelledby="how-heading" class="bg-white rounded-3xl border border-line p-6 sm:p-10 shadow-xs space-y-6">
+            <header class="max-w-2xl">
+                <span class="text-xs font-bold tracking-wider text-brand-blue uppercase">FORMATO EDITORIAL</span>
+                <h2 id="how-heading" class="text-2xl sm:text-3xl font-extrabold text-brand-dark tracking-tight mt-1">
+                    Como o Tech Direction funciona
+                </h2>
+            </header>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm sm:text-base text-muted leading-relaxed">
+                <div class="space-y-2">
+                    <h3 class="text-base font-bold text-ink flex items-center gap-2">
+                        <i class="bi bi-pen text-brand-blue" aria-hidden="true"></i>
+                        <span>Conteúdo feito por escritores dedicados</span>
+                    </h3>
+                    <p>
+                        Nossos escritores produzem e atualizam artigos sobre fundamentos de programação, desenvolvimento web, banco de dados, segurança e outras áreas da computação.
+                    </p>
+                </div>
+
+                <div class="space-y-2">
+                    <h3 class="text-base font-bold text-ink flex items-center gap-2">
+                        <i class="bi bi-shield-check text-brand-blue" aria-hidden="true"></i>
+                        <span>Ambiente transparente e respeitoso</span>
+                    </h3>
+                    <p>
+                        Coletamos apenas os dados essenciais para o funcionamento da sua conta. Você pode consultar todos os detalhes em nossa
+                        <a href="{{ url_for('politica_privacidade') }}" class="font-semibold text-brand-blue underline hover:text-brand-action focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded">
+                            Política de Privacidade
+                        </a>.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Chamada para ação -->
+        <section aria-labelledby="cta-heading" class="bg-brand-light/50 border border-brand-blue/20 rounded-3xl p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+            <div class="space-y-1">
+                <h2 id="cta-heading" class="text-xl sm:text-2xl font-extrabold text-brand-dark">
+                    {% if usuario_logado %}
+                        Pronto para continuar suas leituras?
+                    {% else %}
+                        Comece sua jornada em tecnologia hoje
+                    {% endif %}
+                </h2>
+                <p class="text-sm text-muted">
+                    {% if usuario_logado %}
+                        Volte para o painel inicial e explore os conteúdos disponíveis na plataforma.
+                    {% else %}
+                        Crie sua conta gratuitamente em menos de 2 minutos e acesse os conteúdos da plataforma.
+                    {% endif %}
+                </p>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-3 shrink-0">
+                {% if usuario_logado %}
+                    <a
+                        href="{{ url_for('dashboard') }}"
+                        class="py-3 px-5 rounded-xl bg-brand-lime hover:bg-[#aedf1e] text-brand-dark font-bold text-sm inline-flex items-center gap-2 shadow-[0_4px_0_0_#0A1E3F] active:translate-y-[2px] active:shadow-none transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"
+                    >
+                        <span>Ir para o Início</span>
+                        <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                    </a>
+                {% else %}
+                    <a
+                        href="{{ url_for('cad_user') }}"
+                        class="py-3 px-5 rounded-xl bg-brand-lime hover:bg-[#aedf1e] text-brand-dark font-bold text-sm inline-flex items-center gap-2 shadow-[0_4px_0_0_#0A1E3F] active:translate-y-[2px] active:shadow-none transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"
+                    >
+                        <span>Criar conta grátis</span>
+                        <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                    </a>
+                    <a
+                        href="{{ url_for('login') }}"
+                        class="py-3 px-5 rounded-xl bg-brand-dark hover:bg-slate-800 text-white font-bold text-sm inline-flex items-center gap-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"
+                    >
+                        <span>Entrar</span>
+                    </a>
+                {% endif %}
+            </div>
+        </section>
+    </main>
+</div>
+{% endblock %}
+
+{% block footer %}
+    {% if usuario_logado %}
+        {% include 'partils/footer.html' %}
+    {% else %}
+        <footer class="mt-auto border-t border-line bg-white py-6 text-center text-xs text-muted">
+            <div class="max-w-[76rem] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <p>&copy; Tech Direction &bull; Plataforma Educacional Inclusiva</p>
+                <nav aria-label="Links do rodapé" class="flex flex-wrap items-center justify-center gap-4 text-brand-blue font-semibold">
+                    <a href="{{ url_for('login') }}" class="hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-1 py-0.5">Entrar</a>
+                    <a href="{{ url_for('quem_somos') }}" class="hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-1 py-0.5">Quem Somos</a>
+                    <a href="{{ url_for('politica_privacidade') }}" class="hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-1 py-0.5">Política de Privacidade</a>
+                </nav>
+            </div>
+        </footer>
+    {% endif %}
+{% endblock %}

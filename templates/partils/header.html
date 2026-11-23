@@ -20,8 +20,15 @@
 
         <nav aria-label="Menu institucional" class="flex items-center gap-6">
             <ul class="flex items-center gap-6 list-none m-0 p-0 hidden md:flex">
-                <li><a href="#" class="text-xs sm:text-sm font-semibold text-muted hover:text-brand-blue transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-1 py-0.5">Sobre nós</a></li>
-                <li><a href="#" class="text-xs sm:text-sm font-semibold text-muted hover:text-brand-blue transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-1 py-0.5">FAQ</a></li>
+                <li>
+                    <a
+                        href="{{ url_for('quem_somos') }}"
+                        {% if request.endpoint == 'quem_somos' %}aria-current="page"{% endif %}
+                        class="text-xs sm:text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-1 py-0.5 {{ 'text-brand-blue' if request.endpoint == 'quem_somos' else 'text-muted hover:text-brand-blue' }}"
+                    >
+                        Quem Somos
+                    </a>
+                </li>
             </ul>
 
             <div class="h-6 w-px bg-line hidden sm:block" aria-hidden="true"></div>

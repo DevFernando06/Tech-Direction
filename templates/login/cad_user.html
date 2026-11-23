@@ -55,11 +55,13 @@
     </aside>
 
     <section aria-labelledby="register-heading" class="w-full flex-1 bg-white flex flex-col justify-between p-6 sm:p-10 lg:p-16 overflow-y-auto">
+        {% if usuario_logado %}
         <nav aria-label="Navegação de retorno" class="mb-4">
             <a href="{{ url_for('dashboard') }}" class="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-muted hover:text-brand-blue transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded-md px-1 py-1">
                 <i class="bi bi-arrow-left" aria-hidden="true"></i> Voltar para o início
             </a>
         </nav>
+        {% endif %}
 
         <div class="w-full max-w-lg mx-auto my-auto py-4">
             <header class="mb-6">
@@ -164,10 +166,8 @@
                         class="mt-1 w-4 h-4 rounded border-line text-brand-blue focus:ring-brand-lime focus:ring-offset-1"
                     >
                     <label for="terms" class="text-xs sm:text-sm text-muted leading-relaxed cursor-pointer select-none">
-                        Li e concordo com os
-                        <a href="#" class="font-semibold text-brand-blue underline hover:text-brand-action focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded">Termos de Uso</a>
-                        e a
-                        <a href="#" class="font-semibold text-brand-blue underline hover:text-brand-action focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded">Política de Privacidade</a>.
+                        Li e concordo com a
+                        <a href="{{ url_for('politica_privacidade') }}" target="_blank" rel="noopener noreferrer" class="font-semibold text-brand-blue underline hover:text-brand-action focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded">Política de Privacidade</a>.
                     </label>
                 </div>
 
@@ -190,12 +190,15 @@
             </form>
         </div>
 
-        <p class="text-center pt-6 text-xs text-muted">
-            Precisa de ajuda?
-            <a href="#" class="font-semibold text-brand-blue underline hover:text-brand-action focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-1 py-0.5">
-                Fale com a gente
+        <nav aria-label="Links institucionais" class="flex flex-wrap items-center justify-center gap-4 pt-6 text-xs text-muted">
+            <a href="{{ url_for('quem_somos') }}" class="font-semibold text-brand-blue hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-1 py-0.5">
+                Quem Somos
             </a>
-        </p>
+            <span aria-hidden="true">&bull;</span>
+            <a href="{{ url_for('politica_privacidade') }}" class="font-semibold text-brand-blue hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-1 py-0.5">
+                Política de Privacidade
+            </a>
+        </nav>
     </section>
 </main>
 {% endblock %}

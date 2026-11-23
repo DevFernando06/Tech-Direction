@@ -174,6 +174,7 @@ def injetar_usuario():
     """Deixa o nome e as iniciais disponíveis em TODOS os templates (header, sidebar...)."""
     nome = session.get("nome", "")
     return {
+        "usuario_logado": "usuario_id" in session,
         "usuario_nome": nome,
         "usuario_iniciais": iniciais(nome),
         "modo_dev_sem_login": app.config.get("MODO_DEV_SEM_LOGIN", False),
@@ -293,7 +294,7 @@ def cad_user_post():
     elif len(senha) < TAMANHO_MIN_SENHA:
         erro = f"A senha deve ter pelo menos {TAMANHO_MIN_SENHA} caracteres."
     elif not aceitou_termos:
-        erro = "Você precisa aceitar os Termos de Uso e a Política de Privacidade."
+        erro = "Você precisa aceitar a Política de Privacidade."
     elif buscar_por_email(email):
         erro = "Esse e-mail já está cadastrado."
 
@@ -675,6 +676,17 @@ def perfil_post():
     session["nome"] = nome  # o nome do cabeçalho acompanha a mudança
     flash("Perfil atualizado com sucesso!", "sucesso")
     return redirect(url_for("perfil"))
+
+
+# ---------- PÁGINAS INSTITUCIONAIS (PÚBLICAS) ----------
+@app.get("/quem-somos")
+def quem_somos():
+    return render_template("quem_somos.html")
+
+
+@app.get("/politica-de-privacidade")
+def politica_privacidade():
+    return render_template("politica_privacidade.html")
 
 
 @app.get("/logout")
