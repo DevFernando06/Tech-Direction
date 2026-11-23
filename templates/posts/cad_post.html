@@ -7,6 +7,7 @@
 {% endblock %}
 
 {% block content %}
+{% set editando = post is defined and post %}
 <div class="flex-1 flex relative">
     {% include 'partils/sidebar.html' %}
 
@@ -24,11 +25,11 @@
                                 class="hover:text-brand-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-1 py-0.5">Posts</a>
                         </li>
                         <li aria-hidden="true">/</li>
-                        <li><span class="text-ink font-semibold" aria-current="page">Novo Post</span></li>
+                        <li><span class="text-ink font-semibold" aria-current="page">{{ 'Editar Post' if editando else 'Novo Post' }}</span></li>
                     </ol>
                 </nav>
                 <h1 class="text-2xl sm:text-3xl font-extrabold text-brand-dark tracking-tight">
-                    Criar Novo Post
+                    {{ 'Editar Post' if editando else 'Criar Novo Post' }}
                 </h1>
                 <p class="text-sm text-muted mt-1 max-w-2xl">
                     Defina os dados principais do post e adicione uma ou mais seções com subtítulo, texto e imagem.
@@ -48,13 +49,13 @@
                 </button>
                 <button type="submit" form="formPost"
                     class="py-2 px-4 sm:px-5 rounded-xl bg-brand-lime hover:bg-[#aedf1e] text-brand-dark font-bold text-xs sm:text-sm flex items-center gap-1.5 shadow-[0_3px_0_0_#0A1E3F] active:translate-y-[1px] active:shadow-none transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime">
-                    <span>Publicar Post</span>
+                    <span>{{ 'Salvar Alterações' if editando else 'Publicar Post' }}</span>
                     <i class="bi bi-check2-circle" aria-hidden="true"></i>
                 </button>
             </div>
         </header>
 
-        <form id="formPost" action="{{ url_for('cad_post_post') }}" method="post" enctype="multipart/form-data"
+        <form id="formPost" action="{{ url_for('edit_post_post', slug=slug) if editando else url_for('cad_post_post') }}" method="post" enctype="multipart/form-data"
             class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             <div class="lg:col-span-8 space-y-8">
                 <!-- Passo 1: Dados do Post (tabela posts) -->
@@ -77,6 +78,7 @@
                                 Título do Post <span class="text-danger" aria-hidden="true">*</span>
                             </label>
                             <input type="text" id="postTitle" name="title" required maxlength="255"
+                                value="{{ post.title if editando else '' }}"
                                 placeholder="Ex: Fundamentos de HTML5 e Estrutura Semântica"
                                 class="w-full px-4 py-3 text-sm rounded-xl bg-slate-50/75 border border-line text-ink placeholder-muted/60 focus:outline-none focus:ring-2 focus:ring-brand-lime focus:border-brand-blue focus:bg-white transition-all">
                         </div>
@@ -88,7 +90,7 @@
                             <textarea id="postDescription" name="description" rows="3"
                                 aria-describedby="description-help"
                                 placeholder="Apresente de forma direta o que o leitor vai aprender neste post."
-                                class="w-full px-4 py-3 text-sm rounded-xl bg-slate-50/75 border border-line text-ink placeholder-muted/60 focus:outline-none focus:ring-2 focus:ring-brand-lime focus:border-brand-blue focus:bg-white transition-all"></textarea>
+                                class="w-full px-4 py-3 text-sm rounded-xl bg-slate-50/75 border border-line text-ink placeholder-muted/60 focus:outline-none focus:ring-2 focus:ring-brand-lime focus:border-brand-blue focus:bg-white transition-all">{{ (post.description or '') if editando else '' }}</textarea>
                             <p id="description-help" class="text-xs text-muted mt-1">Resumo exibido no topo do post e
                                 nos cards de busca.</p>
                         </div>
@@ -134,6 +136,7 @@
                     </header>
 
                     <div id="sectionsContainer" class="space-y-6">
+{% for secao in (post.sections|sort(attribute='display_order') if editando else [{}]) %}
                         <article
                             class="post-section-item rounded-2xl border border-line bg-slate-50/50 p-4 sm:p-5 space-y-4">
                             <div class="flex items-center justify-between gap-2 border-b border-line pb-3">
@@ -154,6 +157,7 @@
                                     Subtítulo da Seção
                                 </label>
                                 <input type="text" name="section_subtitle[]" maxlength="255"
+                                    value="{{ secao.subtitle or '' }}"
                                     placeholder="Ex: Por que usar tags semânticas?"
                                     class="section-subtitle-input w-full px-4 py-2.5 text-sm rounded-xl bg-white border border-line text-ink placeholder-muted/60 focus:outline-none focus:ring-2 focus:ring-brand-lime focus:border-brand-blue transition-all">
                             </div>
@@ -179,7 +183,7 @@
                                 </div>
                                 <textarea name="section_text[]" rows="6" required
                                     placeholder="Escreva o conteúdo desta seção..."
-                                    class="section-text-input w-full px-4 py-3 text-sm rounded-b-xl bg-white border border-line text-ink placeholder-muted/60 focus:outline-none focus:ring-2 focus:ring-brand-lime focus:border-brand-blue transition-all leading-relaxed"></textarea>
+                                    class="section-text-input w-full px-4 py-3 text-sm rounded-b-xl bg-white border border-line text-ink placeholder-muted/60 focus:outline-none focus:ring-2 focus:ring-brand-lime focus:border-brand-blue transition-all leading-relaxed">{{ secao.text or '' }}</textarea>
                             </div>
 
                             <div>
@@ -188,13 +192,15 @@
                                 </label>
                                 <input type="file" name="section_img[]" accept="image/*"
                                     class="section-img-input w-full text-xs text-muted file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-brand-dark file:text-white hover:file:bg-brand-blue cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded-xl">
+                                <input type="hidden" name="section_img_atual[]" value="{{ secao.url_img or '' }}">
                                 <figure
-                                    class="section-img-preview hidden mt-3 border border-line rounded-xl p-2 bg-white">
-                                    <img src="" alt="Pré-visualização da imagem da seção"
+                                    class="section-img-preview {{ '' if secao.url_img else 'hidden' }} mt-3 border border-line rounded-xl p-2 bg-white">
+                                    <img src="{{ secao.url_img or '' }}" alt="Pré-visualização da imagem da seção"
                                         class="section-img-preview-el w-full max-h-48 object-cover rounded-lg">
                                 </figure>
                             </div>
                         </article>
+{% endfor %}
                     </div>
 
                     <div class="mt-5 pt-4 border-t border-line flex justify-end">
@@ -218,15 +224,15 @@
                         </label>
                         <select id="postStatus" name="status"
                             class="w-full px-3.5 py-2.5 text-sm rounded-xl bg-slate-50/75 border border-line text-ink focus:outline-none focus:ring-2 focus:ring-brand-lime">
-                            <option value="true" selected>Ativo (Publicado)</option>
-                            <option value="false">Inativo (Rascunho)</option>
+                            <option value="true" {{ 'selected' if not editando or post.status else '' }}>Ativo (Publicado)</option>
+                            <option value="false" {{ 'selected' if editando and not post.status else '' }}>Inativo (Rascunho)</option>
                         </select>
                     </section>
 
                     <div class="space-y-3 pt-2">
                         <button type="submit"
                             class="w-full py-3 px-4 rounded-xl bg-brand-lime hover:bg-[#aedf1e] text-brand-dark font-bold text-sm flex items-center justify-center gap-2 shadow-[0_4px_0_0_#0A1E3F] active:translate-y-[2px] active:shadow-none transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime">
-                            <span>Salvar Post Agora</span>
+                            <span>{{ 'Salvar Alterações' if editando else 'Salvar Post Agora' }}</span>
                             <i class="bi bi-arrow-right" aria-hidden="true"></i>
                         </button>
                     </div>
