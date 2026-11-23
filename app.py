@@ -22,6 +22,7 @@ from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
 
 import usuarios_repo
+import posts_repo
 
 UPLOAD_POSTS_DIR = os.path.join("static", "uploads", "posts")
 ALLOWED_IMAGE_EXTENSIONS = {"png", "jpg", "jpeg", "webp", "gif", "svg"}
@@ -92,10 +93,22 @@ def proximo_id_post():
     return max((p["id_post"] for p in POSTS.values()), default=0) + 1
 
 
+def listar_posts():
+    return posts_repo.listar() if USAR_BANCO else POSTS
+
+
+def buscar_post(slug):
+    return posts_repo.buscar(slug) if USAR_BANCO else POSTS.get(slug)
+
+
+def slug_existe(slug):
+    return posts_repo.slug_existe(slug) if USAR_BANCO else slug in POSTS
+
+
 def slug_unico(titulo):
     base = gerar_slug(titulo)
     slug, n = base, 2
-    while slug in POSTS:
+    while slug_existe(slug):
         slug = f"{base}-{n}"
         n += 1
     return slug
@@ -115,6 +128,8 @@ def buscar_por_id(usuario_id):
 
 
 def nome_autor(post):
+    if post.get("autor_nome"):
+        return post["autor_nome"]
     autor = buscar_por_id(post["id_user"])
     return autor["nome"] if autor else "Desconhecido"
 
@@ -313,8 +328,8 @@ def cad_user_post():
 @login_obrigatorio
 def dashboard():
     nome = session["nome"]
-    posts_visiveis = {s: p for s, p in POSTS.items() if pode_ver_post(p)}
-    autores = {u["id"]: u["nome"] for u in usuarios}
+    posts_visiveis = {s: p for s, p in listar_posts().items() if pode_ver_post(p)}
+    autores = {p["id_user"]: nome_autor(p) for p in posts_visiveis.values()}
     return render_template(
         "dashboard.html",
         nome=nome,
@@ -331,10 +346,10 @@ def dashboard():
 @login_obrigatorio
 def view_post(slug):
     if slug is None:
-        slug = next((s for s, p in POSTS.items() if pode_ver_post(p)), None)
+        slug = next((s for s, p in listar_posts().items() if pode_ver_post(p)), None)
         if slug is None:
             return redirect(url_for("search_post"))
-    post = POSTS.get(slug)
+    post = buscar_post(slug)
     if not post or not pode_ver_post(post):
         abort(404)
     return render_template("posts/view_post.html", slug=slug, post=post, titulo=post["title"])
@@ -367,7 +382,7 @@ def recuperar_senha():
 def search_post():
     q = request.args.get("q", "").strip()
     posts = {
-        slug: post for slug, post in POSTS.items() 
+        slug: post for slug, post in listar_posts().items() 
         if pode_ver_post(post) and q.lower() in post["title"].lower()
     }
     return render_template("posts/search_post.html", posts=posts, q=q)
@@ -442,15 +457,20 @@ def cad_post_post():
 
     slug = slug_unico(title)
 
-    POSTS[slug] = {
-        "id_post": proximo_id_post(),
-        "id_user": session.get("usuario_id", 1),
-        "title": title,
-        "description": description or None,
-        "icon": icon,
-        "status": status,
-        "sections": sections,
-    }
+    if USAR_BANCO:
+        posts_repo.criar(
+            slug, session.get("usuario_id", 1), title, description or None, icon, status, sections
+        )
+    else:
+        POSTS[slug] = {
+            "id_post": proximo_id_post(),
+            "id_user": session.get("usuario_id", 1),
+            "title": title,
+            "description": description or None,
+            "icon": icon,
+            "status": status,
+            "sections": sections,
+        }
 
     flash("Post criado com sucesso!", "sucesso")
     return redirect(url_for("view_post", slug=slug))
@@ -458,7 +478,7 @@ def cad_post_post():
 @app.get("/post/<slug>/editar")
 @login_obrigatorio
 def edit_post(slug):
-    post = POSTS.get(slug)
+    post = buscar_post(slug)
     if not post or not pode_ver_post(post):
         abort(404)
     if not pode_editar_post(post):
@@ -469,7 +489,7 @@ def edit_post(slug):
 @app.post("/post/<slug>/editar")
 @login_obrigatorio
 def edit_post_post(slug):
-    post = POSTS.get(slug)
+    post = buscar_post(slug)
     if not post or not pode_ver_post(post):
         abort(404)
     if not pode_editar_post(post):
@@ -485,11 +505,14 @@ def edit_post_post(slug):
         flash("Informe o título do post e pelo menos uma seção com texto.", "erro")
         return render_template("posts/cad_post.html", slug=slug, post=post, icones=POST_ICONS)
 
-    post["title"] = title
-    post["description"] = description or None
-    post["icon"] = icon
-    post["status"] = status
-    post["sections"] = sections
+    if USAR_BANCO:
+        posts_repo.atualizar(slug, title, description or None, icon, status, sections)
+    else:
+        post["title"] = title
+        post["description"] = description or None
+        post["icon"] = icon
+        post["status"] = status
+        post["sections"] = sections
 
     flash("Post atualizado com sucesso!", "sucesso")
     return redirect(url_for("view_post", slug=slug))
@@ -497,12 +520,15 @@ def edit_post_post(slug):
 @app.post("/post/<slug>/excluir")
 @login_obrigatorio
 def excluir_post(slug):
-    post = POSTS.get(slug)
+    post = buscar_post(slug)
     if not post or not pode_ver_post(post):
         abort(404)
     if not pode_excluir_post(post):
         abort(403)
-    del POSTS[slug]
+    if USAR_BANCO:
+        posts_repo.excluir(slug)
+    else:
+        del POSTS[slug]
     flash("Post excluído com sucesso!", "sucesso")
     return redirect(url_for("search_post"))
 
@@ -512,9 +538,13 @@ def excluir_post(slug):
 @login_obrigatorio
 @permissao_obrigatoria(Permissions.MANAGE_WRITERS)
 def writers():
-    escritores = [u for u in usuarios if "writer" in u["roles"]]
+    if USAR_BANCO:
+        escritores = usuarios_repo.listar_por_role("writer")
+    else:
+        escritores = [u for u in usuarios if "writer" in u["roles"]]
+    todos_posts = list(listar_posts().values())
     posts_por_autor = {
-        u["id"]: sum(1 for p in POSTS.values() if p["id_user"] == u["id"])
+        u["id"]: sum(1 for p in todos_posts if p["id_user"] == u["id"])
         for u in escritores
     }
     return render_template(
@@ -532,9 +562,12 @@ def remover_writer(id_usuario):
     if not usuario:
         abort(404)
     if "writer" in usuario["roles"]:
-        usuario["roles"].remove("writer")
-        if not usuario["roles"]:
-            usuario["roles"].append("student")
+        if USAR_BANCO:
+            usuarios_repo.remover_role(usuario["id"], "writer")
+        else:
+            usuario["roles"].remove("writer")
+            if not usuario["roles"]:
+                usuario["roles"].append("student")
         flash(f"Papel de escritor removido de {usuario['nome']}.", "sucesso")
     return redirect(url_for("writers"))
 
@@ -543,9 +576,12 @@ def remover_writer(id_usuario):
 @login_obrigatorio
 @permissao_obrigatoria(Permissions.MANAGE_WRITERS)
 def cad_writer():
-    candidatos = [
-        u for u in usuarios if "writer" not in u["roles"] and "admin" not in u["roles"]
-    ]
+    if USAR_BANCO:
+        candidatos = usuarios_repo.listar_candidatos_escritor()
+    else:
+        candidatos = [
+            u for u in usuarios if "writer" not in u["roles"] and "admin" not in u["roles"]
+        ]
     return render_template("admin/cad_writer.html", candidatos=candidatos)
 
 
@@ -560,7 +596,10 @@ def cad_writer_post():
         return redirect(url_for("cad_writer"))
 
     if "writer" not in usuario["roles"]:
-        usuario["roles"].append("writer")
+        if USAR_BANCO:
+            usuarios_repo.adicionar_role(usuario["id"], "writer")
+        else:
+            usuario["roles"].append("writer")
     flash(f"{usuario['nome']} agora é escritor(a)!", "sucesso")
     return redirect(url_for("writers"))
 
@@ -571,6 +610,71 @@ def cad_writer_post():
 def perfil():
     usuario = buscar_por_id(session["usuario_id"])
     return render_template("perfil.html", usuario=usuario)
+
+
+@app.post("/perfil")
+@login_obrigatorio
+def perfil_post():
+    usuario = buscar_por_id(session["usuario_id"])
+    if not usuario:
+        abort(404)
+
+    nome = request.form.get("userName", "").strip()
+    email = request.form.get("userEmail", "").strip().lower()
+    data_nasc_str = request.form.get("dateBirth", "")
+    senha_atual = request.form.get("currentPassword", "")
+    senha_nova = request.form.get("newPassword", "")
+    confirmar = request.form.get("confirmNewPassword", "")
+
+    try:
+        data_nasc = datetime.strptime(data_nasc_str, "%Y-%m-%d").date()
+    except ValueError:
+        data_nasc = None
+
+    quer_trocar_senha = any([senha_atual, senha_nova, confirmar])
+    outro = buscar_por_email(email) if EMAIL_REGEX.match(email) else None
+
+    # O papel (role) nunca é lido do formulário: só os administradores mudam isso
+    erro = None
+    if not all([nome, email, data_nasc_str]):
+        erro = "Preencha nome, e-mail e data de nascimento."
+    elif not EMAIL_REGEX.match(email):
+        erro = "E-mail inválido."
+    elif data_nasc is None or data_nasc >= date.today():
+        erro = "Data de nascimento inválida."
+    elif outro and outro["id"] != usuario["id"]:
+        erro = "Esse e-mail já está em uso por outra conta."
+    elif quer_trocar_senha and not check_password_hash(usuario["senha_hash"], senha_atual):
+        erro = "A senha atual está incorreta."
+    elif quer_trocar_senha and len(senha_nova) < TAMANHO_MIN_SENHA:
+        erro = f"A nova senha deve ter pelo menos {TAMANHO_MIN_SENHA} caracteres."
+    elif quer_trocar_senha and senha_nova != confirmar:
+        erro = "A confirmação da nova senha não confere."
+
+    nova_hash = generate_password_hash(senha_nova) if quer_trocar_senha and not erro else None
+
+    if not erro:
+        if USAR_BANCO:
+            try:
+                usuarios_repo.atualizar_usuario(usuario["id"], nome, email, data_nasc, nova_hash)
+            except usuarios_repo.EmailJaCadastrado:
+                erro = "Esse e-mail já está em uso por outra conta."
+        else:
+            usuario["nome"] = nome
+            usuario["email"] = email
+            usuario["data_nascimento"] = data_nasc
+            if nova_hash:
+                usuario["senha_hash"] = nova_hash
+
+    if erro:
+        flash(erro, "erro")
+        # devolve a tela com o que a pessoa digitou (as senhas nunca voltam preenchidas)
+        digitado = {**usuario, "nome": nome, "email": email, "data_nascimento": data_nasc_str}
+        return render_template("perfil.html", usuario=digitado), 400
+
+    session["nome"] = nome  # o nome do cabeçalho acompanha a mudança
+    flash("Perfil atualizado com sucesso!", "sucesso")
+    return redirect(url_for("perfil"))
 
 
 @app.get("/logout")
