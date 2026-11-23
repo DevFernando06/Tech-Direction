@@ -33,11 +33,11 @@
                     {% endif %}
 
                     <a
-                        href="{{ url_for('search_post') }}"
+                        href="{{ url_for('search_post') if pode('CREATE_POST') else url_for('dashboard') }}"
                         class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-line text-xs font-bold text-ink hover:bg-slate-100 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"
                     >
                         <i class="bi bi-arrow-left" aria-hidden="true"></i>
-                        <span>Todos os Posts</span>
+                        <span>{{ 'Todos os Posts' if pode('CREATE_POST') else 'Voltar ao Início' }}</span>
                     </a>
 
                     {% if pode_editar_post(post) %}

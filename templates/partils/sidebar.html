@@ -36,6 +36,7 @@
                         <span>Início</span>
                     </a>
                 </li>
+                {% if pode('CREATE_POST') %}
                 <li>
                     <a
                         href="{{ url_for('search_post') }}"
@@ -46,6 +47,7 @@
                         <span>Posts</span>
                     </a>
                 </li>
+                {% endif %}
                 {% if pode('MANAGE_WRITERS') %}
                 <li>
                     <a

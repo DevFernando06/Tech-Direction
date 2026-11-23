@@ -349,7 +349,7 @@ def view_post(slug):
     if slug is None:
         slug = next((s for s, p in listar_posts().items() if pode_ver_post(p)), None)
         if slug is None:
-            return redirect(url_for("search_post"))
+            return redirect(url_for("search_post") if pode(Permissions.CREATE_POST) else url_for("dashboard"))
     post = buscar_post(slug)
     if not post or not pode_ver_post(post):
         abort(404)
