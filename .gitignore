@@ -38,3 +38,11 @@ Thumbs.db
 
 # Logs
 *.log
+
+!.env.example
+
+# Uploads e arquivos soltos
+static/uploads/
+*.rar
+*.zip
+*.xlsx

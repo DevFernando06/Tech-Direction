@@ -24,4 +24,6 @@ try:
     )
 except usuarios_repo.EmailJaCadastrado:
     sys.exit("Esse e-mail já está cadastrado.")
+except usuarios_repo.BancoIndisponivel as erro:
+    sys.exit(f"Não consegui conectar ao banco: {erro}")
 print(f"Admin criado: {email}")

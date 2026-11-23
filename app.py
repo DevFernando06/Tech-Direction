@@ -19,15 +19,24 @@ from flask import (
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.utils import secure_filename
+from dotenv import load_dotenv
+
+import usuarios_repo
 
 UPLOAD_POSTS_DIR = os.path.join("static", "uploads", "posts")
 ALLOWED_IMAGE_EXTENSIONS = {"png", "jpg", "jpeg", "webp", "gif", "svg"}
 
+load_dotenv()  # lê o arquivo .env (SECRET_KEY, MODO_DEV_SEM_LOGIN e DATABASE_URL)
+
 app = Flask(__name__)
-app.secret_key = "troque-esta-chave-em-producao"  # necessária para session e flash
+# Em produção, defina SECRET_KEY no .env; o valor padrão serve apenas para desenvolvimento
+app.secret_key = os.getenv("SECRET_KEY", "troque-esta-chave-em-producao")  # necessária para session e flash
 app.permanent_session_lifetime = timedelta(days=30)  # usado no "Lembrar de mim"
 
-app.config["MODO_DEV_SEM_LOGIN"] = False        # Se True, ignora login e senha
+app.config["MODO_DEV_SEM_LOGIN"] = os.getenv("MODO_DEV_SEM_LOGIN", "0") == "1"  # Se True, ignora login e senha
+
+# True se DATABASE_URL estiver no .env: login e cadastro passam a usar o PostgreSQL
+USAR_BANCO = usuarios_repo.configurado()
 
 # "Banco de dados" e usuários de TESTE, SEM CONEXÃO COM BD
 
@@ -93,11 +102,15 @@ def slug_unico(titulo):
 
 
 def buscar_por_email(email):
+    if USAR_BANCO:
+        return usuarios_repo.buscar_por_email(email)
     email = email.strip().lower()
     return next((u for u in usuarios if u["email"] == email), None)
 
 
 def buscar_por_id(usuario_id):
+    if USAR_BANCO:
+        return usuarios_repo.buscar_por_id(usuario_id)
     return next((u for u in usuarios if u["id"] == usuario_id), None)
 
 
@@ -154,6 +167,21 @@ def injetar_usuario():
         "pode_excluir_post": pode_excluir_post,
         "nome_autor": nome_autor,
     }
+
+@app.errorhandler(usuarios_repo.BancoIndisponivel)
+def banco_indisponivel(erro):
+    """Banco fora do ar: mostra aviso na própria tela em vez de erro 500."""
+    app.logger.error("Banco de dados indisponível: %s", erro)
+    flash("Não foi possível acessar o banco de dados agora. Tente novamente em instantes.", "erro")
+    if request.endpoint == "cad_user_post":
+        dados = {
+            "userName": request.form.get("userName", "").strip(),
+            "userEmail": request.form.get("userEmail", "").strip().lower(),
+            "dateBirth": request.form.get("dateBirth", ""),
+        }
+        return render_template("login/cad_user.html", dados=dados), 503
+    return render_template("login/login.html", email=request.form.get("login", "")), 503
+
 
 def login_obrigatorio(f):
     @wraps(f)
@@ -214,7 +242,7 @@ def login_post():
 
     # Mensagem genérica: não revela se o erro foi no e-mail ou na senha
     flash("E-mail ou senha inválidos.", "erro")
-    return redirect(url_for("login"))
+    return render_template("login/login.html", email=email), 401  # mantém o e-mail digitado
 
 
 # ---------- CADASTRO ----------
@@ -258,16 +286,24 @@ def cad_user_post():
         flash(erro, "erro")
         return render_template("login/cad_user.html", dados=dados)
 
-    usuarios.append(
-        {
-            "id": len(usuarios) + 1,
-            "nome": nome,
-            "email": email,
-            "data_nascimento": data_nasc,
-            "senha_hash": generate_password_hash(senha),
-            "roles": ["student"],
-        }
-    )
+    senha_hash = generate_password_hash(senha)
+    if USAR_BANCO:
+        try:
+            usuarios_repo.criar_usuario(nome, email, data_nasc, senha_hash)
+        except usuarios_repo.EmailJaCadastrado:
+            flash("Esse e-mail já está cadastrado.", "erro")
+            return render_template("login/cad_user.html", dados=dados)
+    else:
+        usuarios.append(
+            {
+                "id": len(usuarios) + 1,
+                "nome": nome,
+                "email": email,
+                "data_nascimento": data_nasc,
+                "senha_hash": senha_hash,
+                "roles": ["student"],
+            }
+        )
     flash("Conta criada com sucesso! Faça login.", "sucesso")
     return redirect(url_for("login"))
 

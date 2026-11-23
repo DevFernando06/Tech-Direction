@@ -17,16 +17,25 @@ class EmailJaCadastrado(Exception):
     """E-mail já existe na tabela users (restrição UNIQUE)."""
 
 
+class BancoIndisponivel(Exception):
+    """Não foi possível conectar ao PostgreSQL (servidor fora do ar, URL errada, senha errada...)."""
+
+
 def configurado():
     return bool(os.getenv("DATABASE_URL"))
 
 
-def _conectar():
+def conectar():
     # Import tardio: o app roda sem o psycopg instalado enquanto usar a lista em memória
     import psycopg
     from psycopg.rows import dict_row
 
-    return psycopg.connect(os.environ["DATABASE_URL"], row_factory=dict_row)
+    try:
+        return psycopg.connect(
+            os.environ["DATABASE_URL"], row_factory=dict_row, connect_timeout=5
+        )
+    except psycopg.OperationalError as erro:
+        raise BancoIndisponivel(str(erro).strip()) from erro
 
 
 # Um usuário + suas roles ativas, no formato usado pelo app.
@@ -52,7 +61,7 @@ _SELECT_USUARIO = """
 
 def buscar_por_email(email):
     email = (email or "").strip().lower()
-    with _conectar() as conn:
+    with conectar() as conn:
         return conn.execute(
             _SELECT_USUARIO.format(filtro="u.email = %s"), (email,)
         ).fetchone()
@@ -61,7 +70,7 @@ def buscar_por_email(email):
 def buscar_por_id(usuario_id):
     if usuario_id is None:
         return None
-    with _conectar() as conn:
+    with conectar() as conn:
         return conn.execute(
             _SELECT_USUARIO.format(filtro="u.id_user = %s"), (usuario_id,)
         ).fetchone()
@@ -73,7 +82,7 @@ def criar_usuario(nome, email, data_nascimento, senha_hash, roles=("student",)):
 
     email = email.strip().lower()
     try:
-        with _conectar() as conn:  # commit automático ao sair; rollback se der erro
+        with conectar() as conn:  # commit automático ao sair; rollback se der erro
             novo = conn.execute(
                 """
                 INSERT INTO users (name, email, password, date_birth)
