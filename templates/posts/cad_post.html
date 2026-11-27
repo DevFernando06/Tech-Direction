@@ -13,7 +13,7 @@
 
     <main class="flex-1 min-w-0 max-w-[76rem] w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8" id="main-content"
         tabindex="-1">
-        <header class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-line pb-6">
+        <header class="mb-8 border-b border-line pb-6">
             <div>
                 <nav aria-label="Breadcrumb" class="mb-2">
                     <ol class="flex flex-wrap items-center gap-2 text-xs text-muted font-medium">
@@ -34,24 +34,6 @@
                 <p class="text-sm text-muted mt-1 max-w-2xl">
                     Defina os dados principais do post e adicione uma ou mais seções com subtítulo, texto e imagem.
                 </p>
-            </div>
-
-            <div class="flex flex-wrap items-center gap-3 shrink-0">
-                <a href="{{ url_for('search_post') }}"
-                    class="px-3.5 py-2 text-xs sm:text-sm font-semibold text-muted hover:text-brand-dark transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded-lg">
-                    Cancelar
-                </a>
-                <button type="button" id="btnPreviewToggle" data-toggle-preview aria-haspopup="dialog"
-                    aria-controls="previewModal"
-                    class="px-3.5 py-2 text-xs sm:text-sm font-bold text-brand-dark bg-slate-100 hover:bg-slate-200 border border-line rounded-xl transition-all flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime">
-                    <i class="bi bi-eye text-muted" aria-hidden="true"></i>
-                    <span id="previewBtnText">Pré-visualizar</span>
-                </button>
-                <button type="submit" form="formPost"
-                    class="py-2 px-4 sm:px-5 rounded-xl bg-brand-lime hover:bg-[#aedf1e] text-brand-dark font-bold text-xs sm:text-sm flex items-center gap-1.5 shadow-[0_3px_0_0_#0A1E3F] active:translate-y-[1px] active:shadow-none transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime">
-                    <span>{{ 'Salvar Alterações' if editando else 'Publicar Post' }}</span>
-                    <i class="bi bi-check2-circle" aria-hidden="true"></i>
-                </button>
             </div>
         </header>
 
@@ -166,24 +148,9 @@
                                 <label class="block text-xs sm:text-sm font-bold text-ink mb-1.5">
                                     Texto da Seção <span class="text-danger" aria-hidden="true">*</span>
                                 </label>
-                                <div class="flex flex-wrap items-center gap-1.5 p-1.5 bg-slate-100 rounded-t-xl border-t border-x border-line text-xs"
-                                    role="toolbar" aria-label="Ferramentas de formatação do texto">
-                                    <button type="button" data-format-prefix="**" data-format-suffix="**"
-                                        class="btn-format px-2.5 py-1 rounded font-bold hover:bg-white text-ink border border-transparent hover:border-line"
-                                        title="Negrito">B</button>
-                                    <button type="button" data-format-prefix="*" data-format-suffix="*"
-                                        class="btn-format px-2.5 py-1 rounded italic hover:bg-white text-ink border border-transparent hover:border-line"
-                                        title="Itálico">I</button>
-                                    <button type="button" data-format-prefix="`" data-format-suffix="`"
-                                        class="btn-format px-2.5 py-1 rounded font-mono hover:bg-white text-ink border border-transparent hover:border-line"
-                                        title="Código">&lt;/&gt;</button>
-                                    <button type="button" data-format-prefix="\n- " data-format-suffix="\n"
-                                        class="btn-format px-2.5 py-1 rounded hover:bg-white text-ink border border-transparent hover:border-line"
-                                        title="Lista">&bull; Lista</button>
-                                </div>
                                 <textarea name="section_text[]" rows="6" required
                                     placeholder="Escreva o conteúdo desta seção..."
-                                    class="section-text-input w-full px-4 py-3 text-sm rounded-b-xl bg-white border border-line text-ink placeholder-muted/60 focus:outline-none focus:ring-2 focus:ring-brand-lime focus:border-brand-blue transition-all leading-relaxed">{{ secao.text or '' }}</textarea>
+                                    class="section-text-input w-full px-4 py-3 text-sm rounded-xl bg-white border border-line text-ink placeholder-muted/60 focus:outline-none focus:ring-2 focus:ring-brand-lime focus:border-brand-blue transition-all leading-relaxed">{{ secao.text or '' }}</textarea>
                             </div>
 
                             <div>
@@ -203,18 +170,36 @@
 {% endfor %}
                     </div>
 
-                    <div class="mt-5 pt-4 border-t border-line flex justify-end">
+                    <div class="mt-5 pt-4 border-t border-line flex flex-wrap items-center justify-between gap-3">
                         <button type="button" id="btnAddSection"
-                            class="px-4 py-2.5 rounded-xl bg-brand-light hover:bg-blue-100 text-brand-blue font-bold text-xs sm:text-sm flex items-center gap-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime">
+                            class="min-h-[44px] px-4 py-2.5 rounded-xl bg-brand-light hover:bg-blue-100 text-brand-blue font-bold text-xs sm:text-sm flex items-center gap-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime">
                             <i class="bi bi-plus-circle" aria-hidden="true"></i>
                             <span>Adicionar Nova Seção</span>
                         </button>
+
+                        <div class="flex flex-wrap items-center gap-3">
+                            <a href="{{ url_for('search_post') }}"
+                                class="min-h-[44px] inline-flex items-center px-3.5 py-2.5 text-xs sm:text-sm font-semibold text-muted hover:text-brand-dark transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded-lg">
+                                Cancelar
+                            </a>
+                            <button type="button" id="btnPreviewToggle" data-toggle-preview aria-haspopup="dialog"
+                                aria-controls="previewModal"
+                                class="min-h-[44px] px-3.5 py-2.5 text-xs sm:text-sm font-bold text-brand-dark bg-slate-100 hover:bg-slate-200 border border-line rounded-xl transition-all flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime">
+                                <i class="bi bi-eye text-muted" aria-hidden="true"></i>
+                                <span id="previewBtnText">Pré-visualizar</span>
+                            </button>
+                            <button type="submit" form="formPost"
+                                class="min-h-[44px] py-2.5 px-4 sm:px-5 rounded-xl bg-brand-lime hover:bg-[#aedf1e] text-brand-dark font-bold text-xs sm:text-sm flex items-center gap-1.5 shadow-[0_3px_0_0_#0A1E3F] active:translate-y-[1px] active:shadow-none transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime">
+                                <span>{{ 'Salvar Alterações' if editando else 'Publicar Post' }}</span>
+                                <i class="bi bi-check2-circle" aria-hidden="true"></i>
+                            </button>
+                        </div>
                     </div>
                 </section>
             </div>
 
-            <aside aria-label="Publicação do post" class="lg:col-span-4 space-y-6">
-                <div class="bg-white rounded-2xl border border-line p-6 shadow-xs sticky top-24">
+            <aside aria-label="Publicação do post" class="lg:col-span-4 lg:sticky lg:top-24 space-y-6">
+                <div class="bg-white rounded-2xl border border-line p-6 shadow-xs">
                     <section aria-labelledby="publish-heading" class="mb-5">
                         <h3 id="publish-heading" class="text-sm font-bold uppercase tracking-wider text-muted mb-4">
                             Publicação do Post</h3>

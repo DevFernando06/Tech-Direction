@@ -2,20 +2,6 @@
  * Tech Direction - Cadastro de Post
  */
 
-function insertFormattingInTextarea(textarea, prefix, suffix) {
-    if (!textarea) return;
-
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-    const text = textarea.value;
-    const selectedText = text.substring(start, end);
-
-    const replacement = prefix + (selectedText || 'texto') + suffix;
-    textarea.value = text.substring(0, start) + replacement + text.substring(end);
-    textarea.focus();
-    textarea.setSelectionRange(start + prefix.length, start + prefix.length + (selectedText.length || 5));
-}
-
 function updateSectionNumbers() {
     const container = document.getElementById('sectionsContainer');
     if (!container) return;
@@ -185,17 +171,6 @@ function initCadPost() {
                     item.remove();
                     updateSectionNumbers();
                 }
-                return;
-            }
-
-            const formatBtn = e.target.closest('.btn-format');
-            if (formatBtn) {
-                e.preventDefault();
-                const item = formatBtn.closest('.post-section-item');
-                const textarea = item?.querySelector('.section-text-input');
-                const prefix = (formatBtn.getAttribute('data-format-prefix') || '').replace(/\\n/g, '\n');
-                const suffix = (formatBtn.getAttribute('data-format-suffix') || '').replace(/\\n/g, '\n');
-                insertFormattingInTextarea(textarea, prefix, suffix);
             }
         });
     }

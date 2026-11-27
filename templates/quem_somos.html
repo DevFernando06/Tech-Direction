@@ -45,21 +45,31 @@
     {% endif %}
 
     <main class="flex-1 min-w-0 max-w-[76rem] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-10 sm:space-y-12" id="main-content" tabindex="-1">
-        <!-- Breadcrumb -->
-        <nav aria-label="Breadcrumb">
-            <ol class="flex flex-wrap items-center gap-2 text-xs text-muted font-medium list-none p-0 m-0">
-                <li>
-                    <a
-                        href="{{ url_for('dashboard') if usuario_logado else url_for('login') }}"
-                        class="hover:text-brand-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-1 py-0.5"
-                    >
-                        {{ 'Início' if usuario_logado else 'Entrar' }}
-                    </a>
-                </li>
-                <li aria-hidden="true">/</li>
-                <li><span class="text-ink font-semibold" aria-current="page">Quem Somos</span></li>
-            </ol>
-        </nav>
+        <!-- Breadcrumb e botão Voltar -->
+        <div class="flex flex-wrap items-center justify-between gap-3">
+            <nav aria-label="Breadcrumb">
+                <ol class="flex flex-wrap items-center gap-2 text-xs text-muted font-medium list-none p-0 m-0">
+                    <li>
+                        <a
+                            href="{{ url_for('dashboard') if usuario_logado else url_for('login') }}"
+                            class="hover:text-brand-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-1 py-0.5"
+                        >
+                            {{ 'Início' if usuario_logado else 'Entrar' }}
+                        </a>
+                    </li>
+                    <li aria-hidden="true">/</li>
+                    <li><span class="text-ink font-semibold" aria-current="page">Quem Somos</span></li>
+                </ol>
+            </nav>
+
+            <a
+                href="{{ url_for('dashboard') if usuario_logado else url_for('login') }}"
+                class="min-h-[44px] px-4 py-2 rounded-xl border border-line bg-white hover:bg-slate-50 text-ink font-semibold text-sm inline-flex items-center gap-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"
+            >
+                <i class="bi bi-arrow-left" aria-hidden="true"></i>
+                <span>Voltar</span>
+            </a>
+        </div>
 
         <!-- Hero Institucional -->
         <section aria-labelledby="about-heading" class="bg-brand-dark text-white rounded-3xl p-8 sm:p-12 lg:p-14 relative overflow-hidden shadow-sm">
